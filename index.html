@@ -21,8 +21,8 @@
   <div class="card">
     <h1>🎁 RascaYa</h1>
     <div class="saldo">$<span id="saldo">0.00</span></div>
-    <button id="rasparBtn">Raspar y Ganar $0.15</button>
-    <div class="info">Mirá 1 anuncio completo para cobrar</div>
+    <button id="rasparBtn" disabled>Raspar y Ganar $0.15</button>
+    <div class="info">Verificá Monetag primero</div>
   </div>
 
 <!-- CÓDIGO MONETAG REWARDED - TU ZONE ID 11231361 -->
@@ -41,38 +41,17 @@
 <script>
   let saldo = parseFloat(localStorage.getItem('saldoRasca') || '0');
   const saldoEl = document.getElementById('saldo');
-  const btn = document.getElementById('rasparBtn');
-  
-  function actualizarSaldo() {
-    saldoEl.textContent = saldo.toFixed(2);
-  }
-  actualizarSaldo();
-
-  btn.addEventListener('click', async () => {
-    btn.disabled = true;
-    btn.textContent = 'Cargando anuncio...';
-    
-    try {
-      await show_11231361(); 
-      saldo += 0.15;
-      localStorage.setItem('saldoRasca', saldo.toString());
-      actualizarSaldo();
-      alert('+$0.15 acreditado ✅');
-    } catch (e) {
-      alert('El anuncio no se completó. Probá de nuevo.');
-    }
-    
-    btn.disabled = false;
-    btn.textContent = 'Raspar y Ganar $0.15';
-  });
+  saldoEl.textContent = saldo.toFixed(2);
 </script>
 
-<!-- SERVICE WORKER PARA MONETAG + PWA -->
+<!-- SW COMENTADO PARA VERIFICAR. LO DESCOMENTAMOS DESPUÉS -->
+<!-- 
 <script>
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js');
 }
-</script>
+</script> 
+-->
 
 </body>
 </html>
