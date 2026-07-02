@@ -2,6 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
+<meta name="monetag" content="cf89a74b7c3c298cd1302744700289ba">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RascaYa - Gana viendo anuncios</title>
 <link rel="manifest" href="manifest.json">
@@ -24,16 +25,13 @@
     <div class="info">Mirá 1 anuncio completo para cobrar</div>
   </div>
 
-<!-- PASO 1: CÓDIGO MONETAG REWARDED - TU ZONE ID -->
+<!-- CÓDIGO MONETAG REWARDED - TU ZONE ID 11231361 -->
 <script>
-  // Este es tu código de Monetag Rewarded con zoneId: 11231361
   function show_11231361() {
     return new Promise((resolve, reject) => {
-      // Monetag te inyecta esto cuando cargas el sw.js
       if(typeof window.show_11231361 === 'function') {
         window.show_11231361().then(resolve).catch(reject);
       } else {
-        // Si no cargó, lo rechazamos
         reject('Ad no disponible');
       }
     });
@@ -41,7 +39,6 @@
 </script>
 
 <script>
-  // Lógica de la app
   let saldo = parseFloat(localStorage.getItem('saldoRasca') || '0');
   const saldoEl = document.getElementById('saldo');
   const btn = document.getElementById('rasparBtn');
@@ -56,15 +53,11 @@
     btn.textContent = 'Cargando anuncio...';
     
     try {
-      // 1. Muestra el anuncio Rewarded de Monetag
       await show_11231361(); 
-      
-      // 2. Si lo miró completo, suma $0.15
       saldo += 0.15;
       localStorage.setItem('saldoRasca', saldo.toString());
       actualizarSaldo();
       alert('+$0.15 acreditado ✅');
-      
     } catch (e) {
       alert('El anuncio no se completó. Probá de nuevo.');
     }
@@ -74,7 +67,7 @@
   });
 </script>
 
-<!-- PASO 2: REGISTRAR EL SERVICE WORKER PARA MONETAG + PWA -->
+<!-- SERVICE WORKER PARA MONETAG + PWA -->
 <script>
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js');
