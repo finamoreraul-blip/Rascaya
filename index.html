@@ -1,97 +1,85 @@
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RascaYa | Gana $ por mirar anuncios</title>
-  <meta name="description" content="Mirá anuncios y ganá pesos al instante. 100% Argentina.">
-
-  <!-- PASO 1: PEGÁ ACÁ EL CÓDIGO DE MONETAG / ADSTERRA -->
-  <!-- Ejemplo: <script src='//ad.monetag.com/...'></script> -->
-  <!-- Después de pegarlo, guardá y subilo a GitHub -->
-
-  <style>
-    :root {
-      --verde: #00C853;
-      --negro: #121212;
-      --gris: #1E1E1E;
-      --blanco: #F5F5F5;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
-    body { background: var(--negro); color: var(--blanco); text-align: center; padding: 40px 20px; }
-    .card {
-      max-width: 400px;
-      margin: 0 auto;
-      background: var(--gris);
-      border-radius: 20px;
-      padding: 30px 20px;
-      box-shadow: 0 0 20px rgba(0,200,83,0.2);
-    }
-    h1 { font-size: 2rem; color: var(--verde); margin-bottom: 10px; }
-    p { font-size: 1rem; opacity: 0.9; margin-bottom: 25px; }
-    .saldo {
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--verde);
-      margin: 15px 0;
-    }
-    .btn {
-      width: 100%;
-      padding: 18px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      background: var(--verde);
-      color: var(--negro);
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn:disabled { background: #444; color: #aaa; cursor: not-allowed; }
-    .nota { font-size: 0.85rem; opacity: 0.6; margin-top: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RascaYa - Gana viendo anuncios</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f59e0b">
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto;background:#0f172a;color:#e2e8f0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
+  .card{background:#1e293b;padding:24px;border-radius:16px;box-shadow:0 8px 24px #0006;text-align:center;max-width:360px;width:90%}
+  h1{margin:0 0 8px;font-size:28px;color:#fbbf24}
+  .saldo{font-size:40px;font-weight:800;margin:12px 0;color:#22d3ee}
+  button{background:#f59e0b;border:0;color:#0f172a;font-weight:700;font-size:18px;padding:14px 22px;border-radius:12px;cursor:pointer;width:100%;margin-top:8px}
+  button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
+  .info{font-size:13px;color:#94a3b8;margin-top:12px}
+</style>
 </head>
 <body>
-
   <div class="card">
-    <h1>💸 RascaYa</h1>
-    <p>Mirá un anuncio y sumá $0.15 ARS</p>
-
-    <div class="saldo" id="saldo">$0.00</div>
-
-    <button class="btn" id="btnRaspar">Raspar y Ganar</button>
-
-    <p class="nota">Retirá por Payoneer o Crypto cuando llegues a $500 ARS</p>
+    <h1>🎁 RascaYa</h1>
+    <div class="saldo">$<span id="saldo">0.00</span></div>
+    <button id="rasparBtn">Raspar y Ganar $0.15</button>
+    <div class="info">Mirá 1 anuncio completo para cobrar</div>
   </div>
 
-  <script>
-    // Esto es solo para que se vea funcional mientras Monetag aprueba
-    let saldo = parseFloat(localStorage.getItem('saldo') || "0");
-    const saldoEl = document.getElementById('saldo');
-    const btn = document.getElementById('btnRaspar');
-
-    function actualizarSaldo() {
-      saldoEl.textContent = `$${saldo.toFixed(2)}`;
-    }
-    actualizarSaldo();
-
-    btn.addEventListener('click', () => {
-      btn.disabled = true;
-      btn.textContent = "Mostrando anuncio...";
-
-      // PASO 2: ACÁ VA EL "SHOW_AD" DE MONETAG CUANDO TE LO DEN
-      // Ejemplo Monetag: show_1234567().then(() => { sumarSaldo() })
-      
-      setTimeout(() => { // Simulación de 5 segundos viendo anuncio
-        saldo += 0.15;
-        localStorage.setItem('saldo', saldo);
-        actualizarSaldo();
-        btn.disabled = false;
-        btn.textContent = "Raspar y Ganar";
-      }, 5000);
+<!-- PASO 1: CÓDIGO MONETAG REWARDED - TU ZONE ID -->
+<script>
+  // Este es tu código de Monetag Rewarded con zoneId: 11231361
+  function show_11231361() {
+    return new Promise((resolve, reject) => {
+      // Monetag te inyecta esto cuando cargas el sw.js
+      if(typeof window.show_11231361 === 'function') {
+        window.show_11231361().then(resolve).catch(reject);
+      } else {
+        // Si no cargó, lo rechazamos
+        reject('Ad no disponible');
+      }
     });
-  </script>
+  }
+</script>
+
+<script>
+  // Lógica de la app
+  let saldo = parseFloat(localStorage.getItem('saldoRasca') || '0');
+  const saldoEl = document.getElementById('saldo');
+  const btn = document.getElementById('rasparBtn');
+  
+  function actualizarSaldo() {
+    saldoEl.textContent = saldo.toFixed(2);
+  }
+  actualizarSaldo();
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    btn.textContent = 'Cargando anuncio...';
+    
+    try {
+      // 1. Muestra el anuncio Rewarded de Monetag
+      await show_11231361(); 
+      
+      // 2. Si lo miró completo, suma $0.15
+      saldo += 0.15;
+      localStorage.setItem('saldoRasca', saldo.toString());
+      actualizarSaldo();
+      alert('+$0.15 acreditado ✅');
+      
+    } catch (e) {
+      alert('El anuncio no se completó. Probá de nuevo.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Raspar y Ganar $0.15';
+  });
+</script>
+
+<!-- PASO 2: REGISTRAR EL SERVICE WORKER PARA MONETAG + PWA -->
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js');
+}
+</script>
 
 </body>
 </html>
