@@ -1,157 +1,97 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LaburosYA Miami | Trabajos en Miami-Dade</title>
-<style>
-:root{--bg:#0a0f1c;--card:#121a2b;--accent:#00d97e;--text:#e6edf3;--muted:#8b98a8;--border:#1f2a44}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-.container{max-width:760px;margin:0 auto;padding:24px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-.logo{font-weight:900;font-size:22px;color:var(--accent)} .logo span{color:var(--text)}
-.lang-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700}
-.hero{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;text-align:center}
-.hero h1{font-size:32px;line-height:1.2;margin-bottom:8px} .hero h1 .accent{color:var(--accent)}
-.price{font-size:28px;font-weight:900;margin:12px 0;color:var(--accent)} .price small{font-size:14px;color:var(--muted);font-weight:600}
-.btn{display:inline-block;background:var(--accent);color:#001a10;text-decoration:none;font-weight:900;padding:14px 22px;border-radius:12px;margin-top:12px;font-size:16px}
-.btn:hover{filter:brightness(1.1)}
-.btn-small{display:inline-block;background:var(--accent);color:#001a10;text-decoration:none;font-weight:800;padding:10px 16px;border-radius:10px;margin-top:10px;font-size:14px;width:100%;text-align:center}
-.btn-small:hover{filter:brightness(1.1)}
-.whatsapp{display:block;margin-top:10px;color:var(--muted);font-size:14px}
-.whatsapp a{color:var(--accent);text-decoration:none;font-weight:700}
-.features{display:grid;gap:12px;margin:24px 0}
-.feature{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start}
-.feature b{color:var(--accent)}
-.jobs h2{margin:24px 0 12px;font-size:22px}
-.job{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
-.job h3{color:var(--accent);margin-bottom:6px;font-size:16px}
-.job p{color:var(--muted);font-size:14px;margin:4px 0}
-.badge{display:inline-block;background:#1f2a44;color:var(--accent);padding:3px 8px;border-radius:6px;font-size:12px;font-weight:700;margin-bottom:8px}
-.footer{margin-top:32px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px}
-.hidden{display:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RascaYa | Gana $ por mirar anuncios</title>
+  <meta name="description" content="Mirá anuncios y ganá pesos al instante. 100% Argentina.">
+
+  <!-- PASO 1: PEGÁ ACÁ EL CÓDIGO DE MONETAG / ADSTERRA -->
+  <!-- Ejemplo: <script src='//ad.monetag.com/...'></script> -->
+  <!-- Después de pegarlo, guardá y subilo a GitHub -->
+
+  <style>
+    :root {
+      --verde: #00C853;
+      --negro: #121212;
+      --gris: #1E1E1E;
+      --blanco: #F5F5F5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+    body { background: var(--negro); color: var(--blanco); text-align: center; padding: 40px 20px; }
+    .card {
+      max-width: 400px;
+      margin: 0 auto;
+      background: var(--gris);
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 0 20px rgba(0,200,83,0.2);
+    }
+    h1 { font-size: 2rem; color: var(--verde); margin-bottom: 10px; }
+    p { font-size: 1rem; opacity: 0.9; margin-bottom: 25px; }
+    .saldo {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--verde);
+      margin: 15px 0;
+    }
+    .btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: var(--verde);
+      color: var(--negro);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { background: #444; color: #aaa; cursor: not-allowed; }
+    .nota { font-size: 0.85rem; opacity: 0.6; margin-top: 20px; }
+  </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="logo">LaburosYA<span>.MIAMI</span></div>
-    <button class="lang-btn" id="langToggle">EN</button>
-  </header>
 
-  <!-- ESPAÑOL -->
-  <div id="es">
-    <section class="hero">
-      <h1>Acceso mensual a <span class="accent">laburos en Miami</span></h1>
-      <div class="price">$5 USD <small>/ MES. Cancelás cuando quieras.</small></div>
-      <p>CV PRO + Alertas diarias al WhatsApp + Prioridad. Solo Miami-Dade.</p>
-      <a href="https://wa.me/5492983389710" class="btn" target="_blank">ACTIVAR POR WHATSAPP $5 USD</a>
-      <div class="whatsapp">WhatsApp directo: <a href="https://wa.me/5492983389710" target="_blank">+54 9 2983 389710</a></div>
-    </section>
+  <div class="card">
+    <h1>💸 RascaYa</h1>
+    <p>Mirá un anuncio y sumá $0.15 ARS</p>
 
-    <div class="features">
-      <div class="feature"><b>✅</b> <div><b>CV PRO MIAMI:</b> Plantilla lista en español/inglés para postular ya</div></div>
-      <div class="feature"><b>✅</b> <div><b>ALERTAS DIARIAS WA:</b> Todos los avisos nuevos de Miami al WhatsApp</div></div>
-      <div class="feature"><b>✅</b> <div><b>PRIORIDAD MENSUAL:</b> Tu CV va primero en todas las búsquedas</div></div>
-      <div class="feature"><b>✅</b> <div><b>AVISOS NUEVOS:</b> Se actualiza 3 veces por semana. Solo Miami, Hialeah, Doral</div></div>
-    </div>
+    <div class="saldo" id="saldo">$0.00</div>
 
-    <section class="jobs">
-      <h2>Avisos Activos Hoy 04/09</h2>
-      <div class="job">
-        <span class="badge">GASTRONOMÍA</span>
-        <h3>MOZO/A - RESTAURANTE DORAL</h3>
-        <p><b>Sueldo:</b> $18/hr + propinas Cash</p>
-        <p><b>Horario:</b> Part-time 6hs / Full-time 9hs. Turno noche.</p>
-        <p><b>Requisitos:</b> Mayor de 18. Sin experiencia. Sin papeles ok.</p>
-        <p><b>Zona:</b> Doral, FL</p>
-        <a href="https://wa.me/5492983389710?text=Hola%20quiero%20postularme%20al%20puesto%20MOZO%20DORAL%20Ref:%20MOZO%20DORAL" class="btn-small" target="_blank">POSTULARME</a>
-      </div>
-      <div class="job">
-        <span class="badge">COMERCIO</span>
-        <h3>VENDEDOR/A - TIENDA HIALEAH</h3>
-        <p><b>Sueldo:</b> $16/hr + comisiones Cash</p>
-        <p><b>Horario:</b> Lunes a Sábados 13hs a 19hs</p>
-        <p><b>Requisitos:</b> Experiencia en ventas. Inglés básico.</p>
-        <p><b>Zona:</b> Hialeah, FL</p>
-        <a href="https://wa.me/5492983389710?text=Hola%20quiero%20postularme%20al%20puesto%20VENDEDOR%20HIALEAH%20Ref:%20VENTAS%20HIA" class="btn-small" target="_blank">POSTULARME</a>
-      </div>
-      <div class="job">
-        <span class="badge">LIMPIEZA</span>
-        <h3>HOUSEKEEPING - HOTEL MIAMI BEACH</h3>
-        <p><b>Sueldo:</b> $16/hr + Tips Cash</p>
-        <p><b>Horario:</b> Lunes a Viernes 7hs a 15hs</p>
-        <p><b>Requisitos:</b> Responsable, puntual. Sin experiencia. Sin papeles ok.</p>
-        <p><b>Zona:</b> Miami Beach</p>
-        <a href="https://wa.me/5492983389710?text=Hola%20quiero%20postularme%20al%20puesto%20HOUSEKEEPING%20MB%20Ref:%20HOTEL%20MB" class="btn-small" target="_blank">POSTULARME</a>
-      </div>
-    </section>
-    <p class="footer">Cupo limitado: 100 miembros. Se actualiza Lun-Mie-Vie. Contacto: +54 9 2983 389710</p>
+    <button class="btn" id="btnRaspar">Raspar y Ganar</button>
+
+    <p class="nota">Retirá por Payoneer o Crypto cuando llegues a $500 ARS</p>
   </div>
 
-  <!-- INGLÉS -->
-  <div id="en" class="hidden">
-    <section class="hero">
-      <h1>Monthly access to <span class="accent">jobs in Miami</span></h1>
-      <div class="price">$5 USD <small>/ MONTH. Cancel anytime.</small></div>
-      <p>PRO Resume + Daily WhatsApp Alerts + Priority. Miami-Dade only.</p>
-      <a href="https://wa.me/5492983389710" class="btn" target="_blank">ACTIVATE ON WHATSAPP $5 USD</a>
-      <div class="whatsapp">WhatsApp: <a href="https://wa.me/5492983389710" target="_blank">+54 9 2983 389710</a></div>
-    </section>
+  <script>
+    // Esto es solo para que se vea funcional mientras Monetag aprueba
+    let saldo = parseFloat(localStorage.getItem('saldo') || "0");
+    const saldoEl = document.getElementById('saldo');
+    const btn = document.getElementById('btnRaspar');
 
-    <div class="features">
-      <div class="feature"><b>✅</b> <div><b>PRO MIAMI RESUME:</b> Spanish/English template ready to apply now</div></div>
-      <div class="feature"><b>✅</b> <div><b>DAILY WA ALERTS:</b> All new Miami jobs sent to WhatsApp</div></div>
-      <div class="feature"><b>✅</b> <div><b>MONTHLY PRIORITY:</b> Your CV goes first in all searches</div></div>
-      <div class="feature"><b>✅</b> <div><b>NEW JOBS:</b> Updated 3 times per week. Miami, Hialeah, Doral only</div></div>
-    </div>
+    function actualizarSaldo() {
+      saldoEl.textContent = `$${saldo.toFixed(2)}`;
+    }
+    actualizarSaldo();
 
-    <section class="jobs">
-      <h2>Active Jobs Today 09/04</h2>
-      <div class="job">
-        <span class="badge">FOOD</span>
-        <h3>WAITER/WAITRESS - DORAL RESTAURANT</h3>
-        <p><b>Pay:</b> $18/hr + tips Cash</p>
-        <p><b>Shift:</b> Part-time 6hs / Full-time 9hs. Night shift.</p>
-        <p><b>Req:</b> 18+. No experience. No papers ok.</p>
-        <p><b>Area:</b> Doral, FL</p>
-        <a href="https://wa.me/5492983389710?text=Hi%20I%20want%20to%20apply%20for%20WAITER%20DORAL%20Ref:%20MOZO%20DORAL" class="btn-small" target="_blank">APPLY NOW</a>
-      </div>
-      <div class="job">
-        <span class="badge">RETAIL</span>
-        <h3>SALES ASSOCIATE - HIALEAH STORE</h3>
-        <p><b>Pay:</b> $16/hr + commission Cash</p>
-        <p><b>Shift:</b> Mon-Sat 1pm to 7pm</p>
-        <p><b>Req:</b> Sales experience. Basic English.</p>
-        <p><b>Area:</b> Hialeah, FL</p>
-        <a href="https://wa.me/5492983389710?text=Hi%20I%20want%20to%20apply%20for%20SALES%20HIALEAH%20Ref:%20VENTAS%20HIA" class="btn-small" target="_blank">APPLY NOW</a>
-      </div>
-      <div class="job">
-        <span class="badge">CLEANING</span>
-        <h3>HOUSEKEEPING - MIAMI BEACH HOTEL</h3>
-        <p><b>Pay:</b> $16/hr + Tips Cash</p>
-        <p><b>Shift:</b> Mon-Fri 7am to 3pm</p>
-        <p><b>Req:</b> Responsible, punctual. No experience. No papers ok.</p>
-        <p><b>Area:</b> Miami Beach</p>
-        <a href="https://wa.me/5492983389710?text=Hi%20I%20want%20to%20apply%20for%20HOUSEKEEPING%20MB%20Ref:%20HOTEL%20MB" class="btn-small" target="_blank">APPLY NOW</a>
-      </div>
-    </section>
-    <p class="footer">Limited spots: 100 members. Updated Mon-Wed-Fri. Contact: +54 9 2983 389710</p>
-  </div>
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      btn.textContent = "Mostrando anuncio...";
 
-</div>
+      // PASO 2: ACÁ VA EL "SHOW_AD" DE MONETAG CUANDO TE LO DEN
+      // Ejemplo Monetag: show_1234567().then(() => { sumarSaldo() })
+      
+      setTimeout(() => { // Simulación de 5 segundos viendo anuncio
+        saldo += 0.15;
+        localStorage.setItem('saldo', saldo);
+        actualizarSaldo();
+        btn.disabled = false;
+        btn.textContent = "Raspar y Ganar";
+      }, 5000);
+    });
+  </script>
 
-<script>
-const btn = document.getElementById('langToggle');
-const es = document.getElementById('es');
-const en = document.getElementById('en');
-btn.onclick = () => {
-  es.classList.toggle('hidden');
-  en.classList.toggle('hidden');
-  btn.textContent = es.classList.contains('hidden') ? 'ES' : 'EN';
-  document.documentElement.lang = es.classList.contains('hidden') ? 'en' : 'es';
-};
-</script>
 </body>
 </html>
