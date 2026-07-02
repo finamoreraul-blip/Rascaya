@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="monetag" content="cf89a74b7c3c298cd1302744700289ba">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RascaYa - Gana viendo anuncios v2</title> <!-- v2 para forzar update -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#f59e0b">
+<title>RascaYa v3</title> <!-- v3 para forzar update -->
 <style>
   body{font-family:system-ui,Segoe UI,Roboto;background:#0f172a;color:#e2e8f0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
   .card{background:#1e293b;padding:24px;border-radius:16px;box-shadow:0 8px 24px #0006;text-align:center;max-width:360px;width:90%}
@@ -20,38 +18,13 @@
 <body>
   <div class="card">
     <h1>🎁 RascaYa</h1>
-    <div class="saldo">$<span id="saldo">0.00</span></div>
-    <button id="rasparBtn" disabled>Raspar y Ganar $0.15</button>
-    <div class="info">Verificando Monetag v2</div> <!-- texto cambiado -->
+    <div class="saldo">$0.00</div>
+    <button disabled>Raspar y Ganar $0.15</button>
+    <div class="info">Verificando Monetag v3</div>
   </div>
 
 <!-- CÓDIGO MONETAG REWARDED - ZONE 11231361 -->
-<script>
-  function show_11231361() {
-    return new Promise((resolve, reject) => {
-      if(typeof window.show_11231361 === 'function') {
-        window.show_11231361().then(resolve).catch(reject);
-      } else {
-        reject('Ad no disponible');
-      }
-    });
-  }
-</script>
-
-<script>
-  let saldo = parseFloat(localStorage.getItem('saldoRasca') || '0');
-  const saldoEl = document.getElementById('saldo');
-  saldoEl.textContent = saldo.toFixed(2);
-</script>
-
-<!-- SW DESACTIVADO PARA VERIFICACION MONETAG -->
-<!-- 
-<script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/sw.js');
-}
-</script> 
--->
+<script src="//libtl.com/sl.js?z=11231361" data-cfasync="false"></script>
 
 </body>
 </html>
