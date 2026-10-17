@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia - Tu Plan Alimenticio Energético y de Ahorro</title>
+    <title>NutriEnergia - Tu Plan Alimenticio y Recetario Inteligente</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -36,8 +36,8 @@
             font-weight: 900;
             font-size: 1.1rem;
             color: #ef4444;
-            transform: rotate(-25deg) scale(1.2);
-            line-height: 5rem;
+            transform: rotate(-25deg) scale(1.25);
+            line-height: 5.5rem;
             word-spacing: 2.5rem;
             user-select: none;
         }
@@ -75,7 +75,7 @@
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Captura de pantalla bloqueada</h3>
-            <p class="text-sm text-slate-300 mb-6">Para obtener tu plan alimenticio completo en formato PDF descargable y sin marcas de agua, suscríbete oficialmente.</p>
+            <p class="text-sm text-slate-300 mb-6">Para obtener tu plan alimenticio y recetario completo en formato PDF descargable y sin marcas de agua, suscríbete oficialmente.</p>
             <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2">
                 <span class="pay-btn-text">Suscribirme al Plan</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -88,7 +88,7 @@
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium">Suscripción Nutricional Energética + Plan de Ahorro Inteligente</span>
+                <span class="font-medium">Suscripción Nutricional Energética + Recetario con lo que tienes en tu Heladera</span>
             </div>
             
             <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
@@ -127,14 +127,14 @@
         <!-- Hero Section -->
         <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                Cero fatiga · Más rendimiento · Compras económicas
+                <i data-lucide="refrigerator" class="w-3.5 h-3.5"></i>
+                Aprovecha lo que tienes en tu heladera · Cero desperdicio
             </span>
             <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-                Aumenta tu energía diaria y <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">ahorra en el supermercado</span>
+                Recetas detalladas y plan semanal <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">con lo que tienes en casa</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Diseñamos tu plan de alimentación mensual anti-cansancio y la lista exacta de compras para cocinar rico, rápido y sin gastar de más.
+                Ingresa los ingredientes de tu heladera y despensa. La IA creará tus recetas paso a paso para cocinar rico, aumentar tu energía y no tirar comida.
             </p>
         </section>
 
@@ -143,13 +143,23 @@
             <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
                 <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white">
                     <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
-                    Configura tu Plan Alimenticio Mensual
+                    Paso 1: Configura tus preferencias e ingredientes
                 </h2>
+
+                <!-- Campo clave: Ingredientes de la heladera -->
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="refrigerator" class="w-4 h-4"></i>
+                        ¿Qué ingredientes tienes en tu heladera y alacena?
+                    </label>
+                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, media zanahoria, arroz cocido, 1 lata de atún, espinacas, queso cremoso, cebolla..."></textarea>
+                    <p class="text-xs text-slate-400 mt-1">La IA priorizará estos alimentos en tus recetas para que ahorres y no tengas que comprar de más.</p>
+                </div>
 
                 <div class="grid md:grid-cols-2 gap-6 mb-6">
                     <!-- Pregunta 1: Objetivo -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">1. ¿Cuál es tu objetivo principal?</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Objetivo principal</label>
                         <select id="qObjetivo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
                             <option value="Aumentar energía y eliminar cansancio tarde">⚡ Máxima Energía y Rendimiento</option>
                             <option value="Comer sano y ahorrar en compras">💰 Ahorro Económico en el Supermercado</option>
@@ -160,7 +170,7 @@
 
                     <!-- Pregunta 2: Integrantes -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">2. ¿Para cuántas personas cocinas?</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">¿Para cuántas personas cocinas?</label>
                         <select id="qPersonas" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
                             <option value="1 persona (Individual)">Solo para mí (1 persona)</option>
                             <option value="2 personas (Pareja)">Pareja (2 personas)</option>
@@ -170,9 +180,9 @@
 
                     <!-- Pregunta 3: Estilo / Dieta -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">3. Preferencia de alimentación</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Preferencia alimenticia</label>
                         <select id="qDieta" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Omnívora (Carne, pollo, pescado, vegetales)">Omnívora (De todo un poco)</option>
+                            <option value="Omnívora (Carne, pollo, pescado, vegetales)">Omnívora (Sin restricciones)</option>
                             <option value="Vegetariana">Vegetariana</option>
                             <option value="Sin TACC / Celiacos">Sin TACC / Libre de Gluten</option>
                             <option value="Económica Express">Ultra Económica / Express</option>
@@ -181,7 +191,7 @@
 
                     <!-- Pregunta 4: Tiempo para cocinar -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">4. ¿Cuánto tiempo tienes para cocinar?</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Tiempo disponible para cocinar</label>
                         <select id="qTiempo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
                             <option value="Batch Cooking (Cocino 2hs el domingo)">Poco tiempo (Cocinar en lote / Domingo)</option>
                             <option value="Recetas de 15 minutos diarios">Súper rápido (15-20 min por comida)</option>
@@ -191,8 +201,8 @@
                 </div>
 
                 <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
-                    <i data-lucide="cpu" class="w-5 h-5"></i>
-                    <span>Generar mi Plan Energético y Lista de Compras Gratis</span>
+                    <i data-lucide="chef-hat" class="w-5 h-5"></i>
+                    <span>Crear Mis Recetas Inteligentes con Mi Heladera</span>
                 </button>
             </div>
         </section>
@@ -200,96 +210,117 @@
         <!-- Loader -->
         <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
-            <h3 class="text-lg font-bold text-white mb-2">Calculando combinación de micronutrientes y lista óptima...</h3>
-            <p class="text-sm text-slate-400">Balanceando carbohidratos complejos, proteínas y presupuesto de compras.</p>
+            <h3 class="text-lg font-bold text-white mb-2">Analizando ingredientes de tu heladera y redactando recetas...</h3>
+            <p class="text-sm text-slate-400">Diseñando instrucciones paso a paso, tiempos de cocción y combinación energética.</p>
         </section>
 
-        <!-- RESULTADOS Y VISTA PREVIA COMPLETA CON MARCA DE AGUA -->
+        <!-- RESULTADOS Y VISTA PREVIA DETALLADA CON MARCA DE AGUA -->
         <section id="resultados" class="hidden max-w-4xl mx-auto px-4 pb-16">
             <div class="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-8">
                 
-                <!-- Diagnóstico de Optimización -->
+                <!-- Diagnóstico -->
                 <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Plan Mensual Personalizado Generado</span>
-                        <h2 class="text-2xl font-bold text-white">Menú Semanal + Lista de Ahorro</h2>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Inteligente Personalizado</span>
+                        <h2 class="text-2xl font-bold text-white">Instrucciones Paso a Paso Adaptadas</h2>
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
-                        <span class="block text-3xl font-black text-emerald-400">+85%</span>
-                        <span class="text-xs text-emerald-200/80 font-medium">Estimado de Energía Vital</span>
+                        <span class="block text-3xl font-black text-emerald-400">100%</span>
+                        <span class="text-xs text-emerald-200/80 font-medium">Aprovechamiento Heladera</span>
                     </div>
                 </div>
 
-                <!-- HOJA DEL PLAN COMPLETO CON MARCA DE AGUA -->
+                <!-- HOJA DEL PLAN Y RECETARIO COMPLETO CON MARCA DE AGUA -->
                 <div class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
                     
                     <!-- MARCA DE AGUA SUPERPUESTA -->
                     <div class="watermark-overlay">
-                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA — MUESTRA PROTEGIDA — NUTRIENERGIA
+                        MUESTRA PROTEGIDA — RECETARIO NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA — MUESTRA PROTEGIDA
                     </div>
 
-                    <!-- CONTENIDO COMPLETO DEL PLAN -->
+                    <!-- CONTENIDO DETALLADO DEL PLAN Y RECETAS -->
                     <div class="relative z-10 space-y-6">
                         
-                        <!-- Encabezado del documento -->
+                        <!-- Encabezado -->
                         <div class="border-b border-slate-300 pb-4">
-                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional de Alto Rendimiento</span>
-                            <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Menú Energético Personalizado</h1>
-                            <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Configurado para: Objetivo Vitalidad y Ahorro</p>
+                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional con Recetas Guiadas</span>
+                            <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Recetario Energético Basado en tu Heladera</h1>
+                            <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Ingredientes integrados: Trazabilidad completa</p>
                         </div>
 
-                        <!-- Menú Semanal (Vista Previa de 7 Días) -->
+                        <!-- Bloque de Ingredientes Aprovechados de la Heladera -->
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                            <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                                Ingredientes Detectados de tu Heladera:
+                            </h3>
+                            <p class="text-xs text-slate-700" id="resIngredientesUsados">
+                                Huevos, verduras de estación, arroz/legumbres y proteínas integradas con éxito en el recetario semanal.
+                            </p>
+                        </div>
+
+                        <!-- RECETAS DETALLADAS PASO A PASO -->
                         <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-3">Estructura del Menú Semanal (Semana 1 de 4)</h2>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
+                                Recetario Guía Paso a Paso (Muestra Semana 1)
+                            </h2>
                             
-                            <div class="grid sm:grid-cols-2 gap-3 text-xs">
-                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                    <strong class="text-emerald-800 block mb-1">Lunes (Energía Sostenida)</strong>
-                                    <p><strong>Almuerzo:</strong> Tazón de quinua/arroz integral, pechuga de pollo/tofu salteado, espinacas y semillas de girasol.</p>
-                                    <p class="mt-1"><strong>Cena:</strong> Tortilla de avena y verduras con ensalada verde fresca.</p>
+                            <div class="space-y-6 text-xs text-slate-800">
+                                
+                                <!-- RECETA 1 -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                        <h3 class="font-bold text-sm text-emerald-900">1. Tazón Energético de Salteado Express con Huevo y Vegetales</h3>
+                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins · Fácil</span>
+                                    </div>
+                                    <p><strong>Ingredientes:</strong> 2 huevos (de tu heladera), 1 taza de vegetales picados (zanahoria/espinaca/cebolla), 1 taza de arroz cocido o quinua, 1 cda de aceite de oliva, sal y canela/pimienta.</p>
+                                    <div class="text-slate-700 space-y-1">
+                                        <p><strong>Paso 1:</strong> Calienta la sartén con el aceite a fuego medio. Añade los vegetales picados de tu heladera y saltea durante 4 minutos hasta que doren.</p>
+                                        <p><strong>Paso 2:</strong> Incorpora el arroz cocido directamente a la sartén para integrar los sabores y calentar por 2 minutos.</p>
+                                        <p><strong>Paso 3:</strong> Haz un hueco en el centro de la sartén, rompe los 2 huevos y revuelve suavemente hasta que la clara esté firme pero cremosa.</p>
+                                        <p><strong>Tip NutriEnergía:</strong> Este plato aporta carbohidratos de absorción lenta y proteína limpia para mantener el foco mental sin somnolencia.</p>
+                                    </div>
                                 </div>
-                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                    <strong class="text-emerald-800 block mb-1">Martes (Anti-Fatiga)</strong>
-                                    <p><strong>Almuerzo:</strong> Omelette reforzado con champiñones, batata/camote al horno y palta/aguacate.</p>
-                                    <p class="mt-1"><strong>Cena:</strong> Sopa cremosa de calabaza y lentejas con crutones integrales.</p>
+
+                                <!-- RECETA 2 -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                        <h3 class="font-bold text-sm text-emerald-900">2. Tortilla Anti-Fatiga de Espinaca, Queso y Proteína</h3>
+                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">20 mins · Económica</span>
+                                    </div>
+                                    <p><strong>Ingredientes:</strong> 3 huevos, 1 taza de espinacas o acelga (de tu heladera), 50g de queso cremoso/magro, 1 lata de atún o pollo desmenuzado, condimentos a gusto.</p>
+                                    <div class="text-slate-700 space-y-1">
+                                        <p><strong>Paso 1:</strong> Bate los 3 huevos en un recipiente profundo con una pizca de sal y pimienta hasta que queden espumosos.</p>
+                                        <p><strong>Paso 2:</strong> Pica finamente las verduras de tu heladera e incorpóralas a la mezcla junto con el atún o pollo previamente escurrido.</p>
+                                        <p><strong>Paso 3:</strong> Vierte la mezcla en una sartén antiadherente precalentada. Cocina a fuego lento tapado durante 7 minutos, coloca los trozos de queso arriba y da vuelta 3 minutos más.</p>
+                                        <p><strong>Tip NutriEnergía:</strong> Rica en hierro y magnesio para evitar el cansancio muscular al final de la jornada.</p>
+                                    </div>
                                 </div>
-                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                    <strong class="text-emerald-800 block mb-1">Miércoles (Foco Mental)</strong>
-                                    <p><strong>Almuerzo:</strong> Ensalada templada de garbanzos salteados con pimientos, atún/huevos e hinojo.</p>
-                                    <p class="mt-1"><strong>Cena:</strong> Filete de pescado/hamburguesa vegetal con puré de zanahoria e jengibre.</p>
+
+                                <!-- RECETA 3 -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                        <h3 class="font-bold text-sm text-emerald-900">3. Crema Vital de Calabaza, Lentejas y Cúrcuma</h3>
+                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">25 mins · Rinde 2 porciones</span>
+                                    </div>
+                                    <p><strong>Ingredientes:</strong> 1 trozo de calabaza/zapallo, 1 taza de lentejas cocidas, 1 cebolla, 1 cdita de cúrcuma o jengibre, caldo vegetal.</p>
+                                    <div class="text-slate-700 space-y-1">
+                                        <p><strong>Paso 1:</strong> Reahoga la cebolla picada en una olla con unas gotas de aceite. Agrega la calabaza cortada en cubos pequeños.</p>
+                                        <p><strong>Paso 2:</strong> Cubre con caldo o agua hirviendo y cocina por 15 minutos hasta que la calabaza esté tierna. Agrega las lentejas y la cúrcuma.</p>
+                                        <p><strong>Paso 3:</strong> Procesa o pisa con pisapapas hasta lograr una textura cremosa e intensa. Sirve caliente.</p>
+                                    </div>
                                 </div>
-                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                    <strong class="text-emerald-800 block mb-1">Jueves a Domingo</strong>
-                                    <p class="text-slate-500 italic">Plan detallado con rotación de proteínas vegetales/animales, carbohidratos lentos y grasas saludables...</p>
-                                </div>
+
                             </div>
                         </div>
 
-                        <!-- Lista de Compras Inteligente y Agrupada -->
+                        <!-- Lista Complementaria de Compras Mínimas -->
                         <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">Lista de Compras Optimizada (Cero Desperdicio)</h2>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700">
-                                <div>
-                                    <strong class="text-slate-900 block">🥬 Verdulería:</strong>
-                                    <p>• Espinacas frescas<br>• Calabaza / Camote<br>• Paltas / Aguacates<br>• Zanahorias y Jengibre</p>
-                                </div>
-                                <div>
-                                    <strong class="text-slate-900 block">🌾 Almacén / Legumbres:</strong>
-                                    <p>• Arroz integral / Quinua<br>• Garbanzos y Lentejas<br>• Avena enrollada<br>• Semillas (Girasol/Chía)</p>
-                                </div>
-                                <div>
-                                    <strong class="text-slate-900 block">🥑 Proteínas y Refrigerados:</strong>
-                                    <p>• Pechuga / Tofu<br>• Huevos frescos<br>• Pescado / Atún<br>• Queso magro / Yogur</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Desayunos y Snacks Anti-Bajón -->
-                        <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">Snacks y Desayunos de Carga Energética</h2>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">
+                                Ingredientes Complementarios Mínimos
+                            </h2>
                             <p class="text-xs text-slate-700">
-                                • <strong>Desayuno Vital:</strong> Porridge de avena con chía, frutos secos y rodajas de banana.<br>
-                                • <strong>Snack Anti-Cansancio (16:00 hs):</strong> Puñado de almendras/nueces + té verde o café con canela.
+                                Para completar las 4 semanas del recetario solo necesitarás reponer insumos básicos como: aceite de oliva, semillas, limones y especias energéticas (cúrcuma/canela).
                             </p>
                         </div>
                     </div>
@@ -297,9 +328,9 @@
 
                 <!-- BLOQUE DE PAGO / SUSCRIPCIÓN -->
                 <div class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl">
-                    <h4 class="text-xl font-bold text-white mb-2">Desbloquea tu Plan Mensual Completo en PDF</h4>
+                    <h4 class="text-xl font-bold text-white mb-2">Descarga el Recetario Paso a Paso Completo en PDF</h4>
                     <p class="text-slate-300 text-sm max-w-xl mx-auto mb-6">
-                        Recibe las 4 semanas completas de menú, la lista exacta de compras y las guías de cocina en PDF limpio sin marcas de agua por solo <strong class="text-emerald-400 display-price">$1.500 ARS/mes</strong>.
+                        Obtén las 4 semanas de recetas explicadas al detalle, tiempos de cocción exactos y combinaciones para tu heladera por solo <strong class="text-emerald-400 display-price">$1.500 ARS/mes</strong>.
                     </p>
 
                     <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl shadow-emerald-600/30 inline-flex items-center gap-3 text-lg cursor-pointer">
@@ -308,7 +339,7 @@
                     </button>
                     <p class="text-xs text-slate-400 mt-3 flex items-center justify-center gap-1">
                         <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-                        Pago seguro con Mercado Pago / Tarjeta de Crédito o Débito
+                        Pago seguro con Mercado Pago / Tarjetas de Crédito o Débito
                     </p>
                 </div>
 
@@ -339,7 +370,6 @@
             const cod = document.getElementById('countrySelect').value;
             configActual = paisesConfig[cod] || paisesConfig.ARG;
 
-            // Actualizar botones y textos de precio
             document.querySelectorAll('.pay-btn-text').forEach(el => {
                 el.textContent = configActual.textoBtn;
             });
@@ -353,12 +383,19 @@
         }
 
         function generarPlan() {
+            const heladera = document.getElementById('qHeladera').value.trim();
             const obj = document.getElementById('qObjetivo').value;
             const pers = document.getElementById('qPersonas').value;
             const dieta = document.getElementById('qDieta').value;
 
-            document.getElementById('resTitulo').textContent = `Menú Energético (${dieta})`;
-            document.getElementById('resSubtitulo').textContent = `Configurado para: ${obj} · ${pers}`;
+            document.getElementById('resTitulo').textContent = `Recetario Energético (${dieta})`;
+            document.getElementById('resSubtitulo').textContent = `Para: ${obj} · ${pers}`;
+
+            if (heladera) {
+                document.getElementById('resIngredientesUsados').textContent = `Ingredientes integrados en las recetas: "${heladera}"`;
+            } else {
+                document.getElementById('resIngredientesUsados').textContent = "Se utilizó la lista base de alimentos de temporada de alta densidad nutricional.";
+            }
 
             const loader = document.getElementById('loader');
             const resultados = document.getElementById('resultados');
@@ -372,7 +409,7 @@
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 resultados.scrollIntoView({ behavior: 'smooth' });
-            }, 2000);
+            }, 2200);
         }
 
         // --- SISTEMA ANTI-CAPTURAS Y COPIA ---
