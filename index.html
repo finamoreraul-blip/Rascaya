@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia AI - Recetario Inteligente y Plan Nutricional</title>
+    <title>NutriEnergia AI - Tu Plan Mensual Diario & Recetario de Batidos</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -87,7 +87,7 @@
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Captura de pantalla bloqueada</h3>
-            <p class="text-sm text-slate-300 mb-6">Para obtener tu recetario completo en formato PDF descargable e imprimible, completa tu suscripción oficial.</p>
+            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos en PDF e e-mail, completa tu suscripción oficial.</p>
             <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
                 <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -100,7 +100,7 @@
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium">Plan Nutricional + Recetario Inteligente con Ingredientes de tu Heladera</span>
+                <span class="font-medium">Plan Nutricional Mensual + Entregas Diarias al E-mail + Recetario de Batidos</span>
             </div>
             
             <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
@@ -142,21 +142,58 @@
         <!-- Hero Section -->
         <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                Incluye Platos + Batidos Energéticos Anti-Fatiga
+                <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+                Acompañamiento Diario Día a Día · Mail + Web
             </span>
             <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-                Genera tu Recetario Inteligente <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">usando lo que tienes en tu heladera</span>
+                Tu Plan Alimenticio Mensual <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">directo en la web y en tu E-mail cada día</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Ingresa los ingredientes que te quedaron en casa. El sistema creará tus recetas paso a paso y batidos energéticos para potenciar tu día sin desperdiciar nada.
+                Recibe todos los días tu receta personalizada, batido energético anti-fatiga y lista de compras para aprovechar al máximo tu heladera durante los 30 días del mes.
             </p>
         </section>
 
-        <!-- CUESTIONARIO Y GENERADOR AUTOMÁTICO -->
+        <!-- BENFICIOS DEL PLAN MENSUAL -->
+        <section class="max-w-4xl mx-auto px-4 pb-8">
+            <div class="grid sm:grid-cols-3 gap-4 text-center">
+                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
+                    <i data-lucide="mail-check" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                    <h3 class="font-bold text-sm text-white mb-1">Recetas Diarias por Mail</h3>
+                    <p class="text-xs text-slate-400">Cada mañana recibes el menú del día, ingredientes e instrucciones cortas.</p>
+                </div>
+                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
+                    <i data-lucide="cup-soda" class="w-8 h-8 text-teal-400 mx-auto mb-2"></i>
+                    <h3 class="font-bold text-sm text-white mb-1">Batidos para Todas las Semanas</h3>
+                    <p class="text-xs text-slate-400">Combinaciones sencillas para mañanas y tardes con energía máxima.</p>
+                </div>
+                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
+                    <i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                    <h3 class="font-bold text-sm text-white mb-1">Panel Web Interactivo 30 Días</h3>
+                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día con opción de descarga PDF.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CUESTIONARIO Y REGISTRO -->
         <section class="max-w-4xl mx-auto px-4 pb-12">
             <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm space-y-6">
                 
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
+                    Configura tu Registro y Tu Heladera
+                </h2>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Tu E-mail (Para recibir el menú cada día):</label>
+                        <input type="email" id="qEmail" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Nombre / Apodo:</label>
+                        <input type="text" id="qNombre" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500" placeholder="Ej: Santiago">
+                    </div>
+                </div>
+
                 <!-- Campo Clave: Heladera -->
                 <div>
                     <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
@@ -208,7 +245,7 @@
 
                 <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
                     <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    <span>Crear Mi Recetario y Batidos Energéticos Ahora</span>
+                    <span>Activar Mi Plan Mensual Día a Día</span>
                 </button>
             </div>
         </section>
@@ -216,8 +253,8 @@
         <!-- Loader -->
         <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
-            <h3 class="text-lg font-bold text-white mb-2">Combinando ingredientes, platos y batidos revitalizantes...</h3>
-            <p class="text-sm text-slate-400">Estructurando tu plan nutricional anti-fatiga personalizado.</p>
+            <h3 class="text-lg font-bold text-white mb-2">Sincronizando plan diario y recetario de batidos...</h3>
+            <p class="text-sm text-slate-400">Preparando entregas al correo y calendario de 30 días.</p>
         </section>
 
         <!-- VISTA PREVIA DEL PLAN GENERADO -->
@@ -227,12 +264,12 @@
                 <!-- Encabezado de Diagnóstico -->
                 <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Inteligente Generado</span>
-                        <h2 class="text-2xl font-bold text-white">Plan Nutricional, Platos y Batidos Energéticos</h2>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Plataforma Mensual Activa</span>
+                        <h2 class="text-2xl font-bold text-white">Tu Menú Diario + Batidos Anti-Fatiga</h2>
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
-                        <span class="block text-3xl font-black text-emerald-400">100%</span>
-                        <span class="text-xs text-emerald-200/80 font-medium">Aprovechamiento Heladera</span>
+                        <span class="block text-3xl font-black text-emerald-400">30 Días</span>
+                        <span class="text-xs text-emerald-200/80 font-medium">Entregas Diarias</span>
                     </div>
                 </div>
 
@@ -241,7 +278,7 @@
                     
                     <!-- MARCA DE AGUA (DESAPARECE POST-PAGO) -->
                     <div class="watermark-overlay">
-                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA PARA DESCARGA PDF
+                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN MENSUAL REQUERIDA PARA ACCESO COMPLETO
                     </div>
 
                     <!-- CONTENIDO DE LA HOJA -->
@@ -249,31 +286,48 @@
                         
                         <div class="border-b border-slate-300 pb-4 flex justify-between items-start">
                             <div>
-                                <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional & Recetario IA</span>
-                                <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Recetario Energético</h1>
-                                <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Personalizado para tu consumo diario</p>
+                                <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Mensual Personalizado (Día a Día)</span>
+                                <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Plan Nutricional 30 Días</h1>
+                                <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Envío diario activado a tu e-mail</p>
                             </div>
                             <div class="text-right text-xs text-slate-500">
                                 <span>NutriEnergia AI</span><br>
-                                <span>Documento Oficial</span>
+                                <span>Programa Mensual</span>
                             </div>
                         </div>
 
-                        <!-- Ingredientes usados -->
-                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
-                            <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-                                Ingredientes Detectados de tu Heladera:
-                            </h3>
-                            <p class="text-xs text-slate-700" id="resIngredientesText">
-                                Procesando...
-                            </p>
+                        <!-- Estado de Envío E-mail -->
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg flex items-center justify-between">
+                            <div>
+                                <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
+                                    <i data-lucide="mail" class="w-4 h-4 text-emerald-600"></i>
+                                    Casilla de Entrega Registrada:
+                                </h3>
+                                <p class="text-xs text-slate-700 font-bold" id="resEmailDisplay">ejemplo@correo.com</p>
+                            </div>
+                            <span class="text-[10px] bg-emerald-200 text-emerald-800 font-bold px-2 py-1 rounded">Diario 08:00 hs</span>
+                        </div>
+
+                        <!-- Selector de Días del Mes (Día a Día) -->
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-3">
+                                Vista Previa del Calendario Diario (Días 1 a 30)
+                            </h2>
+                            <div class="grid grid-cols-4 sm:grid-cols-7 gap-2 text-center text-xs font-bold mb-4">
+                                <div class="bg-emerald-600 text-white p-2 rounded-lg cursor-pointer">Día 1 (Hoy)</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 2</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 3</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 4</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 5</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 6</div>
+                                <div class="bg-slate-100 text-slate-700 p-2 rounded-lg">Día 7</div>
+                            </div>
                         </div>
 
                         <!-- Recetas Detalladas Generadas -->
                         <div>
                             <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
-                                Recetario Guía Paso a Paso (Platos Principales y Batidos)
+                                Estructura de Entregas Semanales (Muestra Día 1)
                             </h2>
                             
                             <div class="space-y-6 text-xs text-slate-800" id="resContenidoRecetas">
@@ -286,24 +340,24 @@
 
                 <!-- BLOQUE DE PAGO O DESCARGA SEGUN ESTADO -->
                 <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl space-y-4">
-                    <h4 class="text-xl font-bold text-white">Desbloquea y Descarga tu Recetario Completo en PDF</h4>
+                    <h4 class="text-xl font-bold text-white">Activa tu Suscripción Mensual por $2.500 ARS</h4>
                     <p class="text-slate-300 text-sm max-w-xl mx-auto">
-                        Suscríbete por <strong class="text-emerald-400 display-price">$2.500 ARS/mes</strong> para quitar marcas de agua, habilitar descargas ilimitadas en PDF e imprimir tus recetas.
+                        Al suscribirte recibes acceso inmediato a la web con los <strong class="text-emerald-400">30 días de menú + batidos</strong>, envíos automáticos a tu mail cada mañana y la descarga completa en PDF.
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
                         <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl shadow-emerald-600/30 inline-flex items-center gap-3 text-lg cursor-pointer w-full sm:w-auto">
                             <i data-lucide="credit-card" class="w-6 h-6"></i>
-                            <span class="pay-btn-text">Pagar $2.500 ARS y Descargar</span>
+                            <span class="pay-btn-text">Pagar $2.500 ARS y Activar Plan</span>
                         </button>
                     </div>
 
                     <!-- Verificación de Pago para habilitar descarga automática o manual -->
                     <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
-                        <label class="block text-xs text-slate-400 mb-1">¿Ya realizaste el pago? Ingresa tu e-mail o comprobante:</label>
+                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para acceder:</label>
                         <div class="flex gap-2">
-                            <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full uppercase outline-none focus:border-emerald-500" placeholder="Ej: MP-26VYWTC">
-                            <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
+                            <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
+                            <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Ingresar</button>
                         </div>
                     </div>
                 </div>
@@ -312,12 +366,12 @@
                 <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
                     <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
                         <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-                        <span>¡Suscripción Acreditada! Tu documento está desbloqueado.</span>
+                        <span>¡Suscripción Mensual Activa! Acceso Diario y Mail Habilitado.</span>
                     </div>
-                    <p class="text-slate-200 text-sm">Puedes guardar tu recetario en PDF limpio o imprimirlo directamente.</p>
+                    <p class="text-slate-200 text-sm">Puedes descargar las 4 semanas completas en PDF limpio o ver las recetas del día a día en la plataforma.</p>
                     <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer">
                         <i data-lucide="download" class="w-6 h-6"></i>
-                        <span>Descargar PDF Oficial</span>
+                        <span>Descargar PDF Completo de 30 Días</span>
                     </button>
                 </div>
 
@@ -367,15 +421,17 @@
         }
 
         function generarPlan() {
+            const email = document.getElementById('qEmail').value.trim() || 'tu-email@correo.com';
+            const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
             const heladera = document.getElementById('qHeladera').value.trim() || 'Huevos, banana, avena, verduras y lácteos';
             const obj = document.getElementById('qObjetivo').value;
             const pers = document.getElementById('qPersonas').value;
             const dieta = document.getElementById('qDieta').value;
             const tiempo = document.getElementById('qTiempo').value;
 
-            document.getElementById('resTitulo').textContent = `Recetario Energético & Batidos (${dieta})`;
+            document.getElementById('resEmailDisplay').textContent = email;
+            document.getElementById('resTitulo').textContent = `Plan 30 Días de ${nombre} (${dieta})`;
             document.getElementById('resSubtitulo').textContent = `Objetivo: ${obj} · ${pers} · Prep: ${tiempo}`;
-            document.getElementById('resIngredientesText').textContent = heladera;
 
             const loader = document.getElementById('loader');
             const resultados = document.getElementById('resultados');
@@ -386,54 +442,38 @@
             const htmlRecetas = `
                 <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">1. Batido Matutino Revitalizante (Anti-Fatiga)</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">5 mins · Bebida</span>
+                        <h3 class="font-bold text-sm text-emerald-900">Día 1 - Desayuno/Batido: Energizante de Banana & Avena</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">08:00 hs · Mail + Web</span>
                     </div>
-                    <p><strong>Base aprovechada:</strong> Lácteos/bebida vegetal, fruta disponible (${heladera}), avena o semillas.</p>
+                    <p><strong>Ingredientes de tu heladera:</strong> Banana, leche/yogur, avena y miel/canela.</p>
                     <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Coloca en la licuadora 1 taza de leche o yogur junto con la fruta de tu heladera (ej. banana o frutos disponibles).</p>
-                        <p><strong>Paso 2:</strong> Añade 2 cucharadas soperas de avena o semillas para asegurar carbohidratos de absorción sostenida.</p>
-                        <p><strong>Paso 3:</strong> Licúa a máxima velocidad durante 45 segundos hasta lograr una textura cremosa homogénea.</p>
+                        <p><strong>Instrucciones:</strong> Licúa la banana con 200ml de leche y 2 cdas de avena. Tómalo fresco al despertar para evitar la somnolencia matutina.</p>
                     </div>
                 </div>
 
                 <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">2. Batido Verde de Foco Mental (Media Tarde)</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">5 mins · Bebida</span>
-                    </div>
-                    <p><strong>Base aprovechada:</strong> Espinacas o verduras de hoja verde de tu heladera + agua o jugo cítrico.</p>
-                    <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Lava un puñado generoso de espinacas u hojas verdes disponibles.</p>
-                        <p><strong>Paso 2:</strong> Procesa en licuadora con agua fría, unas gotas de limón y un toque de jengibre si tienes en alacena.</p>
-                        <p><strong>Paso 3:</strong> Bebe inmediatamente para recargar magnesio y evitar el bajón de energía de las 16:00 hs.</p>
-                    </div>
-                </div>
-
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">3. Salteado Energético Express con tus Ingredientes</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">${tiempo} · Plato Principal</span>
+                        <h3 class="font-bold text-sm text-emerald-900">Día 1 - Almuerzo: Salteado Vital con tu Heladera</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">12:30 hs · Plato Principal</span>
                     </div>
                     <p><strong>Base aprovechada:</strong> ${heladera}</p>
                     <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Calienta una sartén con unas gotas de aceite de oliva. Pica y saltea los vegetales e ingredientes disponibles a fuego medio durante 4 minutos.</p>
-                        <p><strong>Paso 2:</strong> Añade la base de carbohidratos o complementos y mezcla suavemente para unificar sabores.</p>
-                        <p><strong>Paso 3:</strong> Sazona con especias a gusto y sirve caliente.</p>
+                        <p><strong>Paso 1:</strong> Saltea las verduras disponibles en tu sartén durante 4 minutos.</p>
+                        <p><strong>Paso 2:</strong> Mezcla con la proteína (huevos/atún/pollo) y la base de arroz/legumbres.</p>
                     </div>
                 </div>
 
                 <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">4. Tortilla o Revuelto Anti-Fatiga Proteico</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins · Plato Principal</span>
+                        <h3 class="font-bold text-sm text-emerald-900">Día 1 - Merienda: Batido Verde Anti-Fatiga</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">16:30 hs · Bebida Vital</span>
                     </div>
-                    <p><strong>Base aprovechada:</strong> Huevos y componentes frescos de tu heladera.</p>
-                    <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Bate los huevos en un bol con sal y pimienta. Integra los ingredientes picados de tu heladera.</p>
-                        <p><strong>Paso 2:</strong> Vierte en sartén antiadherente caliente y cocina a fuego bajo.</p>
-                        <p><strong>Paso 3:</strong> Dobla al medio o da vuelta para dorar ambos lados. Alto valor proteico.</p>
-                    </div>
+                    <p><strong>Instrucciones:</strong> Espinacas frescas licuadas con agua fría y unas gotas de limón. Aporte directo de magnesio para el cierre laboral.</p>
+                </div>
+
+                <div class="border border-emerald-300 rounded-xl p-4 bg-emerald-50 text-center space-y-1">
+                    <strong class="text-emerald-900 block font-bold">... + 29 Días de Recetas y Batidos Diarios Programados</strong>
+                    <p class="text-xs text-slate-600">Al confirmar tu suscripción desbloqueas el acceso completo a los 30 días en pantalla y los envíos matutinos a tu mail.</p>
                 </div>
             `;
 
@@ -453,7 +493,7 @@
             if (tok.length >= 3) {
                 activarModoDesbloqueado();
             } else {
-                alert("Por favor ingresa un comprobante o e-mail válido.");
+                alert("Por favor ingresa un correo o comprobante válido.");
             }
         }
 
@@ -464,7 +504,6 @@
             document.getElementById('bloquePago').classList.add('hidden');
             document.getElementById('bloqueDescarga').classList.remove('hidden');
             
-            // Auto-scroll a la descarga
             const el = document.getElementById('bloqueDescarga');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
@@ -474,7 +513,7 @@
             const elemento = document.getElementById('hojaPDF');
             const opt = {
                 margin:       0.5,
-                filename:     'Recetario_Batidos_NutriEnergia.pdf',
+                filename:     'Plan_Mensual_NutriEnergia_30Dias.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
