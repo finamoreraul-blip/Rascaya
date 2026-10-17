@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia - Recetario con IA y Plan Alimenticio de Ahorro</title>
+    <title>NutriEnergia AI - Recetario Inteligente y Plan Nutricional</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
@@ -11,7 +11,7 @@
     <!-- html2pdf.js para exportar PDF real post-pago -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Protección básica anti-selección de texto en estado de prueba */
+        /* Protección básica anti-selección de texto en estado protegido */
         body.protected, body.protected .no-select {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -149,7 +149,7 @@
                 Genera tu Recetario Inteligente <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">usando lo que tienes en tu heladera</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Ingresa los ingredientes que te quedaron en casa. El sistema creará tus recetas paso a paso y batidos energéticos para potenciar tu mañana y tarde sin desperdiciar nada.
+                Ingresa los ingredientes que te quedaron en casa. El sistema creará tus recetas paso a paso y batidos energéticos para potenciar tu día sin desperdiciar nada.
             </p>
         </section>
 
@@ -298,9 +298,9 @@
                         </button>
                     </div>
 
-                    <!-- Verificación de Pago para habilitar descarga automática -->
+                    <!-- Verificación de Pago para habilitar descarga automática o manual -->
                     <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
-                        <label class="block text-xs text-slate-400 mb-1">¿Ya realizaste el pago? Ingresa tu código de confirmación o e-mail:</label>
+                        <label class="block text-xs text-slate-400 mb-1">¿Ya realizaste el pago? Ingresa tu e-mail o comprobante:</label>
                         <div class="flex gap-2">
                             <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full uppercase outline-none focus:border-emerald-500" placeholder="Ej: MP-26VYWTC">
                             <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
@@ -308,7 +308,7 @@
                     </div>
                 </div>
 
-                <!-- BOTÓN DE DESCARGA PDF REVELADO POST-PAGO -->
+                <!-- BOTÓN DE DESCARGA PDF REVELADO POST-PAGO AUTOMÁTICO -->
                 <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
                     <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
                         <i data-lucide="check-circle-2" class="w-6 h-6"></i>
@@ -343,8 +343,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             
+            // AUTOMATIZACIÓN POST-PAGO: Detecta si Mercado Pago redirige al usuario tras pagar
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('status') === 'approved' || urlParams.get('payment_id')) {
+            const status = urlParams.get('status');
+            const pagoExitoso = urlParams.get('pago');
+            const paymentId = urlParams.get('payment_id');
+
+            if (status === 'approved' || pagoExitoso === 'exitoso' || paymentId) {
                 activarModoDesbloqueado();
             }
         });
@@ -378,7 +383,6 @@
             loader.classList.remove('hidden');
             resultados.classList.add('hidden');
 
-            // Generar recetas y batidos detallados dinámicamente
             const htmlRecetas = `
                 <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
@@ -389,7 +393,7 @@
                     <div class="text-slate-700 space-y-1">
                         <p><strong>Paso 1:</strong> Coloca en la licuadora 1 taza de leche o yogur junto con la fruta de tu heladera (ej. banana o frutos disponibles).</p>
                         <p><strong>Paso 2:</strong> Añade 2 cucharadas soperas de avena o semillas para asegurar carbohidratos de absorción sostenida.</p>
-                        <p><strong>Paso 3:</strong> Licúa a máxima velocidad durante 45 segundos hasta lograr una textura cremosa homogénea. Ideal para tomar antes de empezar el día.</p>
+                        <p><strong>Paso 3:</strong> Licúa a máxima velocidad durante 45 segundos hasta lograr una textura cremosa homogénea.</p>
                     </div>
                 </div>
 
@@ -400,7 +404,7 @@
                     </div>
                     <p><strong>Base aprovechada:</strong> Espinacas o verduras de hoja verde de tu heladera + agua o jugo cítrico.</p>
                     <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Lava un puñado generoso de espinacas o hojas verdes disponibles.</p>
+                        <p><strong>Paso 1:</strong> Lava un puñado generoso de espinacas u hojas verdes disponibles.</p>
                         <p><strong>Paso 2:</strong> Procesa en licuadora con agua fría, unas gotas de limón y un toque de jengibre si tienes en alacena.</p>
                         <p><strong>Paso 3:</strong> Bebe inmediatamente para recargar magnesio y evitar el bajón de energía de las 16:00 hs.</p>
                     </div>
@@ -446,10 +450,10 @@
 
         function verificarYDesbloquear() {
             const tok = document.getElementById('tokenPago').value.trim();
-            if (tok.length >= 4) {
+            if (tok.length >= 3) {
                 activarModoDesbloqueado();
             } else {
-                alert("Por favor ingresa un código válido de confirmación de pago o correo.");
+                alert("Por favor ingresa un comprobante o e-mail válido.");
             }
         }
 
@@ -459,7 +463,10 @@
             document.body.classList.add('unlocked');
             document.getElementById('bloquePago').classList.add('hidden');
             document.getElementById('bloqueDescarga').classList.remove('hidden');
-            alert("¡Pago verificado con éxito! Tu recetario ha sido desbloqueado para descarga.");
+            
+            // Auto-scroll a la descarga
+            const el = document.getElementById('bloqueDescarga');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         }
 
         function descargarPDF() {
