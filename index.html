@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia AI - Tu Plan Mensual Diario & Recetario de Batidos</title>
+    <title>NutriEnergia AI - Tu Plan Mensual Diario & Recetario VIP</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,6 +20,8 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf.js para exportar PDF post-aprobación -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* Protecciones estrictas contra copias y capturas */
         body.protected, body.protected .no-select {
@@ -94,7 +96,7 @@
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Contenido Protegido</h3>
-            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos, completa tu suscripción oficial por WhatsApp.</p>
+            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos en PDF, completa tu suscripción oficial por WhatsApp.</p>
             <button onclick="redirigirPagoWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
                 <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -176,7 +178,7 @@
                 <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
                     <i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
                     <h3 class="font-bold text-sm text-white mb-1">Panel Web Interactivo 30 Días</h3>
-                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día de manera exclusiva.</p>
+                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día con opción de descarga PDF.</p>
                 </div>
             </div>
         </section>
@@ -278,7 +280,7 @@
                     </div>
                 </div>
 
-                <!-- HOJA DE VISTA PREVIA -->
+                <!-- HOJA IMPRIMIBLE Y DESCARGABLE EN PDF -->
                 <div id="hojaPDF" class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
                     
                     <div class="watermark-overlay">
@@ -341,8 +343,9 @@
                         </button>
                     </div>
 
+                    <!-- Panel de Verificación de Correo -->
                     <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
-                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para verificar:</label>
+                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para habilitar:</label>
                         <div class="flex gap-2">
                             <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
                             <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
@@ -350,25 +353,57 @@
                     </div>
                 </div>
 
-                <!-- BLOQUE DE ESTADO DE PAGO / REDIRECCIÓN VIP -->
+                <!-- BLOQUE APARTE: BOTÓN DE APROBACIÓN Y REDIRECCIÓN VIP (ADMIN) -->
+                <div class="bg-slate-900 border border-indigo-500/40 p-6 rounded-2xl text-center space-y-3">
+                    <span class="text-xs uppercase font-extrabold text-indigo-400 tracking-wider">Panel de Control Exclusivo (Admin)</span>
+                    <h4 class="text-sm font-bold text-white">¿Recibiste el comprobante en WhatsApp y verificaste el pago?</h4>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">Haz clic en el botón de abajo para aprobar el acceso del usuario, desbloquear el sitio y redirigirlo inmediatamente a la Sección VIP.</p>
+                    <button onclick="aprobarPagoAdmin()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg inline-flex items-center gap-2 text-sm cursor-pointer">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>Aprobar Pago y Redirigir a Sección VIP</span>
+                    </button>
+                </div>
+
+                <!-- BOTÓN DE DESCARGA PDF REVELADO (Disponible una vez VIP o aprobado) -->
                 <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
-                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
-                        <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
-                        <span>Estamos aprobando tu pago</span>
+                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
+                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                        <span>¡Suscripción Mensual Activa! Acceso a los 30 Días Habilitado.</span>
                     </div>
-                    <p class="text-slate-200 text-sm max-w-md mx-auto">
-                        Cuando se apruebe serás redirigido a la sección VIP de la página para recibir diariamente tus recetas.
-                    </p>
-                    <div class="w-full bg-slate-900/60 rounded-full h-2.5 max-w-xs mx-auto overflow-hidden">
-                        <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full w-1/3 animate-pulse"></div>
-                    </div>
+                    <p class="text-slate-200 text-sm">Puedes descargar las 4 semanas completas de recetas en PDF o consultarlas interactivamente.</p>
+                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer">
+                        <i data-lucide="download" class="w-6 h-6"></i>
+                        <span>Descargar PDF Completo (30 Días de Recetas)</span>
+                    </button>
                 </div>
 
             </div>
         </section>
+
+        <!-- SECCIÓN VIP (Área exclusiva para usuarios aprobados) -->
+        <section id="seccionVIP" class="hidden max-w-4xl mx-auto px-4 pb-20">
+            <div class="bg-gradient-to-b from-slate-800 to-emerald-950/80 border-2 border-emerald-500 rounded-3xl p-8 shadow-2xl space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-500/30 pb-6 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-emerald-500 text-slate-950 p-3 rounded-2xl">
+                            <i data-lucide="crown" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-emerald-400 font-extrabold">Área Exclusiva VIP</span>
+                            <h2 class="text-3xl font-black text-white">Panel NutriEnergia Pro</h2>
+                        </div>
+                    </div>
+                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-full text-xs font-bold animate-pulse">
+                        🌟 Membresía 30 Días Activa
+                    </span>
+                </div>
+                <p class="text-slate-300 text-sm">¡Bienvenido a tu sección VIP! Aquí tienes acceso ilimitado a todo tu recetario, batidos semanales y asistencia prioritaria.</p>
+                <div id="vipContenidoRecetas" class="space-y-3 max-h-[500px] overflow-y-auto pr-2 text-xs text-slate-200"></div>
+            </div>
+        </section>
     </div>
 
-    <!-- Scripts de Lógica y Protecciones -->
+    <!-- Scripts de Lógica, Google Sheets y Protecciones -->
     <script>
         const paisesConfig = {
             ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Suscribirme por $2.500 ARS' },
@@ -439,6 +474,7 @@
             ];
 
             let htmlRecetas = "";
+            let htmlVip = "";
             for (let i = 1; i <= 30; i++) {
                 const plato = nombresPlatos[i - 1] || `Receta Especial Día ${i}`;
                 const costoEstimado = Math.floor(Math.random() * 600) + 900;
@@ -458,9 +494,21 @@
                         </div>
                     </div>
                 `;
+
+                htmlVip += `
+                    <div class="border border-emerald-500/30 rounded-xl p-4 bg-slate-800/60 space-y-1.5">
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                            <h3 class="font-bold text-sm text-emerald-400">Día ${i} (VIP) — ${plato}</h3>
+                            <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-semibold text-[10px]">Desbloqueado</span>
+                        </div>
+                        <p class="text-slate-300"><strong>Ingredientes base:</strong> ${heladera}</p>
+                        <p class="text-slate-300"><strong>Preparación express:</strong> Cocción rápida en 15 minutos.</p>
+                    </div>
+                `;
             }
 
             document.getElementById('resContenidoRecetas').innerHTML = htmlRecetas;
+            document.getElementById('vipContenidoRecetas').innerHTML = htmlVip;
 
             setTimeout(() => {
                 loader.classList.add('hidden');
@@ -473,27 +521,39 @@
         function verificarYDesbloquear() {
             const tok = document.getElementById('tokenPago').value.trim();
             if (tok.length >= 3) {
-                activarModoDesbloqueado();
+                alert("E-mail registrado. En cuanto el administrador apruebe el pago mediante el botón de aprobación, serás redirigido.");
             } else {
-                alert("Por favor ingresa un correo o comprobante válido.");
+                alert("Por favor ingresa un correo válido.");
             }
         }
 
-        function activarModoDesbloqueado() {
+        function aprobarPagoAdmin() {
             pagoAcreditado = true;
             document.body.classList.remove('protected');
             document.body.classList.add('unlocked');
+            
             document.getElementById('bloquePago').classList.add('hidden');
             document.getElementById('bloqueDescarga').classList.remove('hidden');
             
-            const el = document.getElementById('bloqueDescarga');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            const vipSec = document.getElementById('seccionVIP');
+            vipSec.classList.remove('hidden');
+            vipSec.scrollIntoView({ behavior: 'smooth' });
+            
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            alert("¡Pago aprobado con éxito! Redirigido a la Sección VIP y descargas habilitadas.");
+        }
 
-            // Simulación de redirección a la sección VIP tras unos segundos
-            setTimeout(() => {
-                alert("¡Pago verificado con éxito! Redirigiendo a tu sección VIP...");
-                // window.location.href = "https://tu-sitio-vip.com"; 
-            }, 4000);
+        function descargarPDF() {
+            if (!pagoAcreditado) return;
+            const elemento = document.getElementById('hojaPDF');
+            const opt = {
+                margin:       0.5,
+                filename:     'Plan_Mensual_NutriEnergia_30Dias.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(elemento).save();
         }
 
         // --- SISTEMA PROTECTIVO ANTI-CAPTURAS ---
