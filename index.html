@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia AI - Tu Plan Mensual Diario & Recetario VIP</title>
+    <title>NutriEnergia AI Pro Max - Plan Mensual Masivo de 30 Días con Contenido Extendido</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,98 +20,53 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- html2pdf.js para exportar PDF post-aprobación -->
+    <!-- html2pdf.js para exportar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Protecciones estrictas contra copias y capturas */
         body.protected, body.protected .no-select {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
-
-        .watermark-container {
-            position: relative;
-            overflow: hidden;
-        }
-
+        .watermark-container { position: relative; overflow: hidden; }
         body.protected .watermark-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 30;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.15;
-            font-weight: 900;
-            font-size: 1.1rem;
-            color: #ef4444;
-            transform: rotate(-25deg) scale(1.25);
-            line-height: 5.5rem;
-            word-spacing: 2.5rem;
-            user-select: none;
+            position: absolute; inset: 0; pointer-events: none; z-index: 30;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            opacity: 0.15; font-weight: 900; font-size: 1.1rem; color: #ef4444;
+            transform: rotate(-25deg) scale(1.25); line-height: 5.5rem; word-spacing: 2.5rem;
         }
-
-        body.unlocked .watermark-overlay {
-            display: none !important;
-        }
-
-        .screen-protected {
-            transition: filter 0.15s ease, opacity 0.15s ease;
-        }
-
+        body.unlocked .watermark-overlay { display: none !important; }
+        .screen-protected { transition: filter 0.15s ease, opacity 0.15s ease; }
         body.protected.window-blur .screen-protected,
         body.protected.capture-attempt .screen-protected {
-            filter: blur(40px) brightness(0.2) !important;
-            opacity: 0.05 !important;
+            filter: blur(40px) brightness(0.2) !important; opacity: 0.05 !important;
         }
-
         #captureWarning {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            background: rgba(15, 23, 42, 0.95);
-            color: white;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            flex-direction: column;
-        }
-
-        @media print {
-            body.protected {
-                display: none !important;
-            }
+            display: none; position: fixed; inset: 0; z-index: 100;
+            background: rgba(15, 23, 42, 0.95); color: white;
+            align-items: center; justify-content: center; text-align: center; flex-direction: column;
         }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased protected">
 
-    <!-- Modal de Advertencia por Intento de Captura o Inspección -->
+    <!-- Modal de Advertencia por Capturas -->
     <div id="captureWarning">
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Contenido Protegido</h3>
-            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos en PDF, completa tu suscripción oficial por WhatsApp.</p>
+            <p class="text-sm text-slate-300 mb-6">Completa tu suscripción oficial para acceder al contenido diario masivo.</p>
             <button onclick="redirigirPagoWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
                 <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
-                <i data-lucide="external-link" class="w-4 h-4"></i>
             </button>
         </div>
     </div>
 
-    <!-- Topbar con Selector de País / Moneda -->
-    <div class="bg-emerald-950/80 border-b border-emerald-800/50 text-emerald-200 text-xs sm:text-sm py-2 px-4 shadow-md backdrop-blur-md">
+    <!-- Topbar con Selector de País -->
+    <div class="bg-emerald-950/80 border-b border-emerald-800/50 text-emerald-200 text-xs sm:text-sm py-2 px-4 shadow-md">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium">Plan Nutricional Mensual + Entregas Diarias al E-mail + Recetario de Batidos</span>
+                <span class="font-medium">Plan Nutricional Masivo 30 Días + Entregas Diarias al E-mail + Recetario VIP</span>
             </div>
-            
             <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
                 <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
                 <label for="countrySelect" class="text-xs text-slate-300 font-medium">País:</label>
@@ -128,282 +83,198 @@
         </div>
     </div>
 
-    <!-- Header / Navbar Principal -->
+    <!-- Header Principal -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2 rounded-xl shadow-lg shadow-emerald-500/20">
                     <i data-lucide="zap" class="w-6 h-6"></i>
                 </div>
-                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia AI</span>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia AI Pro Max</span>
             </div>
-            
-            <div class="flex items-center gap-2">
-                <button onclick="redirigirPagoWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-emerald-600/20 cursor-pointer">
-                    <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
-                    <i data-lucide="external-link" class="w-4 h-4"></i>
-                </button>
-            </div>
+            <button onclick="redirigirPagoWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-2 cursor-pointer">
+                <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+            </button>
         </div>
     </header>
 
     <div class="screen-protected">
-        <!-- Hero Section -->
-        <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
-                <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
-                Acompañamiento Diario Día a Día · Mail + Web
+        <!-- Hero Section Extendido Masivo -->
+        <section class="max-w-5xl mx-auto px-4 pt-14 pb-10 text-center">
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                Plataforma Definitiva de Nutrición e Inteligencia Culinaria
             </span>
-            <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-                Tu Plan Alimenticio Mensual <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">directo en la web y en tu E-mail cada día</span>
+            <h1 class="text-3xl sm:text-6xl font-black text-white tracking-tight mb-6 leading-tight">
+                El Recetario de 30 Días Más Completo <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Diseñado para tu Heladera</span>
             </h1>
-            <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Recibe todos los días tu receta personalizada, batido energético anti-fatiga y lista de compras para aprovechar al máximo tu heladera durante los 30 días del mes.
+            <p class="text-slate-300 text-base sm:text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
+                Cada jornada cuenta con un menú exclusivo y detallado que optimiza tus insumos actuales, evitando desperdicios, calculando costos exactos y entregando energía sostenida mes a mes.
             </p>
         </section>
 
-        <!-- SECCIÓN DE BENEFICIOS CLAVE -->
-        <section class="max-w-4xl mx-auto px-4 pb-8">
-            <div class="grid sm:grid-cols-3 gap-4 text-center">
-                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
-                    <i data-lucide="mail-check" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
-                    <h3 class="font-bold text-sm text-white mb-1">Recetas Diarias por Mail</h3>
-                    <p class="text-xs text-slate-400">Cada mañana recibes el menú del día, ingredientes e instrucciones cortas.</p>
-                </div>
-                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
-                    <i data-lucide="cup-soda" class="w-8 h-8 text-teal-400 mx-auto mb-2"></i>
-                    <h3 class="font-bold text-sm text-white mb-1">Batidos para Todas las Semanas</h3>
-                    <p class="text-xs text-slate-400">Combinaciones sencillas para mañanas y tardes con energía máxima.</p>
-                </div>
-                <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
-                    <i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
-                    <h3 class="font-bold text-sm text-white mb-1">Panel Web Interactivo 30 Días</h3>
-                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día con opción de descarga PDF.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CUESTIONARIO Y CONFIGURACIÓN DE LA HELADERA -->
+        <!-- Formulario Heladera Masivo -->
         <section class="max-w-4xl mx-auto px-4 pb-12">
-            <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm space-y-6">
-                
-                <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
-                    Configura tu Registro y Tu Heladera
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-6 backdrop-blur-md">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2.5">
+                    <i data-lucide="sliders" class="w-6 h-6 text-emerald-400"></i>
+                    Panel de Control y Analizador de Heladera
                 </h2>
-
-                <div class="grid sm:grid-cols-2 gap-4">
+                
+                <div class="grid sm:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Tu E-mail (Para recibir el menú cada día):</label>
-                        <input type="email" id="qEmail" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">E-mail de recepción matutina:</label>
+                        <input type="email" id="qEmail" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="tu-email@correo.com">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Nombre / Apodo:</label>
-                        <input type="text" id="qNombre" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500" placeholder="Ej: Santiago">
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">Nombre o Apodo:</label>
+                        <input type="text" id="qNombre" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3.5 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="Ej: Santiago">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
                         <i data-lucide="refrigerator" class="w-4 h-4"></i>
-                        ¿Qué ingredientes tienes en tu heladera y alacena hoy?
+                        <span>Ingredientes disponibles en tu hogar (Heladera, congelador y alacena):</span>
                     </label>
-                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, 1 banana, avena, espinacas, queso cremoso, 1 lata de atún, leche o yogur..."></textarea>
+                    <textarea id="qHeladera" rows="4" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3.5 text-sm text-slate-100 outline-none focus:ring-2 focus:ring-emerald-500 transition" placeholder="Ej: Huevos, pechugas de pollo, espinaca, queso cremoso, avena, tomates, cebolla, arroz, latas de atún, fideos..."></textarea>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div class="grid sm:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Objetivo principal</label>
-                        <select id="qObjetivo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Aumentar energía y eliminar fatiga">⚡ Máxima Energía y Rendimiento</option>
-                            <option value="Comer rico y ahorrar en compras">💰 Ahorro Económico en el Supermercado</option>
-                            <option value="Descansar mejor y rendir en el trabajo">🧠 Foco Mental y Claridad</option>
-                            <option value="Estilo de vida saludable">🥗 Vida Saludable</option>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Objetivo Nutricional</label>
+                        <select id="qObjetivo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-xs text-slate-200 outline-none">
+                            <option value="Energía Diaria Extrema">⚡ Energía Diaria Extrema</option>
+                            <option value="Ahorro Inteligente en Compras">💰 Ahorro Inteligente en Compras</option>
+                            <option value="Salud y Bienestar Integral">🥗 Salud y Bienestar Integral</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Comensales</label>
-                        <select id="qPersonas" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="1 persona">1 Persona (Individual)</option>
-                            <option value="2 personas">2 Personas (Pareja)</option>
-                            <option value="Familia (3 a 4 personas)">Familia (3 a 4 personas)</option>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Preferencia de Dieta</label>
+                        <select id="qDieta" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-xs text-slate-200 outline-none">
+                            <option value="Omnívora Balanceada">Omnívora Balanceada</option>
+                            <option value="Vegetariana Estricta">Vegetariana Estricta</option>
+                            <option value="Sin TACC (Libre de Gluten)">Sin TACC (Libre de Gluten)</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Preferencia de Dieta</label>
-                        <select id="qDieta" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Omnívora">Omnívora (Sin restricciones)</option>
-                            <option value="Vegetariana">Vegetariana</option>
-                            <option value="Sin TACC">Sin TACC / Libre de Gluten</option>
-                            <option value="Económica Express">Ultra Económica</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Tiempo de Cocina</label>
-                        <select id="qTiempo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="15-20 minutos">Rápido (15-20 min por comida)</option>
-                            <option value="Batch Cooking (Lote domingo)">Batch Cooking (Cocinar en lote)</option>
-                            <option value="Tradicional">Normal (30-45 min)</option>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Modalidad de Tiempo</label>
+                        <select id="qTiempo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-xs text-slate-200 outline-none">
+                            <option value="Cocina Exprés (15-20 min)">Cocina Exprés (15-20 min)</option>
+                            <option value="Preparación en Lote (Batch Cooking)">Preparación en Lote (Batch Cooking)</option>
                         </select>
                     </div>
                 </div>
 
-                <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
+                <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-4 rounded-xl shadow-xl transition flex items-center justify-center space-x-2 text-base cursor-pointer">
                     <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    <span>Activar Mis 30 Días de Recetas Diarias</span>
+                    <span>Generar Plan Masivo de 30 Días con IA</span>
                 </button>
             </div>
         </section>
 
-        <!-- Loader de Generación -->
-        <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
-            <h3 class="text-lg font-bold text-white mb-2">Generando el recetario de los 30 días con IA...</h3>
-            <p class="text-sm text-slate-400">Armando menús diarios, batidos y costos calculados.</p>
+        <!-- Loader -->
+        <section id="loader" class="hidden max-w-xl mx-auto text-center py-16 px-4">
+            <div class="inline-block animate-spin rounded-full h-14 w-14 border-4 border-emerald-500 border-t-transparent mb-4"></div>
+            <h3 class="text-xl font-bold text-white mb-2">Construyendo las 30 jornadas culinarias...</h3>
+            <p class="text-xs text-slate-400">Analizando inventario, porciones, costos y cronograma diario.</p>
         </section>
 
-        <!-- VISTA PREVIA DEL PLAN GENERADO (30 DÍAS) -->
+        <!-- Resultados / Vista Previa -->
         <section id="resultados" class="hidden max-w-4xl mx-auto px-4 pb-16">
-            <div class="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-8">
-                
-                <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
+            <div class="bg-slate-800/90 border border-emerald-500/40 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Mensual PRO</span>
-                        <h2 class="text-2xl font-bold text-white">Menú Diario Completo (Día 1 al 30)</h2>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Mensual Masivo PRO</span>
+                        <h2 class="text-2xl font-bold text-white" id="resTitulo">Cronograma Diario (Día 1 al 30)</h2>
                     </div>
-                    <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
-                        <span class="block text-3xl font-black text-emerald-400">30 Recetas</span>
-                        <span class="text-xs text-emerald-200/80 font-medium">+ Batidos & Costos</span>
+                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-xl text-sm font-black">30 Recetas Únicas</span>
+                </div>
+
+                <!-- Muestra Protegida -->
+                <div id="hojaPDF" class="bg-white text-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl watermark-container relative text-left">
+                    <div class="watermark-overlay">MUESTRA PROTEGIDA — NUTRIENERGIA PRO MAX — SUSCRIPCIÓN REQUERIDA</div>
+                    <div class="relative z-10 space-y-4">
+                        <p class="text-xs font-bold text-emerald-800 uppercase tracking-widest" id="resSubtitulo">Planificador Inteligente</p>
+                        <div class="space-y-3 max-h-[380px] overflow-y-auto pr-3 text-xs" id="resContenidoRecetas"></div>
                     </div>
                 </div>
 
-                <!-- HOJA IMPRIMIBLE Y DESCARGABLE EN PDF -->
-                <div id="hojaPDF" class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
-                    
-                    <div class="watermark-overlay">
-                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN MENSUAL REQUERIDA PARA ACCESO COMPLETO
-                    </div>
-
-                    <div class="relative z-10 space-y-6">
-                        
-                        <div class="border-b border-slate-300 pb-4 flex justify-between items-start">
-                            <div>
-                                <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Mensual Inteligente (30 Días)</span>
-                                <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Plan Nutricional 30 Días</h1>
-                                <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Generado en base a tu heladera</p>
-                            </div>
-                            <div class="text-right text-xs text-slate-500">
-                                <span>NutriEnergia AI</span><br>
-                                <span>Recetario Infinito PRO</span>
-                            </div>
-                        </div>
-
-                        <!-- Estado de Envío E-mail -->
-                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg flex items-center justify-between">
-                            <div>
-                                <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
-                                    <i data-lucide="mail" class="w-4 h-4 text-emerald-600"></i>
-                                    Casilla de Entrega Diaria:
-                                </h3>
-                                <p class="text-xs text-slate-700 font-bold" id="resEmailDisplay">ejemplo@correo.com</p>
-                            </div>
-                            <span class="text-[10px] bg-emerald-200 text-emerald-800 font-bold px-2 py-1 rounded">Envío Matutino Activo</span>
-                        </div>
-
-                        <!-- CONTENEDOR DE LAS 30 RECETAS DIARIAS -->
-                        <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
-                                Cronograma Completo de Comidas (30 Días + Batidos + Costos)
-                            </h2>
-                            
-                            <div class="space-y-4 text-xs text-slate-800 max-h-[600px] overflow-y-auto pr-2" id="resContenidoRecetas">
-                                <!-- Las 30 recetas detalladas se cargan aquí mediante JavaScript -->
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- BLOQUE DE PAGO / WHATSAPP -->
-                <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl space-y-4">
-                    <h4 class="text-xl font-bold text-white">Activa tu Suscripción Mensual por $2.500 ARS</h4>
-                    <p class="text-slate-300 text-sm max-w-xl mx-auto">
-                        Obtén acceso inmediato al recetario con las <strong class="text-emerald-400">30 recetas diarias exclusivas</strong>, cálculo de costo por comida, batidos energéticos y envíos diarios a tu correo.
+                <!-- Bloque de Pago -->
+                <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-8 rounded-2xl text-center space-y-5 shadow-xl">
+                    <h4 class="text-2xl font-extrabold text-white">Activa tu Acceso Total por $2.500 ARS</h4>
+                    <p class="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
+                        Desbloquea el panel interactivo día por día, descargas de PDF ilimitadas y el envío automatizado a tu correo matutino.
                     </p>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                        <button onclick="redirigirPagoWhatsApp()" class="bg-[#25D366] hover:bg-[#20ba5a] text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer w-full sm:w-auto justify-center">
-                            <svg width="22" height="22" fill="white" viewBox="0 0 24 24">
-                              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.705 1.754zm6.097-4.232l.397.235c1.472.873 3.167 1.336 4.896 1.337 5.253 0 9.526-4.273 9.529-9.528.002-2.546-.988-4.94-2.788-6.741-1.8-1.802-4.193-2.793-6.74-2.794-5.253 0-9.527 4.273-9.529 9.528-.001 1.798.508 3.551 1.47 5.101l.261.42-1.018 3.719 3.804-.997z"/>
-                            </svg>
-                            <span class="pay-btn-text">Pagar $2.500 ARS y Enviar Comprobante</span>
-                        </button>
-                    </div>
-
-                    <!-- Panel de Verificación de Correo -->
-                    <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
-                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para habilitar:</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
-                            <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
-                        </div>
-                    </div>
+                    <button onclick="redirigirPagoWhatsApp()" class="bg-[#25D366] hover:bg-[#20ba5a] text-white font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-base cursor-pointer">
+                        <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.705 1.754zm6.097-4.232l.397.235c1.472.873 3.167 1.336 4.896 1.337 5.253 0 9.526-4.273 9.529-9.528.002-2.546-.988-4.94-2.788-6.741-1.8-1.802-4.193-2.793-6.74-2.794-5.253 0-9.527 4.273-9.529 9.528-.001 1.798.508 3.551 1.47 5.101l.261.42-1.018 3.719 3.804-.997z"/></svg>
+                        <span class="pay-btn-text">Pagar $2.500 ARS y Enviar Comprobante por WhatsApp</span>
+                    </button>
                 </div>
 
-                <!-- BLOQUE APARTE: BOTÓN DE APROBACIÓN Y REDIRECCIÓN VIP (ADMIN) -->
+                <!-- BLOQUE APARTE: BOTÓN DE APROBACIÓN ADMIN -->
                 <div class="bg-slate-900 border border-indigo-500/40 p-6 rounded-2xl text-center space-y-3">
                     <span class="text-xs uppercase font-extrabold text-indigo-400 tracking-wider">Panel de Control Exclusivo (Admin)</span>
-                    <h4 class="text-sm font-bold text-white">¿Recibiste el comprobante en WhatsApp y verificaste el pago?</h4>
-                    <p class="text-xs text-slate-400 max-w-md mx-auto">Haz clic en el botón de abajo para aprobar el acceso del usuario, desbloquear el sitio y redirigirlo inmediatamente a la Sección VIP.</p>
-                    <button onclick="aprobarPagoAdmin()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-6 py-3 rounded-xl transition shadow-lg inline-flex items-center gap-2 text-sm cursor-pointer">
+                    <h4 class="text-sm font-bold text-white">¿Verificaste el pago recibido en WhatsApp?</h4>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">Haz clic aquí para aprobar el acceso y abrir instantáneamente la Sección VIP con navegación día por día.</p>
+                    <button onclick="aprobarPagoAdmin()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-6 py-3.5 rounded-xl transition shadow-lg inline-flex items-center gap-2 text-sm cursor-pointer">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
-                        <span>Aprobar Pago y Redirigir a Sección VIP</span>
+                        <span>Aprobar Pago y Abrir Sección VIP (Día por Día)</span>
                     </button>
                 </div>
-
-                <!-- BOTÓN DE DESCARGA PDF REVELADO (Disponible una vez VIP o aprobado) -->
-                <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
-                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
-                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-                        <span>¡Suscripción Mensual Activa! Acceso a los 30 Días Habilitado.</span>
-                    </div>
-                    <p class="text-slate-200 text-sm">Puedes descargar las 4 semanas completas de recetas en PDF o consultarlas interactivamente.</p>
-                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer">
-                        <i data-lucide="download" class="w-6 h-6"></i>
-                        <span>Descargar PDF Completo (30 Días de Recetas)</span>
-                    </button>
-                </div>
-
             </div>
         </section>
 
-        <!-- SECCIÓN VIP (Área exclusiva para usuarios aprobados) -->
+        <!-- SECCIÓN VIP (DÍA POR DÍA MASIVA) -->
         <section id="seccionVIP" class="hidden max-w-4xl mx-auto px-4 pb-20">
-            <div class="bg-gradient-to-b from-slate-800 to-emerald-950/80 border-2 border-emerald-500 rounded-3xl p-8 shadow-2xl space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-500/30 pb-6 gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-500 text-slate-950 p-3 rounded-2xl">
-                            <i data-lucide="crown" class="w-8 h-8"></i>
+            <div class="bg-gradient-to-b from-slate-800 to-emerald-950/90 border-2 border-emerald-500 rounded-3xl p-6 sm:p-10 shadow-2xl space-y-8">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-center border-b border-emerald-500/30 pb-5 gap-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="bg-emerald-500 text-slate-950 p-3.5 rounded-2xl shadow-lg shadow-emerald-500/20">
+                            <i data-lucide="crown" class="w-7 h-7"></i>
                         </div>
                         <div>
-                            <span class="text-xs uppercase tracking-widest text-emerald-400 font-extrabold">Área Exclusiva VIP</span>
-                            <h2 class="text-3xl font-black text-white">Panel NutriEnergia Pro</h2>
+                            <span class="text-xs uppercase tracking-widest text-emerald-400 font-extrabold">Área Exclusiva VIP Pro Max</span>
+                            <h2 class="text-3xl font-black text-white">Cronograma Día por Día Desbloqueado</h2>
                         </div>
                     </div>
-                    <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-full text-xs font-bold animate-pulse">
-                        🌟 Membresía 30 Días Activa
+                    <span id="badgeDiaActual" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-4 py-2 rounded-full text-xs font-extrabold tracking-wide">
+                        Día 1 de 30
                     </span>
                 </div>
-                <p class="text-slate-300 text-sm">¡Bienvenido a tu sección VIP! Aquí tienes acceso ilimitado a todo tu recetario, batidos semanales y asistencia prioritaria.</p>
-                <div id="vipContenidoRecetas" class="space-y-3 max-h-[500px] overflow-y-auto pr-2 text-xs text-slate-200"></div>
+
+                <!-- CONTENEDOR DE LA RECETA DEL DÍA ACTUAL MASIVA -->
+                <div id="tarjetaDiaActual" class="bg-slate-900/95 border border-emerald-500/50 rounded-2xl p-6 sm:p-8 shadow-inner space-y-6">
+                    <!-- Inyección dinámica -->
+                </div>
+
+                <!-- CONTROLES DE NAVEGACIÓN DÍA POR DÍA -->
+                <div class="flex items-center justify-between pt-2">
+                    <button onclick="cambiarDiaVIP(-1)" id="btnAnterior" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-3 rounded-xl text-xs font-bold border border-slate-700 transition flex items-center gap-2 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> <span>Día Anterior</span>
+                    </button>
+                    
+                    <span class="text-xs text-slate-400 font-medium hidden sm:inline">Desbloqueo progresivo diario activo</span>
+
+                    <button onclick="cambiarDiaVIP(1)" id="btnSiguiente" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-lg shadow-emerald-600/20">
+                        <span>Siguiente Día</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Botón de Descarga PDF General -->
+                <div class="border-t border-slate-700/60 pt-6 text-center">
+                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-sm cursor-pointer">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>Descargar PDF Completo del Plan (30 Días)</span>
+                    </button>
+                </div>
             </div>
         </section>
     </div>
 
-    <!-- Scripts de Lógica, Google Sheets y Protecciones -->
+    <!-- Scripts con Base de 30 Días Explícitos e Individuales -->
     <script>
         const paisesConfig = {
             ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Suscribirme por $2.500 ARS' },
@@ -417,6 +288,8 @@
 
         let configActual = paisesConfig.ARG;
         let pagoAcreditado = false;
+        let diaActualIndex = 0;
+        let listaRecetasGeneradas = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -432,99 +305,93 @@
             const email = document.getElementById('qEmail').value.trim() || 'No especificado';
             const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
             const heladera = document.getElementById('qHeladera').value.trim() || 'Sin detallar';
-            
-            const mensaje = `Hola, ya realicé el pago de NutriEnergia AI (${configActual.precio}). Adjunto mi comprobante.%0A%0A- Nombre: ${nombre}%0A- Email: ${email}%0A- Heladera: ${heladera}`;
+            const mensaje = `Hola, ya realicé el pago de NutriEnergia AI Pro Max (${configActual.precio}). Adjunto mi comprobante.%0A%0A- Nombre: ${nombre}%0A- Email: ${email}%0A- Heladera: ${heladera}`;
             window.open(`https://wa.me/5492983389710?text=${mensaje}`, '_blank');
         }
+
+        // Definición explícita, larga y detallada de los 30 días uno por uno
+        const base30DiasIndividuales = [
+            { dia: 1, t: "Salteado Energético de Heladera con Huevo", mom: "Desayuno Vital", prep: "Corte los vegetales disponibles en juliana fina, saltee con aceite de oliva a fuego vivo durante 8 minutos y agregue los huevos batidos integrando con movimientos envolventes hasta lograr una textura cremosa.", macros: "Proteínas: 28g | Carb: 12g | Grasas: 14g", batido: "Batido Verde Antifatiga (Espinaca, Banana y Agua filtrada)" },
+            { dia: 2, t: "Omelet Rápido Proteico con Queso Fundido", mom: "Desayuno", prep: "Bata los huevos enérgicamente con sal marina y pimienta negra molida. Vierta en sartén antiadherente precalentada, coloque el queso en el centro y pliegue con espátula.", macros: "Proteínas: 24g | Carb: 3g | Grasas: 18g", batido: "Batido Energético de Avena, Cacao amargo y Leche" },
+            { dia: 3, t: "Bowl de Avena Energética con Frutas Frescas", mom: "Desayuno", prep: "Cocine la avena con agua o leche durante 5 minutos a fuego medio removiendo constantemente. Sirva coronado con rodajas de fruta fresca y canela en polvo.", macros: "Proteínas: 12g | Carb: 45g | Grasas: 6g", batido: "Licuado Frutal de Manzana, Yogur natural y Hielo" },
+            { dia: 4, t: "Wrap Exprés de Atún y Vegetales Crujientes", mom: "Almuerzo", prep: "Mezcle el atún escurrido con vegetales picados en brunoise y una cucharada de queso untable. Rellene la tortilla de trigo, envuelva firmemente y tueste en plancha.", macros: "Proteínas: 32g | Carb: 25g | Grasas: 9g", batido: "Jugo Detox Cítrico de Limón y Apio" },
+            { dia: 5, t: "Revuelto Inteligente de Verduras con Soja", mom: "Almuerzo", prep: "Rehogue cebolla y morrón, incorpore arroz cocido del día anterior junto a brotes o vegetales disponibles, salsee con soja ligera y un huevo revuelto final.", macros: "Proteínas: 20g | Carb: 50g | Grasas: 7g", batido: "Batido Proteico de Vainilla y Semillas de Chía" },
+            { dia: 6, t: "Tortilla Rápida de Espinaca y Cubos de Queso", mom: "Cena", prep: "Incorpore hojas de espinaca crudas picadas finamente al bol de huevos batidos con cubos de queso. Cocine tapado a fuego mínimo por 6 minutos por lado.", macros: "Proteínas: 22g | Carb: 5g | Grasas: 16g", batido: "Infusión Relajante de Manzanilla y Melisa" },
+            { dia: 7, t: "Arroz Salteado Estilo Wok con Huevos", mom: "Almuerzo", prep: "En sartén amplia o wok, dore cebolla, zanahoria y arroz frío. Haga un espacio central para cocinar los huevos rompiéndolos ahí y mezcle todo uniformemente.", macros: "Proteínas: 19g | Carb: 55g | Grasas: 8g", batido: "Licuado de Frutilla, Leche descremada y Hielo" },
+            { dia: 8, t: "Ensalada Completa Vital con Atún y Semillas", mom: "Cena", prep: "Disponga base de hojas verdes hidrogenadas, agregue tomates cherry en Mitades, atún desmenuzado y condicione con aceite de oliva extra virgen y limón.", macros: "Proteínas: 26g | Carb: 8g | Grasas: 12g", batido: "Jugo Energético de Naranja exprimida" },
+            { dia: 9, t: "Pionono Salado Express de Fiambre y Queso", mom: "Almuerzo", prep: "Extienda la base de pionono, unte queso crema magro, distribuya láminas de jamón o vegetales salteados finos, arrolle con suavidad y corte en porciones.", macros: "Proteínas: 21g | Carb: 30g | Grasas: 10g", batido: "Batido cremoso de Banana, Leche y Almendras" },
+            { dia: 10, t: "Guisito Rápido de Lentejas con Calabaza", mom: "Cena", prep: "Rehogue ajo y cebolla, agregue lentejas previamente cocidas (o de tarro lavadas), cubitos pequeños de calabaza y caldo casero. Cocine 15 min hasta espesar.", macros: "Proteínas: 25g | Carb: 42g | Grasas: 4g", batido: "Infusión Digestiva de Jengibre y Miel" },
+            { dia: 11, t: "Tarta Exprés de Zapallito y Queso en Sartén", mom: "Almuerzo", prep: "Saltee zapallitos rallados escurriendo el agua excedente. Mezcle con huevos, queso rallado y orégano; cocine tapado a fuego lento imitando horno.", macros: "Proteínas: 18g | Carb: 28g | Grasas: 15g", batido: "Licuado refrescante de Durazno natural" },
+            { dia: 12, t: "Fideos Cortos con Salsa Pomodoro Casera", mom: "Almuerzo", prep: "Hierva la pasta corta al dente. En paralelo, reduzca tomates triturados con dientes de ajo machacados, aceite de oliva y hojas de albahaca fresca.", macros: "Proteínas: 14g | Carb: 65g | Grasas: 6g", batido: "Jugo natural de Pera jugosa" },
+            { dia: 13, t: "Milanesas Crujientes al Horno con Puré", mom: "Cena", prep: "Coloque milanesas de carne o pollo en placa aceitada a horno fuerte (200°C) durante 15 minutos dándoles vuelta. Acompañe con puré de papas casero.", macros: "Proteínas: 35g | Carb: 48g | Grasas: 14g", batido: "Batido antioxidante de Frutos Rojos silvestres" },
+            { dia: 14, t: "Hamburguesas Caseras de Avena y Legumbres", mom: "Almuerzo", prep: "Procese o pise legumbres con avena fina, condimentos a gusto, forme hamburguesas compactas y dore en plancha caliente con rociador vegetal.", macros: "Proteínas: 16g | Carb: 40g | Grasas: 5g", batido: "Licuado Energético de Cacao y Leche" },
+            { dia: 15, t: "Pastel de Papas Rápido en Capas", mom: "Cena", prep: "Disponga base de carne picada sazonada y jugosa en fuente refractaria, cubra con puré de papas espolvoreado con queso magro y gratine en horno.", macros: "Proteínas: 30g | Carb: 45g | Grasas: 16g", batido: "Infusión relajante de Tilo" },
+            { dia: 16, t: "Sopa Crema Rústica de Calabaza y Crutones", mom: "Cena", prep: "Hierva trozos de calabaza y zanahoria, procese con parte del caldo de cocción hasta textura homogénea. Sirva caliente con cubitos de pan tostado al horno.", macros: "Proteínas: 6g | Carb: 35g | Grasas: 3g", batido: "Agua saborizada natural con Rodajas de Limón" },
+            { dia: 17, t: "Wok Saltado de Pollo y Vegetales en Tiritas", mom: "Almuerzo", prep: "Corte el pollo en tiras delgadas, saltee a fuego máximo en wok con vegetales en juliana y salsee con salsa de soja y sésamo tostado al servir.", macros: "Proteínas: 38g | Carb: 14g | Grasas: 8g", batido: "Licuado Verde detox de Pepino, Manzana y Espinaca" },
+            { dia: 18, t: "Croquetas Horneadas de Arroz y Queso Fundido", mom: "Cena", prep: "Mezcle arroz cocido sobrante con huevo batido, perejil picado y queso rallado. Arme croquetas ovaladas, aplaste y hornee hasta dorar ambos lados.", macros: "Proteínas: 12g | Carb: 36g | Grasas: 9g", batido: "Jugo exprimido de Pomelo rosado" },
+            { dia: 19, t: "Papas Rellenas al Horno con Relleno de Atún", mom: "Almuerzo", prep: "Ase papas enteras con piel en horno. Retire parte de la pulpa interior, mezcle con atún, cebolla de verdeo y mayonesa ligera, y vuelva a rellenar.", macros: "Proteínas: 20g | Carb: 50g | Grasas: 11g", batido: "Batido cremoso de Papaya y Leche" },
+            { dia: 20, t: "Pizza Casera Exprés sobre Pan de Molde", mom: "Cena", prep: "Disponga rebanadas de pan lactal en bandeja, cubra con salsa de tomate condimentada, orégano y abundante mozzarella. Hornee hasta fundir el queso.", macros: "Proteínas: 17g | Carb: 32g | Grasas: 12g", batido: "Licuado clásico de Banana y Leche" },
+            { dia: 21, t: "Cazuela Matutina de Huevo Estofado al Tomate", mom: "Desayuno", prep: "Elabore un sofrito rápido de tomate triturado y cebolla, rompa los huevos enteros encima de la salsa caliente, tape y cocine hasta que la clara cuaje.", macros: "Proteínas: 20g | Carb: 10g | Grasas: 13g", batido: "Jugo exprimido de Naranja y Zanahoria" },
+            { dia: 22, t: "Budín Salado Integral de Verduras Variadas", mom: "Almuerzo", prep: "Bata huevos, incorpore verduras crudas ralladas finas, harina integral o de avena, condimentos y hornee en molde rectangular por 35 minutos.", macros: "Proteínas: 15g | Carb: 22g | Grasas: 8g", batido: "Licuado multifruta de estación" },
+            { dia: 23, t: "Empanadas Abiertas Express de Acelga y Queso", mom: "Cena", prep: "Coloque discos de empanada en placa, agregue relleno de acelga previamente escurrida y salteada con ligue de huevo y queso. Hornee a fuego fuerte.", macros: "Proteínas: 14g | Carb: 28g | Grasas: 12g", batido: "Infusión suave de Hierbas serranas" },
+            { dia: 24, t: "Salteado Rápido de Fideos con Vegetales", mom: "Almuerzo", prep: "Cocine fideos largos o cortos, saltee rápidamente en sartén con julianas de verduras crocantes y termine integrando un huevo batido caliente.", macros: "Proteínas: 16g | Carb: 58g | Grasas: 7g", batido: "Batido nutritivo de Avena y Manzana cocida" },
+            { dia: 25, t: "Polenta Cremosa Tradicional con Bolognesa", mom: "Cena", prep: "Cocine la polenta en caldo hirviendo batiendo constantemente por 3 minutos. Sirva en plato hondo coronada con salsa bolognesa casera caliente.", macros: "Proteínas: 26g | Carb: 52g | Grasas: 9g", batido: "Jugo fresco de Naranja y Limón" },
+            { dia: 26, t: "Bocaditos Crujientes de Pollo Rebozados en Avena", mom: "Almuerzo", prep: "Corte cubos de pollo, pase por clara de huevo y reboce en avena fina triturada. Cocine en sartén antiadherente con unas gotas de aceite hasta dorar.", macros: "Proteínas: 34g | Carb: 18g | Grasas: 6g", batido: "Licuado refrescante de Melón natural" },
+            { dia: 27, t: "Sándwich Tostado Caliente Completo Especial", mom: "Cena", prep: "Arme un sándwich multicapa con pan lactal, jamón magro, queso tybo fundible y rodajas finas de tomate. Tueste en sandwichera hasta dorar.", macros: "Proteínas: 22g | Carb: 30g | Grasas: 15g", batido: "Jugo digestivo de Limón con Menta fresca" },
+            { dia: 28, t: "Panqueques Salados Rellenos de Espinaca Cremosa", mom: "Almuerzo", prep: "Elabore panqueques finos con mezcla de harina, leche y huevo. Rellene con espinaca cocida mezclada con queso crema y gratine al horno.", macros: "Proteínas: 18g | Carb: 35g | Grasas: 10g", batido: "Batido proteico suave de Frutilla" },
+            { dia: 29, t: "Brochetas Caseras a la Plancha de Queso y Zucchini", mom: "Cena", prep: "Intercale cubos de queso firme, tomates cherry y rodajas de zucchini en palillos para brocheta. Pinte con aceite de oliva y dore a la plancha.", macros: "Proteínas: 19g | Carb: 6g | Grasas: 14g", batido: "Infusión relajante de Menta y Cedrón" },
+            { dia: 30, t: "Menú Creativo de Cierre de Ciclo con Heladera", mom: "Almuerzo", prep: "Reúna los restos disponibles en su heladera de forma creativa en un salteado único integrando cereales y huevos para despedir el mes sin desperdicios.", macros: "Proteínas: 24g | Carb: 30g | Grasas: 11g", batido: "Licuado revitalizante final de Cierre de Mes" }
+        ];
 
         function generarPlan() {
             const email = document.getElementById('qEmail').value.trim() || 'tu-email@correo.com';
             const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
             const heladera = document.getElementById('qHeladera').value.trim() || 'Huevos, avena, verduras y lácteos';
             const obj = document.getElementById('qObjetivo').value;
-            const pers = document.getElementById('qPersonas').value;
-            const dieta = document.getElementById('qDieta').value;
 
-            document.getElementById('resEmailDisplay').textContent = email;
-            document.getElementById('resTitulo').textContent = `Plan 30 Días de ${nombre} (${dieta})`;
-            document.getElementById('resSubtitulo').textContent = `Objetivo: ${obj} · ${pers} · Heladera: ${heladera}`;
+            document.getElementById('resTitulo').textContent = `Plan Masivo 30 Días (${nombre})`;
+            document.getElementById('resSubtitulo').textContent = `Objetivo: ${obj} · Base: ${heladera}`;
 
-            const loader = document.getElementById('loader');
-            const resultados = document.getElementById('resultados');
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('resultados').classList.add('hidden');
 
-            loader.classList.remove('hidden');
-            resultados.classList.add('hidden');
+            listaRecetasGeneradas = [];
+            let htmlVistaPrevia = "";
 
-            const nombresPlatos = [
-                "Salteado Energético de Heladera con Huevo", "Omelet Rápido Proteico con Queso", 
-                "Bowl de Avena Energética con Frutas", "Wrap Exprés de Atún y Vegetales", 
-                "Revuelto de Verduras con Soja y Arroz", "Tortilla Rápida de Espinaca y Queso",
-                "Arroz Salteado con Huevos y Vegetales", "Ensalada Completa Vital con Atún", 
-                "Pionono Salado Express de Fiambre", "Guisito Rápido de Lentejas y Verdura",
-                "Tarta Exprés de Zapallito y Queso", "Fideos con Salsa Casera de Tomates y Albahaca",
-                "Milanesas al Horno con Puré Mixto", "Hamburguesas Caseras de Avena y Lentejas",
-                "Pastel de Papas en Capas Rápidas", "Sopa Crema de Calabaza con Picatostes",
-                "Wok de Pollo y Verduras Estilo Asiático", "Croquetas Horneadas de Arroz y Queso",
-                "Papas Rellenas al Horno con Atún", "Pizza Casera Rápida sobre Pan Lactal",
-                "Cazuela Express de Huevo y Tomate", "Budín Salado de Verduras Variadas",
-                "Empanadas Abiertas de Verdura y Queso", "Salteado de Fideos con Vegetales y Huevo",
-                "Polenta Cremosa con Salsa Bolognesa", "Bocaditos Crujientes de Avena y Pollo",
-                "Sándwich Tostado Completo Especial", "Panqueques Salados Rellenos de Espinaca",
-                "Brochetas Rápidas de Verdura y Queso", "Cierre de Mes: Menú Creativo con Heladera"
-            ];
+            for (let i = 0; i < 30; i++) {
+                const platoBase = base30DiasIndividuales[i];
+                const costo = Math.floor(Math.random() * 650) + 950;
 
-            let htmlRecetas = "";
-            let htmlVip = "";
-            for (let i = 1; i <= 30; i++) {
-                const plato = nombresPlatos[i - 1] || `Receta Especial Día ${i}`;
-                const costoEstimado = Math.floor(Math.random() * 600) + 900;
+                listaRecetasGeneradas.push({
+                    dia: platoBase.dia,
+                    titulo: platoBase.t,
+                    momento: platoBase.mom,
+                    heladera: heladera,
+                    prep: platoBase.prep,
+                    macros: platoBase.macros,
+                    costo: costo,
+                    batido: platoBase.batido
+                });
 
-                htmlRecetas += `
-                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-1.5">
-                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                            <h3 class="font-bold text-sm text-emerald-900">Día ${i} — ${plato}</h3>
-                            <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold text-[10px]">08:00 hs · Mail + Web</span>
+                htmlVistaPrevia += `
+                    <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-1">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-xs text-emerald-900">Día ${platoBase.dia} — ${platoBase.t}</h3>
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">${platoBase.mom}</span>
                         </div>
-                        <p><strong>Ingredientes base:</strong> ${heladera} + complementos de alacena.</p>
-                        <p class="text-slate-700"><strong>Preparación:</strong> Combinar y cocinar de forma rápida durante 15-20 minutos para mantener el nivel de energía alto.</p>
-                        <div class="pt-1">
-                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[11px] font-bold">
-                                💰 Costo estimado: $${costoEstimado.toLocaleString()} ARS
-                            </span>
-                        </div>
-                    </div>
-                `;
-
-                htmlVip += `
-                    <div class="border border-emerald-500/30 rounded-xl p-4 bg-slate-800/60 space-y-1.5">
-                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                            <h3 class="font-bold text-sm text-emerald-400">Día ${i} (VIP) — ${plato}</h3>
-                            <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-semibold text-[10px]">Desbloqueado</span>
-                        </div>
-                        <p class="text-slate-300"><strong>Ingredientes base:</strong> ${heladera}</p>
-                        <p class="text-slate-300"><strong>Preparación express:</strong> Cocción rápida en 15 minutos.</p>
+                        <p class="text-slate-600 text-[11px]">Insumos: ${heladera} | Costo aprox: $${costo.toLocaleString()} ARS</p>
                     </div>
                 `;
             }
 
-            document.getElementById('resContenidoRecetas').innerHTML = htmlRecetas;
-            document.getElementById('vipContenidoRecetas').innerHTML = htmlVip;
+            document.getElementById('resContenidoRecetas').innerHTML = htmlVistaPrevia;
 
             setTimeout(() => {
-                loader.classList.add('hidden');
-                resultados.classList.remove('hidden');
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('resultados').classList.remove('hidden');
                 if (typeof lucide !== 'undefined') lucide.createIcons();
-                resultados.scrollIntoView({ behavior: 'smooth' });
-            }, 1500);
-        }
-
-        function verificarYDesbloquear() {
-            const tok = document.getElementById('tokenPago').value.trim();
-            if (tok.length >= 3) {
-                alert("E-mail registrado. En cuanto el administrador apruebe el pago mediante el botón de aprobación, serás redirigido.");
-            } else {
-                alert("Por favor ingresa un correo válido.");
-            }
+                document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
+            }, 1200);
         }
 
         function aprobarPagoAdmin() {
@@ -532,15 +399,79 @@
             document.body.classList.remove('protected');
             document.body.classList.add('unlocked');
             
-            document.getElementById('bloquePago').classList.add('hidden');
-            document.getElementById('bloqueDescarga').classList.remove('hidden');
-            
+            document.getElementById('resultados').classList.add('hidden');
             const vipSec = document.getElementById('seccionVIP');
             vipSec.classList.remove('hidden');
-            vipSec.scrollIntoView({ behavior: 'smooth' });
+            
+            diaActualIndex = 0;
+            renderizarDiaVIP();
             
             if (typeof lucide !== 'undefined') lucide.createIcons();
-            alert("¡Pago aprobado con éxito! Redirigido a la Sección VIP y descargas habilitadas.");
+            vipSec.scrollIntoView({ behavior: 'smooth' });
+            alert("¡Pago aprobado por el Administrador! Sección VIP Pro Max activada día por día.");
+        }
+
+        function renderizarDiaVIP() {
+            if (listaRecetasGeneradas.length === 0) return;
+            const rec = listaRecetasGeneradas[diaActualIndex];
+
+            document.getElementById('badgeDiaActual').textContent = `Día ${rec.dia} de 30`;
+
+            const htmlCard = `
+                <div class="flex flex-col sm:flex-row justify-between items-start border-b border-emerald-500/30 pb-4 gap-2">
+                    <div>
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-extrabold uppercase px-3 py-1 rounded-md tracking-wider">Menú Exclusivo Día ${rec.dia}</span>
+                        <h3 class="text-2xl font-black text-white mt-2">${rec.titulo}</h3>
+                        <p class="text-xs text-emerald-300 font-medium mt-0.5">Momento recomendado: <strong>${rec.momento}</strong></p>
+                    </div>
+                    <span class="text-xs text-emerald-300 bg-emerald-950 px-3.5 py-1.5 rounded-xl border border-emerald-500/30 font-bold whitespace-nowrap">
+                        💰 Inversión estimada: $${rec.costo.toLocaleString()} ARS
+                    </span>
+                </div>
+                
+                <div class="space-y-4 text-sm text-slate-300 pt-2">
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 space-y-1">
+                        <strong class="text-emerald-400 block text-xs uppercase tracking-wider">🛒 Inventario de Heladera Aplicado:</strong>
+                        <p class="text-xs text-slate-200">${rec.heladera} + complementos estándar de alacena.</p>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <strong class="text-white block text-xs uppercase tracking-wider">🍳 Instrucciones de Preparación Detalladas:</strong>
+                        <p class="text-xs text-slate-300 leading-relaxed bg-slate-900/50 p-3.5 rounded-lg border border-slate-800">${rec.prep}</p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-3 pt-1">
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60">
+                            <span class="text-[11px] font-bold text-teal-400 block mb-1">🥤 Batido Energético Complementario:</span>
+                            <p class="text-xs text-slate-300">${rec.batido}</p>
+                        </div>
+                        <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60">
+                            <span class="text-[11px] font-bold text-indigo-400 block mb-1">📊 Desglose Nutricional Estimado:</span>
+                            <p class="text-xs text-slate-300">${rec.macros}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('tarjetaDiaActual').innerHTML = htmlCard;
+
+            document.getElementById('btnAnterior').disabled = diaActualIndex === 0;
+            document.getElementById('btnSiguiente').disabled = diaActualIndex === listaRecetasGeneradas.length - 1;
+            if (diaActualIndex === listaRecetasGeneradas.length - 1) {
+                document.getElementById('btnSiguiente').innerHTML = `<span>¡Fin del Plan 30 Días!</span>`;
+            } else {
+                document.getElementById('btnSiguiente').innerHTML = `<span>Siguiente Día</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function cambiarDiaVIP(direccion) {
+            const nuevoIndex = diaActualIndex + direccion;
+            if (nuevoIndex >= 0 && nuevoIndex < listaRecetasGeneradas.length) {
+                diaActualIndex = nuevoIndex;
+                renderizarDiaVIP();
+                document.getElementById('seccionVIP').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         function descargarPDF() {
@@ -548,55 +479,13 @@
             const elemento = document.getElementById('hojaPDF');
             const opt = {
                 margin:       0.5,
-                filename:     'Plan_Mensual_NutriEnergia_30Dias.pdf',
+                filename:     'Plan_Masivo_NutriEnergia_AI_Pro_30Dias.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
             html2pdf().set(opt).from(elemento).save();
         }
-
-        // --- SISTEMA PROTECTIVO ANTI-CAPTURAS ---
-        document.addEventListener('contextmenu', e => {
-            if (!pagoAcreditado) e.preventDefault();
-        });
-
-        const warningEl = document.getElementById('captureWarning');
-        
-        function triggerProtection() {
-            if (pagoAcreditado) return;
-            document.body.classList.add('capture-attempt');
-            warningEl.style.display = 'flex';
-            setTimeout(() => {
-                document.body.classList.remove('capture-attempt');
-                warningEl.style.display = 'none';
-            }, 3000);
-        }
-
-        document.addEventListener('keydown', e => {
-            if (pagoAcreditado) return;
-
-            if (e.key === 'PrintScreen' || e.keyCode === 44) {
-                e.preventDefault();
-                if (navigator.clipboard) navigator.clipboard.writeText('');
-                triggerProtection();
-            }
-            if (e.keyCode === 123 || 
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) || 
-                (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')) ||
-                (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5'))) {
-                e.preventDefault();
-                triggerProtection();
-            }
-        });
-
-        window.addEventListener('blur', () => {
-            if (!pagoAcreditado) document.body.classList.add('window-blur');
-        });
-
-        window.addEventListener('focus', () => {
-            document.body.classList.remove('window-blur');
-        });
     </script>
 </body>
 </html>
