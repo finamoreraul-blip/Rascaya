@@ -73,7 +73,6 @@
             flex-direction: column;
         }
 
-        /* Impresión limpia si el contenido fue desbloqueado */
         @media print {
             body.protected {
                 display: none !important;
@@ -101,7 +100,7 @@
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium">Plan Nutricional + Recetario de IA con Ingredientes de tu Heladera</span>
+                <span class="font-medium">Plan Nutricional + Recetario Inteligente con Ingredientes de tu Heladera</span>
             </div>
             
             <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
@@ -144,36 +143,27 @@
         <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                Inteligencia Artificial aplicada a tu Cocina y Nutrición
+                Incluye Platos + Batidos Energéticos Anti-Fatiga
             </span>
             <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-                Genera tu Recetario con la IA <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">usando lo que tienes en tu heladera</span>
+                Genera tu Recetario Inteligente <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">usando lo que tienes en tu heladera</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Ingresa los ingredientes que te quedaron en casa. La Inteligencia Artificial redactará recetas paso a paso para desayunos, almuerzos y cenas sin desperdiciar nada.
+                Ingresa los ingredientes que te quedaron en casa. El sistema creará tus recetas paso a paso y batidos energéticos para potenciar tu mañana y tarde sin desperdiciar nada.
             </p>
         </section>
 
-        <!-- CUESTIONARIO Y GENERADOR DE IA -->
+        <!-- CUESTIONARIO Y GENERADOR AUTOMÁTICO -->
         <section class="max-w-4xl mx-auto px-4 pb-12">
             <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm space-y-6">
                 
-                <!-- Clave API Opcional de Gemini para producción -->
-                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700">
-                    <label class="block text-xs font-medium text-slate-400 mb-1 flex items-center justify-between">
-                        <span>Configuración de IA (Gemini API Key Opcional)</span>
-                        <span class="text-emerald-400 text-[10px]">Si se deja vacío, usará el motor predeterminado</span>
-                    </label>
-                    <input type="password" id="geminiApiKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 outline-none focus:border-emerald-500" placeholder="AIzaSy...">
-                </div>
-
                 <!-- Campo Clave: Heladera -->
                 <div>
                     <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
                         <i data-lucide="refrigerator" class="w-4 h-4"></i>
                         ¿Qué ingredientes tienes en tu heladera y alacena hoy?
                     </label>
-                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, 1 cebolla, media zanahoria, queso cremoso, 1 lata de atún, arroz, espinacas, choclo..."></textarea>
+                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, 1 banana, avena, espinacas, queso cremoso, 1 lata de atún, leche o yogur..."></textarea>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
@@ -216,9 +206,9 @@
                     </div>
                 </div>
 
-                <button onclick="generarPlanConIA()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
+                <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
                     <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    <span>Generar Recetario Personalizado con IA</span>
+                    <span>Crear Mi Recetario y Batidos Energéticos Ahora</span>
                 </button>
             </div>
         </section>
@@ -226,8 +216,8 @@
         <!-- Loader -->
         <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
-            <h3 class="text-lg font-bold text-white mb-2">La IA está creando tus recetas paso a paso...</h3>
-            <p class="text-sm text-slate-400">Procesando los ingredientes de tu heladera y estructurando el plan nutricional.</p>
+            <h3 class="text-lg font-bold text-white mb-2">Combinando ingredientes, platos y batidos revitalizantes...</h3>
+            <p class="text-sm text-slate-400">Estructurando tu plan nutricional anti-fatiga personalizado.</p>
         </section>
 
         <!-- VISTA PREVIA DEL PLAN GENERADO -->
@@ -237,8 +227,8 @@
                 <!-- Encabezado de Diagnóstico -->
                 <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Generado por IA</span>
-                        <h2 class="text-2xl font-bold text-white">Plan Nutricional e Instrucciones Detalladas</h2>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Inteligente Generado</span>
+                        <h2 class="text-2xl font-bold text-white">Plan Nutricional, Platos y Batidos Energéticos</h2>
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
                         <span class="block text-3xl font-black text-emerald-400">100%</span>
@@ -273,7 +263,7 @@
                         <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
                             <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
                                 <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-                                Ingredientes Procesados de tu Heladera:
+                                Ingredientes Detectados de tu Heladera:
                             </h3>
                             <p class="text-xs text-slate-700" id="resIngredientesText">
                                 Procesando...
@@ -283,11 +273,11 @@
                         <!-- Recetas Detalladas Generadas -->
                         <div>
                             <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
-                                Recetario Guía Paso a Paso
+                                Recetario Guía Paso a Paso (Platos Principales y Batidos)
                             </h2>
                             
                             <div class="space-y-6 text-xs text-slate-800" id="resContenidoRecetas">
-                                <!-- Las recetas se inyectan dinámicamente desde JS/IA -->
+                                <!-- Las recetas y batidos se inyectan dinámicamente -->
                             </div>
                         </div>
 
@@ -335,7 +325,7 @@
         </section>
     </div>
 
-    <!-- Scripts de Lógica, Multimoneda y Protecciones -->
+    <!-- Scripts de Lógica y Protecciones -->
     <script>
         const paisesConfig = {
             ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Suscribirme por $2.500 ARS', link: 'https://mpago.la/26vyWtC' },
@@ -353,7 +343,6 @@
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             
-            // Auto-detectar si vuelve de Mercado Pago con estado exitoso
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('status') === 'approved' || urlParams.get('payment_id')) {
                 activarModoDesbloqueado();
@@ -372,15 +361,14 @@
             window.open(configActual.link, '_blank');
         }
 
-        async function generarPlanConIA() {
-            const heladera = document.getElementById('qHeladera').value.trim() || 'Huevos, verduras, arroz y queso';
+        function generarPlan() {
+            const heladera = document.getElementById('qHeladera').value.trim() || 'Huevos, banana, avena, verduras y lácteos';
             const obj = document.getElementById('qObjetivo').value;
             const pers = document.getElementById('qPersonas').value;
             const dieta = document.getElementById('qDieta').value;
             const tiempo = document.getElementById('qTiempo').value;
-            const apiKey = document.getElementById('geminiApiKey').value.trim();
 
-            document.getElementById('resTitulo').textContent = `Recetario Energético (${dieta})`;
+            document.getElementById('resTitulo').textContent = `Recetario Energético & Batidos (${dieta})`;
             document.getElementById('resSubtitulo').textContent = `Objetivo: ${obj} · ${pers} · Prep: ${tiempo}`;
             document.getElementById('resIngredientesText').textContent = heladera;
 
@@ -390,25 +378,60 @@
             loader.classList.remove('hidden');
             resultados.classList.add('hidden');
 
-            let htmlRecetas = "";
+            // Generar recetas y batidos detallados dinámicamente
+            const htmlRecetas = `
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">1. Batido Matutino Revitalizante (Anti-Fatiga)</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">5 mins · Bebida</span>
+                    </div>
+                    <p><strong>Base aprovechada:</strong> Lácteos/bebida vegetal, fruta disponible (${heladera}), avena o semillas.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Coloca en la licuadora 1 taza de leche o yogur junto con la fruta de tu heladera (ej. banana o frutos disponibles).</p>
+                        <p><strong>Paso 2:</strong> Añade 2 cucharadas soperas de avena o semillas para asegurar carbohidratos de absorción sostenida.</p>
+                        <p><strong>Paso 3:</strong> Licúa a máxima velocidad durante 45 segundos hasta lograr una textura cremosa homogénea. Ideal para tomar antes de empezar el día.</p>
+                    </div>
+                </div>
 
-            if (apiKey) {
-                try {
-                    const prompt = `Actúa como nutricionista. Crea 3 recetas detalladas paso a paso aprovechando principalmente estos ingredientes de la heladera: "${heladera}". Dieta: ${dieta}. Objetivo: ${obj}. Devuelve únicamente las recetas formateadas en HTML estructurado.`;
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    const data = await res.json();
-                    htmlRecetas = data.candidates[0].content.parts[0].text;
-                } catch (e) {
-                    console.error("Falló la llamada a Gemini API, usando plantilla local:", e);
-                    htmlRecetas = construirPlantillaLocal(heladera);
-                }
-            } else {
-                htmlRecetas = construirPlantillaLocal(heladera);
-            }
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">2. Batido Verde de Foco Mental (Media Tarde)</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">5 mins · Bebida</span>
+                    </div>
+                    <p><strong>Base aprovechada:</strong> Espinacas o verduras de hoja verde de tu heladera + agua o jugo cítrico.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Lava un puñado generoso de espinacas o hojas verdes disponibles.</p>
+                        <p><strong>Paso 2:</strong> Procesa en licuadora con agua fría, unas gotas de limón y un toque de jengibre si tienes en alacena.</p>
+                        <p><strong>Paso 3:</strong> Bebe inmediatamente para recargar magnesio y evitar el bajón de energía de las 16:00 hs.</p>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">3. Salteado Energético Express con tus Ingredientes</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">${tiempo} · Plato Principal</span>
+                    </div>
+                    <p><strong>Base aprovechada:</strong> ${heladera}</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Calienta una sartén con unas gotas de aceite de oliva. Pica y saltea los vegetales e ingredientes disponibles a fuego medio durante 4 minutos.</p>
+                        <p><strong>Paso 2:</strong> Añade la base de carbohidratos o complementos y mezcla suavemente para unificar sabores.</p>
+                        <p><strong>Paso 3:</strong> Sazona con especias a gusto y sirve caliente.</p>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">4. Tortilla o Revuelto Anti-Fatiga Proteico</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins · Plato Principal</span>
+                    </div>
+                    <p><strong>Base aprovechada:</strong> Huevos y componentes frescos de tu heladera.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Bate los huevos en un bol con sal y pimienta. Integra los ingredientes picados de tu heladera.</p>
+                        <p><strong>Paso 2:</strong> Vierte en sartén antiadherente caliente y cocina a fuego bajo.</p>
+                        <p><strong>Paso 3:</strong> Dobla al medio o da vuelta para dorar ambos lados. Alto valor proteico.</p>
+                    </div>
+                </div>
+            `;
 
             document.getElementById('resContenidoRecetas').innerHTML = htmlRecetas;
 
@@ -418,49 +441,7 @@
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 resultados.scrollIntoView({ behavior: 'smooth' });
-            }, 1800);
-        }
-
-        function construirPlantillaLocal(heladera) {
-            return `
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">1. Salteado Energético Express de Heladera</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins</span>
-                    </div>
-                    <p><strong>Ingredientes utilizados:</strong> ${heladera}.</p>
-                    <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Calienta una sartén con unas gotas de aceite de oliva. Corta finamente las verduras disponibles e incorpóralas a fuego medio durante 4 minutos.</p>
-                        <p><strong>Paso 2:</strong> Añade la base de carbohidratos (arroz/quinua/legumbres) y saltea para unificar sabores.</p>
-                        <p><strong>Paso 3:</strong> Incorpora la proteína (huevos/atún/pollo/queso), revuelve suavemente hasta cocinar y sirve caliente.</p>
-                    </div>
-                </div>
-
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">2. Tortilla Anti-Fatiga Proteica</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">20 mins</span>
-                    </div>
-                    <p><strong>Ingredientes utilizados:</strong> Huevos, verduras de hojear/zanahoria y queso de tu heladera.</p>
-                    <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Bate 3 huevos en un recipiente con sal, pimienta y especias.</p>
-                        <p><strong>Paso 2:</strong> Mezcla con las verduras picadas y coloca en sartén antiadherente tapada a fuego bajo por 8 minutos.</p>
-                        <p><strong>Paso 3:</strong> Da vuelta con un plato, gratina con queso arriba durante 3 minutos adicionales.</p>
-                    </div>
-                </div>
-
-                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                        <h3 class="font-bold text-sm text-emerald-900">3. Crema / Sopa Nutritiva Reconstituyente</h3>
-                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">25 mins</span>
-                    </div>
-                    <p><strong>Ingredientes utilizados:</strong> Hortalizas de raíz, cebollas, legumbres y caldo.</p>
-                    <div class="text-slate-700 space-y-1">
-                        <p><strong>Paso 1:</strong> Corta en cubos los vegetales e hiérvelos con caldo vegetal hasta ablandar.</p>
-                        <p><strong>Paso 2:</strong> Procesa o tritura incorporando una cucharada de aceite y condimentos energéticos como cúrcuma o pimienta.</p>
-                    </div>
-                </div>
-            `;
+            }, 1500);
         }
 
         function verificarYDesbloquear() {
@@ -468,7 +449,7 @@
             if (tok.length >= 4) {
                 activarModoDesbloqueado();
             } else {
-                alert("Por favor ingresa un código válido de confirmación de pago.");
+                alert("Por favor ingresa un código válido de confirmación de pago o correo.");
             }
         }
 
@@ -486,7 +467,7 @@
             const elemento = document.getElementById('hojaPDF');
             const opt = {
                 margin:       0.5,
-                filename:     'Recetario_NutriEnergia_IA.pdf',
+                filename:     'Recetario_Batidos_NutriEnergia.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
