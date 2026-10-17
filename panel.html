@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriEnergia AI - Panel de Administración PRO</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: { 50: '#ecfdf5', 100: '#d1fae5', 400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b', 950: '#022c22' }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-p-6">
+
+    <!-- Navbar del Panel -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2 rounded-xl shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight text-white">Panel Admin — NutriEnergia AI</span>
+                    <span class="block text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">Gestión Exclusiva de Suscripciones</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="https://docs.google.com/spreadsheets/d/1GZQwQhm05Ifz2V49DC9UjuIOYYS54g23vKIOPm6pfO0/edit" target="_blank" class="bg-emerald-950 border border-emerald-500/40 hover:bg-emerald-900 text-emerald-300 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <span>Abrir Google Sheet</span>
+                </a>
+                <a href="https://wa.me/5492983389710" target="_blank" class="bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366]/30 text-emerald-400 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp Comprobantes</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+        
+        <!-- Tarjetas de Estadísticas Rápidas -->
+        <div class="grid sm:grid-cols-3 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Usuarios Registrados</p>
+                        <h3 class="text-2xl font-black text-white mt-1" id="totalUsuarios">12</h3>
+                    </div>
+                    <div class="bg-slate-800 p-3 rounded-xl text-emerald-400">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Suscripciones PRO Activas</p>
+                        <h3 class="text-2xl font-black text-emerald-400 mt-1" id="totalPro">8</h3>
+                    </div>
+                    <div class="bg-emerald-950/60 p-3 rounded-xl text-emerald-400">
+                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Pendientes de Pago</p>
+                        <h3 class="text-2xl font-black text-amber-400 mt-1" id="totalPendientes">4</h3>
+                    </div>
+                    <div class="bg-amber-950/60 p-3 rounded-xl text-amber-400">
+                        <i data-lucide="clock" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Gestión de Usuarios -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-bold text-white">Base de Datos de Clientes y Estado PRO</h3>
+                    <p class="text-xs text-slate-400">Habilita o deshabilita el acceso al recetario de 30 días y envíos por e-mail.</p>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por email o nombre..." class="bg-slate-950 border border-slate-700 text-xs rounded-xl px-4 py-2.5 text-white outline-none focus:border-emerald-500 w-full sm:w-64">
+                    <button onclick="cargarDatosMock()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer">
+                        Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-950/60 text-slate-400 border-b border-slate-800">
+                            <th class="p-4 font-bold">ID</th>
+                            <th class="p-4 font-bold">Usuario / Nombre</th>
+                            <th class="p-4 font-bold">E-mail</th>
+                            <th class="p-4 font-bold">Heladera Registrada</th>
+                            <th class="p-4 font-bold text-center">Estado PRO</th>
+                            <th class="p-4 font-bold text-center">Comprobante WhatsApp</th>
+                            <th class="p-4 font-bold text-right">Acción Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuarios" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- Filas de ejemplo precargadas -->
+                        <tr class="hover:bg-slate-800/40 transition">
+                            <td class="p-4 font-mono text-slate-400">USR-001</td>
+                            <td class="p-4 font-bold text-white">Santiago Finamore</td>
+                            <td class="p-4 text-emerald-400">finamoreraul@gmail.com</td>
+                            <td class="p-4 text-slate-400 truncate max-w-xs">Huevos, avena, espinaca, atún</td>
+                            <td class="p-4 text-center">
+                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]">ACTIVO</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="bg-emerald-950 text-emerald-300 px-2 py-1 rounded font-bold text-[10px]">Verificado ($2.500)</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button onclick="toggleEstado(this)" class="bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
+                                    Deshabilitar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40 transition">
+                            <td class="p-4 font-mono text-slate-400">USR-002</td>
+                            <td class="p-4 font-bold text-white">Maria Gomez</td>
+                            <td class="p-4 text-slate-300">maria.gomez@email.com</td>
+                            <td class="p-4 text-slate-400 truncate max-w-xs">Banana, leche, yogur, queso</td>
+                            <td class="p-4 text-center">
+                                <span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]">PENDIENTE</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <span class="bg-amber-950 text-amber-300 px-2 py-1 rounded font-bold text-[10px]">Esperando pago</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button onclick="toggleEstado(this)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
+                                    Habilitar PRO
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script de Control del Panel -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        function toggleEstado(btn) {
+            const tr = btn.closest('tr');
+            const badge = tr.querySelector('td:nth-child(5) span');
+            
+            if (badge.textContent.trim() === 'ACTIVO') {
+                badge.className = "bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]";
+                badge.textContent = "PENDIENTE";
+                btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg transition cursor-pointer";
+                btn.textContent = "Habilitar PRO";
+            } else {
+                badge.className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]";
+                badge.textContent = "ACTIVO";
+                btn.className = "bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer";
+                btn.textContent = "Deshabilitar";
+            }
+        }
+
+        function filtrarUsuarios() {
+            const filtro = document.getElementById('buscador').value.toLowerCase();
+            const filas = document.querySelectorAll('#tablaUsuarios tr');
+
+            filas.forEach(fila => {
+                const texto = fila.textContent.toLowerCase();
+                fila.style.display = texto.includes(filtro) ? '' : 'none';
+            });
+        }
+
+        function cargarDatosMock() {
+            alert("Panel sincronizado correctamente.");
+        }
+    </script>
+</body>
+</html>
