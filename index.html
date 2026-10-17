@@ -20,8 +20,6 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- html2pdf.js para exportar PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body.protected, body.protected .no-select {
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
@@ -113,7 +111,7 @@
                 Plan Nutricional Masivo <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Sin Desperdicios en tu Hogar</span>
             </h1>
             <p class="text-slate-300 text-base sm:text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
-                Ingresa los ingredientes disponibles en tu heladera para evaluar una muestra restringida del Día 1. Tras tu pago por WhatsApp, desbloquea de inmediato las 120 recetas completas con paso a paso y beneficios.
+                Ingresa los ingredientes disponibles en tu heladera para evaluar una muestra restringida del Día 1. Tras tu pago por WhatsApp y habilitación desde nuestro panel administrativo, accede a las 120 recetas completas.
             </p>
         </section>
 
@@ -180,23 +178,17 @@
                     </div>
                 </div>
 
-                <!-- Bloque de Pago y Botón de Validación de WhatsApp -->
+                <!-- Bloque de Pago -->
                 <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-8 rounded-2xl text-center space-y-6 shadow-xl">
                     <h4 class="text-2xl font-extrabold text-white">¿Te gustó el adelanto? Desbloquea los 30 Días por $2.500 ARS</h4>
                     <p class="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
-                        1. Haz clic en el botón verde para pagar y enviar tu comprobante por WhatsApp.<br>
-                        2. Cuando el administrador verifique tu pago, haz clic en el botón azul inferior para activar tu acceso instantáneo al panel VIP.
+                        Envía tu comprobante por WhatsApp. Una vez que verifiquemos tu pago, te habilitaremos el acceso completo en nuestro sistema.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                        <button onclick="redirigirPagoWhatsApp()" class="bg-[#25D366] hover:bg-[#20ba5a] text-white font-black px-6 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-sm cursor-pointer w-full sm:w-auto justify-center">
+                    <div class="pt-2">
+                        <button onclick="redirigirPagoWhatsApp()" class="bg-[#25D366] hover:bg-[#20ba5a] text-white font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-sm cursor-pointer justify-center">
                             <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.705 1.754zm6.097-4.232l.397.235c1.472.873 3.167 1.336 4.896 1.337 5.253 0 9.526-4.273 9.529-9.528.002-2.546-.988-4.94-2.788-6.741-1.8-1.802-4.193-2.793-6.74-2.794-5.253 0-9.527 4.273-9.529 9.528-.001 1.798.508 3.551 1.47 5.101l.261.42-1.018 3.719 3.804-.997z"/></svg>
                             <span class="pay-btn-text">Pagar y Enviar Comprobante por WhatsApp</span>
-                        </button>
-
-                        <button onclick="verificarYAbrirVIP()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-4 rounded-xl transition shadow-lg inline-flex items-center gap-2 text-sm cursor-pointer w-full sm:w-auto justify-center">
-                            <i data-lucide="check-circle" class="w-5 h-5"></i>
-                            <span>Ya pagué / Habilitar mi Acceso VIP</span>
                         </button>
                     </div>
                 </div>
@@ -239,14 +231,6 @@
                         <span>Siguiente Día</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </div>
-
-                <!-- Botón de Descarga PDF General -->
-                <div class="pt-6 text-center">
-                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-9 py-4.5 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-base cursor-pointer">
-                        <i data-lucide="download" class="w-5 h-5"></i>
-                        <span>Descargar PDF Completo del Plan (30 Días / 120 Recetas)</span>
-                    </button>
-                </div>
             </div>
         </section>
     </div>
@@ -272,7 +256,7 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
             construirBaseDatos30Dias();
             
-            // Persistencia para alta concurrencia
+            // Verificación automática de sesión VIP guardada
             if(localStorage.getItem("nutri_vip_habilitado") === "true") {
                 pagoAcreditado = true;
                 document.body.classList.remove('protected');
@@ -313,7 +297,8 @@
 
             for (let i = 1; i <= 30; i++) {
                 const baseTitulo = titulosPlatos[(i - 1) % titulosPlatos.length];
-                const costoDia = Math.floor(Math.random() * 800) + 1200;
+                // Costos realistas actualizados para 4 comidas diarias completas
+                const costoDia = Math.floor(Math.random() * 4000) + 12500;
                 
                 listaRecetasGeneradas.push({
                     dia: i,
@@ -374,29 +359,6 @@
             }, 800);
         }
 
-        function verificarYAbrirVIP() {
-            const pin = prompt("Ingresa tu PIN de Acceso VIP Enterprise (o pulsa Aceptar si ya enviaste el comprobante por WhatsApp y el administrador te habilitó):");
-            
-            pagoAcreditado = true;
-            localStorage.setItem("nutri_vip_habilitado", "true");
-            
-            document.body.classList.remove('protected');
-            document.body.classList.add('unlocked');
-            
-            document.getElementById('seccionFormulario').classList.add('hidden');
-            document.getElementById('resultados').classList.add('hidden');
-            
-            const vipSec = document.getElementById('seccionVIP');
-            vipSec.classList.remove('hidden');
-            
-            diaActualIndex = 0;
-            renderizarDiaVIP();
-            
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            vipSec.scrollIntoView({ behavior: 'smooth' });
-            alert("¡Acceso VIP Enterprise Concedido con Éxito!");
-        }
-
         function renderizarDiaVIP() {
             if (listaRecetasGeneradas.length === 0) construirBaseDatos30Dias();
             const rec = listaRecetasGeneradas[diaActualIndex];
@@ -436,7 +398,7 @@
                         <h3 class="text-2xl font-black text-white mt-1">Día ${rec.dia} — Menú de 4 Comidas Exclusivas</h3>
                     </div>
                     <span class="text-xs text-emerald-300 bg-emerald-950 px-4 py-2 rounded-xl border border-emerald-500/30 font-bold">
-                        💰 Inversión diaria estimada: $${rec.costo.toLocaleString()} ARS
+                        💰 Inversión estimada 4 comidas: $${rec.costo.toLocaleString()} ARS
                     </span>
                 </div>
                 <div class="space-y-5 pt-2">
@@ -463,19 +425,6 @@
                 renderizarDiaVIP();
                 document.getElementById('seccionVIP').scrollIntoView({ behavior: 'smooth' });
             }
-        }
-
-        function descargarPDF() {
-            if (!pagoAcreditado) return;
-            const elemento = document.getElementById('seccionVIP');
-            const opt = {
-                margin:       0.5,
-                filename:     'Plan_Enterprise_NutriEnergia_VIP_30Dias.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(elemento).save();
         }
     </script>
 </body>
