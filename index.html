@@ -20,8 +20,6 @@
     </script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- html2pdf.js para exportar PDF real post-pago -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* Protecciones estrictas contra copias y capturas */
         body.protected, body.protected .no-select {
@@ -96,7 +94,7 @@
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Contenido Protegido</h3>
-            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos en PDF, completa tu suscripción oficial por WhatsApp.</p>
+            <p class="text-sm text-slate-300 mb-6">Para desbloquear tu plan diario de 30 días con recetario y batidos, completa tu suscripción oficial por WhatsApp.</p>
             <button onclick="redirigirPagoWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
                 <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -178,7 +176,7 @@
                 <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl">
                     <i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
                     <h3 class="font-bold text-sm text-white mb-1">Panel Web Interactivo 30 Días</h3>
-                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día con opción de descarga PDF.</p>
+                    <p class="text-xs text-slate-400">Ingresas a la web y ves el progreso día a día de manera exclusiva.</p>
                 </div>
             </div>
         </section>
@@ -280,7 +278,7 @@
                     </div>
                 </div>
 
-                <!-- HOJA IMPRIMIBLE Y DESCARGABLE EN PDF -->
+                <!-- HOJA DE VISTA PREVIA -->
                 <div id="hojaPDF" class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
                     
                     <div class="watermark-overlay">
@@ -344,7 +342,7 @@
                     </div>
 
                     <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
-                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para habilitar el acceso:</label>
+                        <label class="block text-xs text-slate-400 mb-1">¿Ya pagaste? Ingresa tu e-mail registrado para verificar:</label>
                         <div class="flex gap-2">
                             <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full outline-none focus:border-emerald-500" placeholder="tu-email@correo.com">
                             <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
@@ -352,24 +350,25 @@
                     </div>
                 </div>
 
-                <!-- BOTÓN DE DESCARGA PDF REVELADO -->
+                <!-- BLOQUE DE ESTADO DE PAGO / REDIRECCIÓN VIP -->
                 <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
-                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
-                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-                        <span>¡Suscripción Mensual Activa! Acceso a los 30 Días Habilitado.</span>
+                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold text-lg">
+                        <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                        <span>Estamos aprobando tu pago</span>
                     </div>
-                    <p class="text-slate-200 text-sm">Puedes descargar las 4 semanas completas de recetas en PDF o consultarlas interactivamente.</p>
-                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer">
-                        <i data-lucide="download" class="w-6 h-6"></i>
-                        <span>Descargar PDF Completo (30 Días de Recetas)</span>
-                    </button>
+                    <p class="text-slate-200 text-sm max-w-md mx-auto">
+                        Cuando se apruebe serás redirigido a la sección VIP de la página para recibir diariamente tus recetas.
+                    </p>
+                    <div class="w-full bg-slate-900/60 rounded-full h-2.5 max-w-xs mx-auto overflow-hidden">
+                        <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full w-1/3 animate-pulse"></div>
+                    </div>
                 </div>
 
             </div>
         </section>
     </div>
 
-    <!-- Scripts de Lógica, Google Sheets y Protecciones -->
+    <!-- Scripts de Lógica y Protecciones -->
     <script>
         const paisesConfig = {
             ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Suscribirme por $2.500 ARS' },
@@ -420,17 +419,6 @@
 
             loader.classList.remove('hidden');
             resultados.classList.add('hidden');
-
-            // --- ENVÍO AUTOMÁTICO A GOOGLE SHEETS ---
-            const urlAppsScript = "PEGAR_AQUI_TU_URL_DE_APPS_SCRIPT"; // Reemplaza esto con tu URL de /exec
-            if(urlAppsScript && urlAppsScript !== "PEGAR_AQUI_TU_URL_DE_APPS_SCRIPT") {
-                fetch(urlAppsScript, {
-                    method: "POST",
-                    mode: "no-cors",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nombre: nombre, email: email, heladera: heladera })
-                }).catch(error => console.error("Error al registrar en la base de datos:", error));
-            }
 
             const nombresPlatos = [
                 "Salteado Energético de Heladera con Huevo", "Omelet Rápido Proteico con Queso", 
@@ -500,19 +488,12 @@
             
             const el = document.getElementById('bloqueDescarga');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
 
-        function descargarPDF() {
-            if (!pagoAcreditado) return;
-            const elemento = document.getElementById('hojaPDF');
-            const opt = {
-                margin:       0.5,
-                filename:     'Plan_Mensual_NutriEnergia_30Dias.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(elemento).save();
+            // Simulación de redirección a la sección VIP tras unos segundos
+            setTimeout(() => {
+                alert("¡Pago verificado con éxito! Redirigiendo a tu sección VIP...");
+                // window.location.href = "https://tu-sitio-vip.com"; 
+            }, 4000);
         }
 
         // --- SISTEMA PROTECTIVO ANTI-CAPTURAS ---
