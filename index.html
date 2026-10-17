@@ -58,25 +58,36 @@
         </div>
     </div>
 
-    <!-- Topbar con Selector de Moneda / País -->
+    <!-- Topbar con Selector de Moneda / País y Botón de Acceso VIP (Si ya pagó) -->
     <div class="bg-emerald-950/90 border-b border-emerald-800/60 text-emerald-200 text-xs sm:text-sm py-2.5 px-4 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2.5">
                 <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span class="font-semibold tracking-wide">Plataforma Enterprise Concurrente — Alta Disponibilidad (1.000 Usuarios)</span>
             </div>
-            <div class="flex items-center gap-3 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
-                <i data-lucide="globe" class="w-4 h-4 text-emerald-400"></i>
-                <label for="countrySelect" class="text-xs text-slate-300 font-medium">País / Moneda:</label>
-                <select id="countrySelect" onchange="cambiarPais()" class="bg-transparent text-xs text-emerald-300 font-bold outline-none cursor-pointer">
-                    <option value="ARG" selected class="bg-slate-900 text-white">🇦🇷 Argentina ($2.500 ARS)</option>
-                    <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($79 MXN)</option>
-                    <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($14.900 COP)</option>
-                    <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($3.500 CLP)</option>
-                    <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($14.90 PEN)</option>
-                    <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€3,99 EUR)</option>
-                    <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($3,99 USD)</option>
-                </select>
+            
+            <div class="flex items-center gap-3">
+                <!-- Botón condicional que aparece SOLO si ya es VIP -->
+                <div id="contenedorBotonVIP" class="hidden">
+                    <button onclick="irAZonaVIP()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-2 rounded-lg transition shadow-md inline-flex items-center gap-1.5 cursor-pointer">
+                        <i data-lucide="crown" class="w-3.5 h-3.5"></i>
+                        <span>Ir a mi Zona VIP</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-3 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
+                    <i data-lucide="globe" class="w-4 h-4 text-emerald-400"></i>
+                    <label for="countrySelect" class="text-xs text-slate-300 font-medium">País / Moneda:</label>
+                    <select id="countrySelect" onchange="cambiarPais()" class="bg-transparent text-xs text-emerald-300 font-bold outline-none cursor-pointer">
+                        <option value="ARG" selected class="bg-slate-900 text-white">🇦🇷 Argentina ($2.500 ARS)</option>
+                        <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($79 MXN)</option>
+                        <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($14.900 COP)</option>
+                        <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($3.500 CLP)</option>
+                        <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($14.90 PEN)</option>
+                        <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€3,99 EUR)</option>
+                        <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($3,99 USD)</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -111,7 +122,7 @@
                 Plan Nutricional Masivo <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Sin Desperdicios en tu Hogar</span>
             </h1>
             <p class="text-slate-300 text-base sm:text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
-                Ingresa los ingredientes disponibles en tu heladera para evaluar una muestra restringida del Día 1. Tras tu pago por WhatsApp y habilitación desde nuestro panel administrativo, accede a las 120 recetas completas.
+                Ingresa los ingredientes disponibles en tu heladera para evaluar primero la vista previa y muestra restringida del Día 1. Tras tu pago por WhatsApp y habilitación desde el panel administrativo, podrás acceder a las 120 recetas completas.
             </p>
         </section>
 
@@ -144,7 +155,7 @@
 
                 <button onclick="generarMuestraPrevia()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-4.5 rounded-xl shadow-xl transition flex items-center justify-center space-x-3 text-base cursor-pointer">
                     <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    <span>Analizar Heladera y Generar Muestra del Día 1</span>
+                    <span>Analizar Heladera y Generar Vista Previa (Día 1)</span>
                 </button>
             </div>
         </section>
@@ -161,7 +172,7 @@
             <div class="bg-slate-800/95 border border-emerald-500/40 rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8">
                 <div class="flex flex-col sm:flex-row justify-between items-center border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Muestra Previa Restringida (Solo Día 1)</span>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Vista Previa Restringida (Solo Día 1)</span>
                         <h2 class="text-2xl font-bold text-white" id="resTitulo">Adelanto del Plan Nutricional</h2>
                     </div>
                     <span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl text-xs font-black">🔒 Días 2 al 30 Bloqueados</span>
@@ -169,7 +180,7 @@
 
                 <!-- Muestra Protegida del Día 1 -->
                 <div class="bg-white text-slate-900 rounded-2xl p-6 sm:p-8 shadow-2xl watermark-container relative text-left">
-                    <div class="watermark-overlay">MUESTRA RESTRINGIDA — SUSCRIPCIÓN REQUERIDA PARA LOS 30 DÍAS</div>
+                    <div class="watermark-overlay">VISTA PREVIA RESTRINGIDA — SUSCRIPCIÓN REQUERIDA PARA LOS 30 DÍAS</div>
                     <div class="relative z-10 space-y-4">
                         <p class="text-xs font-bold text-emerald-800 uppercase tracking-widest">Demostración del Día 1 (4 Comidas)</p>
                         <div class="space-y-3 text-xs" id="resContenidoMuestra">
@@ -182,7 +193,7 @@
                 <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-8 rounded-2xl text-center space-y-6 shadow-xl">
                     <h4 class="text-2xl font-extrabold text-white">¿Te gustó el adelanto? Desbloquea los 30 Días por $2.500 ARS</h4>
                     <p class="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
-                        Envía tu comprobante por WhatsApp. Una vez que verifiquemos tu pago, te habilitaremos el acceso completo en nuestro sistema.
+                        Envía tu comprobante por WhatsApp. Una vez que verifiquemos tu pago y te habilitemos desde el panel administrativo, podrás ingresar a la Zona VIP completa.
                     </p>
                     
                     <div class="pt-2">
@@ -256,15 +267,10 @@
             if (typeof lucide !== 'undefined') lucide.createIcons();
             construirBaseDatos30Dias();
             
-            // Verificación automática de sesión VIP guardada
+            // Si el usuario ya fue habilitado previamente por ti, muestra el botón VIP en la barra superior
             if(localStorage.getItem("nutri_vip_habilitado") === "true") {
                 pagoAcreditado = true;
-                document.body.classList.remove('protected');
-                document.body.classList.add('unlocked');
-                document.getElementById('seccionFormulario').classList.add('hidden');
-                document.getElementById('resultados').classList.add('hidden');
-                document.getElementById('seccionVIP').classList.remove('hidden');
-                renderizarDiaVIP();
+                document.getElementById('contenedorBotonVIP').classList.remove('hidden');
             }
         });
 
@@ -297,7 +303,6 @@
 
             for (let i = 1; i <= 30; i++) {
                 const baseTitulo = titulosPlatos[(i - 1) % titulosPlatos.length];
-                // Costos realistas actualizados para 4 comidas diarias completas
                 const costoDia = Math.floor(Math.random() * 4000) + 12500;
                 
                 listaRecetasGeneradas.push({
@@ -335,7 +340,7 @@
 
         function generarMuestraPrevia() {
             const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
-            document.getElementById('resTitulo').textContent = `Muestra Restringida para ${nombre}`;
+            document.getElementById('resTitulo').textContent = `Vista Previa para ${nombre}`;
             document.getElementById('loader').classList.remove('hidden');
             document.getElementById('resultados').classList.add('hidden');
 
@@ -357,6 +362,17 @@
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 document.getElementById('resultados').scrollIntoView({ behavior: 'smooth' });
             }, 800);
+        }
+
+        function irAZonaVIP() {
+            document.getElementById('seccionFormulario').classList.add('hidden');
+            document.getElementById('resultados').classList.add('hidden');
+            const vipSec = document.getElementById('seccionVIP');
+            vipSec.classList.remove('hidden');
+            diaActualIndex = 0;
+            renderizarDiaVIP();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            vipSec.scrollIntoView({ behavior: 'smooth' });
         }
 
         function renderizarDiaVIP() {
