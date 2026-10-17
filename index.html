@@ -1,29 +1,411 @@
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="monetag" content="cf89a74b7c3c298cd1302744700289ba">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RascaYa v6</title> <!-- v6 para forzar update -->
-<style>
-  body{font-family:system-ui,Segoe UI,Roboto;background:#0f172a;color:#e2e8f0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
-  .card{background:#1e293b;padding:24px;border-radius:16px;box-shadow:0 8px 24px #0006;text-align:center;max-width:360px;width:90%}
-  h1{margin:0 0 8px;font-size:28px;color:#fbbf24}
-  .saldo{font-size:40px;font-weight:800;margin:12px 0;color:#22d3ee}
-  button{background:#f59e0b;border:0;color:#0f172a;font-weight:700;font-size:18px;padding:14px 22px;border-radius:12px;cursor:pointer;width:100%;margin-top:8px}
-  button:disabled{background:#475569;color:#94a3b8;cursor:not-allowed}
-  .info{font-size:13px;color:#94a3b8;margin-top:12px}
-</style>
-</head>
-<body>
-  <div class="card">
-    <h1>🎁 RascaYa</h1>
-    <div class="saldo">$0.00</div>
-    <button disabled>Raspar y Ganar $0.16</button> <!-- 15 -> 16 -->
-    <div class="info">Verificando Monetag v6</div>
-  </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriEnergia - Tu Plan Alimenticio Energético y de Ahorro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Protección básica anti-selección de texto */
+        body, .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-<!-- CÓDIGO MONETAG REWARDED - ZONE 11231361 -->
-<script src="//libtl.com/sl.js?z=11231361" data-cfasync="false"></script>
+        /* Capa de Marca de Agua Dinámica sobre la vista previa */
+        .watermark-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .watermark-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 30;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.15;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #ef4444;
+            transform: rotate(-25deg) scale(1.2);
+            line-height: 5rem;
+            word-spacing: 2.5rem;
+            user-select: none;
+        }
+
+        /* Efecto de pantalla oculta al intentar capturas o perder el foco */
+        .screen-protected {
+            transition: filter 0.15s ease, opacity 0.15s ease;
+        }
+
+        body.window-blur .screen-protected,
+        body.capture-attempt .screen-protected {
+            filter: blur(40px) brightness(0.2) !important;
+            opacity: 0.05 !important;
+        }
+
+        /* Modal de advertencia por intento de captura */
+        #captureWarning {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased no-select">
+
+    <!-- Modal de Intento de Captura -->
+    <div id="captureWarning">
+        <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
+            <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">Captura de pantalla bloqueada</h3>
+            <p class="text-sm text-slate-300 mb-6">Para obtener tu plan alimenticio completo en formato PDF descargable y sin marcas de agua, suscríbete oficialmente.</p>
+            <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2">
+                <span class="pay-btn-text">Suscribirme al Plan</span>
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Topbar con Selector de País / Moneda -->
+    <div class="bg-emerald-950/80 border-b border-emerald-800/50 text-emerald-200 text-xs sm:text-sm py-2 px-4 shadow-md backdrop-blur-md">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-medium">Suscripción Nutricional Energética + Plan de Ahorro Inteligente</span>
+            </div>
+            
+            <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <label for="countrySelect" class="text-xs text-slate-300 font-medium">País:</label>
+                <select id="countrySelect" onchange="cambiarPais()" class="bg-transparent text-xs text-emerald-300 font-bold outline-none cursor-pointer">
+                    <option value="ARG" selected class="bg-slate-900 text-white">🇦🇷 Argentina ($1.500 ARS/mes)</option>
+                    <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($49 MXN/mes)</option>
+                    <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($9.900 COP/mes)</option>
+                    <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($2.200 CLP/mes)</option>
+                    <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($9.90 PEN/mes)</option>
+                    <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€2,50 EUR/mes)</option>
+                    <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($2,50 USD/mes)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2 rounded-xl shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia</span>
+            </div>
+            <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-emerald-600/20">
+                <span class="pay-btn-text">Suscribirme por $1.500 ARS</span>
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="screen-protected">
+        <!-- Hero Section -->
+        <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                Cero fatiga · Más rendimiento · Compras económicas
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
+                Aumenta tu energía diaria y <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">ahorra en el supermercado</span>
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
+                Diseñamos tu plan de alimentación mensual anti-cansancio y la lista exacta de compras para cocinar rico, rápido y sin gastar de más.
+            </p>
+        </section>
+
+        <!-- CUESTIONARIO DE PERSONALIZACIÓN -->
+        <section class="max-w-4xl mx-auto px-4 pb-12" id="seccionCuestionario">
+            <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white">
+                    <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
+                    Configura tu Plan Alimenticio Mensual
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <!-- Pregunta 1: Objetivo -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">1. ¿Cuál es tu objetivo principal?</label>
+                        <select id="qObjetivo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Aumentar energía y eliminar cansancio tarde">⚡ Máxima Energía y Rendimiento</option>
+                            <option value="Comer sano y ahorrar en compras">💰 Ahorro Económico en el Supermercado</option>
+                            <option value="Descansar mejor y rendir en el trabajo">🧠 Foco Mental y Claridad</option>
+                            <option value="Mantener peso y ganar vitalidad">🥗 Estilo de Vida Saludable</option>
+                        </select>
+                    </div>
+
+                    <!-- Pregunta 2: Integrantes -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">2. ¿Para cuántas personas cocinas?</label>
+                        <select id="qPersonas" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="1 persona (Individual)">Solo para mí (1 persona)</option>
+                            <option value="2 personas (Pareja)">Pareja (2 personas)</option>
+                            <option value="Familia (3-4 personas)">Familia (3 a 4 personas)</option>
+                        </select>
+                    </div>
+
+                    <!-- Pregunta 3: Estilo / Dieta -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">3. Preferencia de alimentación</label>
+                        <select id="qDieta" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Omnívora (Carne, pollo, pescado, vegetales)">Omnívora (De todo un poco)</option>
+                            <option value="Vegetariana">Vegetariana</option>
+                            <option value="Sin TACC / Celiacos">Sin TACC / Libre de Gluten</option>
+                            <option value="Económica Express">Ultra Económica / Express</option>
+                        </select>
+                    </div>
+
+                    <!-- Pregunta 4: Tiempo para cocinar -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">4. ¿Cuánto tiempo tienes para cocinar?</label>
+                        <select id="qTiempo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="Batch Cooking (Cocino 2hs el domingo)">Poco tiempo (Cocinar en lote / Domingo)</option>
+                            <option value="Recetas de 15 minutos diarios">Súper rápido (15-20 min por comida)</option>
+                            <option value="Cocinero tradicional">Normal (30-45 min diarios)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
+                    <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <span>Generar mi Plan Energético y Lista de Compras Gratis</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Loader -->
+        <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
+            <h3 class="text-lg font-bold text-white mb-2">Calculando combinación de micronutrientes y lista óptima...</h3>
+            <p class="text-sm text-slate-400">Balanceando carbohidratos complejos, proteínas y presupuesto de compras.</p>
+        </section>
+
+        <!-- RESULTADOS Y VISTA PREVIA COMPLETA CON MARCA DE AGUA -->
+        <section id="resultados" class="hidden max-w-4xl mx-auto px-4 pb-16">
+            <div class="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-8">
+                
+                <!-- Diagnóstico de Optimización -->
+                <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Plan Mensual Personalizado Generado</span>
+                        <h2 class="text-2xl font-bold text-white">Menú Semanal + Lista de Ahorro</h2>
+                    </div>
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
+                        <span class="block text-3xl font-black text-emerald-400">+85%</span>
+                        <span class="text-xs text-emerald-200/80 font-medium">Estimado de Energía Vital</span>
+                    </div>
+                </div>
+
+                <!-- HOJA DEL PLAN COMPLETO CON MARCA DE AGUA -->
+                <div class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
+                    
+                    <!-- MARCA DE AGUA SUPERPUESTA -->
+                    <div class="watermark-overlay">
+                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA — MUESTRA PROTEGIDA — NUTRIENERGIA
+                    </div>
+
+                    <!-- CONTENIDO COMPLETO DEL PLAN -->
+                    <div class="relative z-10 space-y-6">
+                        
+                        <!-- Encabezado del documento -->
+                        <div class="border-b border-slate-300 pb-4">
+                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional de Alto Rendimiento</span>
+                            <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Menú Energético Personalizado</h1>
+                            <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Configurado para: Objetivo Vitalidad y Ahorro</p>
+                        </div>
+
+                        <!-- Menú Semanal (Vista Previa de 7 Días) -->
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-3">Estructura del Menú Semanal (Semana 1 de 4)</h2>
+                            
+                            <div class="grid sm:grid-cols-2 gap-3 text-xs">
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-emerald-800 block mb-1">Lunes (Energía Sostenida)</strong>
+                                    <p><strong>Almuerzo:</strong> Tazón de quinua/arroz integral, pechuga de pollo/tofu salteado, espinacas y semillas de girasol.</p>
+                                    <p class="mt-1"><strong>Cena:</strong> Tortilla de avena y verduras con ensalada verde fresca.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-emerald-800 block mb-1">Martes (Anti-Fatiga)</strong>
+                                    <p><strong>Almuerzo:</strong> Omelette reforzado con champiñones, batata/camote al horno y palta/aguacate.</p>
+                                    <p class="mt-1"><strong>Cena:</strong> Sopa cremosa de calabaza y lentejas con crutones integrales.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-emerald-800 block mb-1">Miércoles (Foco Mental)</strong>
+                                    <p><strong>Almuerzo:</strong> Ensalada templada de garbanzos salteados con pimientos, atún/huevos e hinojo.</p>
+                                    <p class="mt-1"><strong>Cena:</strong> Filete de pescado/hamburguesa vegetal con puré de zanahoria e jengibre.</p>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-emerald-800 block mb-1">Jueves a Domingo</strong>
+                                    <p class="text-slate-500 italic">Plan detallado con rotación de proteínas vegetales/animales, carbohidratos lentos y grasas saludables...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lista de Compras Inteligente y Agrupada -->
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">Lista de Compras Optimizada (Cero Desperdicio)</h2>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-700">
+                                <div>
+                                    <strong class="text-slate-900 block">🥬 Verdulería:</strong>
+                                    <p>• Espinacas frescas<br>• Calabaza / Camote<br>• Paltas / Aguacates<br>• Zanahorias y Jengibre</p>
+                                </div>
+                                <div>
+                                    <strong class="text-slate-900 block">🌾 Almacén / Legumbres:</strong>
+                                    <p>• Arroz integral / Quinua<br>• Garbanzos y Lentejas<br>• Avena enrollada<br>• Semillas (Girasol/Chía)</p>
+                                </div>
+                                <div>
+                                    <strong class="text-slate-900 block">🥑 Proteínas y Refrigerados:</strong>
+                                    <p>• Pechuga / Tofu<br>• Huevos frescos<br>• Pescado / Atún<br>• Queso magro / Yogur</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Desayunos y Snacks Anti-Bajón -->
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">Snacks y Desayunos de Carga Energética</h2>
+                            <p class="text-xs text-slate-700">
+                                • <strong>Desayuno Vital:</strong> Porridge de avena con chía, frutos secos y rodajas de banana.<br>
+                                • <strong>Snack Anti-Cansancio (16:00 hs):</strong> Puñado de almendras/nueces + té verde o café con canela.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE DE PAGO / SUSCRIPCIÓN -->
+                <div class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl">
+                    <h4 class="text-xl font-bold text-white mb-2">Desbloquea tu Plan Mensual Completo en PDF</h4>
+                    <p class="text-slate-300 text-sm max-w-xl mx-auto mb-6">
+                        Recibe las 4 semanas completas de menú, la lista exacta de compras y las guías de cocina en PDF limpio sin marcas de agua por solo <strong class="text-emerald-400 display-price">$1.500 ARS/mes</strong>.
+                    </p>
+
+                    <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl shadow-emerald-600/30 inline-flex items-center gap-3 text-lg cursor-pointer">
+                        <i data-lucide="unlock" class="w-6 h-6"></i>
+                        <span class="pay-btn-text">Suscribirme por $1.500 ARS/mes</span>
+                    </button>
+                    <p class="text-xs text-slate-400 mt-3 flex items-center justify-center gap-1">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                        Pago seguro con Mercado Pago / Tarjeta de Crédito o Débito
+                    </p>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- Script de Gestión, Multimoneda y Protecciones -->
+    <script>
+        // Configuración de Precios y Links por País
+        const paisesConfig = {
+            ARG: { moneda: 'ARS', precio: '$1.500 ARS/mes', textoBtn: 'Suscribirme por $1.500 ARS', link: 'https://mpago.la/19zWnnD' },
+            MEX: { moneda: 'MXN', precio: '$49 MXN/mes', textoBtn: 'Suscribirme por $49 MXN', link: 'https://www.paypal.com' },
+            COL: { moneda: 'COP', precio: '$9.900 COP/mes', textoBtn: 'Suscribirme por $9.900 COP', link: 'https://www.paypal.com' },
+            CHL: { moneda: 'CLP', precio: '$2.200 CLP/mes', textoBtn: 'Suscribirme por $2.200 CLP', link: 'https://www.paypal.com' },
+            PER: { moneda: 'PEN', precio: '$9.90 PEN/mes', textoBtn: 'Suscribirme por $9.90 PEN', link: 'https://www.paypal.com' },
+            ESP: { moneda: 'EUR', precio: '€2,50 EUR/mes', textoBtn: 'Suscribirme por €2,50 EUR', link: 'https://www.paypal.com' },
+            USA: { moneda: 'USD', precio: '$2,50 USD/mes', textoBtn: 'Suscribirme por $2,50 USD', link: 'https://www.paypal.com' }
+        };
+
+        let configActual = paisesConfig.ARG;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        function cambiarPais() {
+            const cod = document.getElementById('countrySelect').value;
+            configActual = paisesConfig[cod] || paisesConfig.ARG;
+
+            // Actualizar botones y textos de precio
+            document.querySelectorAll('.pay-btn-text').forEach(el => {
+                el.textContent = configActual.textoBtn;
+            });
+            document.querySelectorAll('.display-price').forEach(el => {
+                el.textContent = configActual.precio;
+            });
+        }
+
+        function redirigirPago() {
+            window.open(configActual.link, '_blank');
+        }
+
+        function generarPlan() {
+            const obj = document.getElementById('qObjetivo').value;
+            const pers = document.getElementById('qPersonas').value;
+            const dieta = document.getElementById('qDieta').value;
+
+            document.getElementById('resTitulo').textContent = `Menú Energético (${dieta})`;
+            document.getElementById('resSubtitulo').textContent = `Configurado para: ${obj} · ${pers}`;
+
+            const loader = document.getElementById('loader');
+            const resultados = document.getElementById('resultados');
+
+            loader.classList.remove('hidden');
+            resultados.classList.add('hidden');
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                resultados.classList.remove('hidden');
+
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                resultados.scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        }
+
+        // --- SISTEMA ANTI-CAPTURAS Y COPIA ---
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        const warningEl = document.getElementById('captureWarning');
+        
+        function triggerProtection() {
+            document.body.classList.add('capture-attempt');
+            warningEl.style.display = 'flex';
+            setTimeout(() => {
+                document.body.classList.remove('capture-attempt');
+                warningEl.style.display = 'none';
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                e.preventDefault();
+                if (navigator.clipboard) navigator.clipboard.writeText('');
+                triggerProtection();
+            }
+            if (e.keyCode === 123 || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) || 
+                (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')) ||
+                (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5'))) {
+                e.preventDefault();
+                triggerProtection();
+            }
+        });
+
+        window.addEventListener('blur', () => document.body.classList.add('window-blur'));
+        window.addEventListener('focus', () => document.body.classList.remove('window-blur'));
+    </script>
 </body>
 </html>
