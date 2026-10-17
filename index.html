@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia - Tu Plan Alimenticio y Recetario Inteligente</title>
+    <title>NutriEnergia - Recetario con IA y Plan Alimenticio de Ahorro</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- html2pdf.js para exportar PDF real post-pago -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* Protección básica anti-selección de texto */
-        body, .no-select {
+        /* Protección básica anti-selección de texto en estado de prueba */
+        body.protected, body.protected .no-select {
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -23,7 +25,7 @@
             overflow: hidden;
         }
 
-        .watermark-overlay {
+        body.protected .watermark-overlay {
             position: absolute;
             inset: 0;
             pointer-events: none;
@@ -42,13 +44,17 @@
             user-select: none;
         }
 
+        body.unlocked .watermark-overlay {
+            display: none !important;
+        }
+
         /* Efecto de pantalla oculta al intentar capturas o perder el foco */
         .screen-protected {
             transition: filter 0.15s ease, opacity 0.15s ease;
         }
 
-        body.window-blur .screen-protected,
-        body.capture-attempt .screen-protected {
+        body.protected.window-blur .screen-protected,
+        body.protected.capture-attempt .screen-protected {
             filter: blur(40px) brightness(0.2) !important;
             opacity: 0.05 !important;
         }
@@ -66,18 +72,25 @@
             text-align: center;
             flex-direction: column;
         }
+
+        /* Impresión limpia si el contenido fue desbloqueado */
+        @media print {
+            body.protected {
+                display: none !important;
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased no-select">
+<body class="bg-slate-900 text-slate-100 font-sans antialiased protected">
 
     <!-- Modal de Intento de Captura -->
     <div id="captureWarning">
         <div class="bg-slate-800 p-8 rounded-2xl border border-red-500/40 max-w-md mx-4 text-center shadow-2xl">
             <i data-lucide="shield-alert" class="w-16 h-16 text-red-500 mx-auto mb-4"></i>
             <h3 class="text-xl font-bold mb-2">Captura de pantalla bloqueada</h3>
-            <p class="text-sm text-slate-300 mb-6">Para obtener tu plan alimenticio y recetario completo en formato PDF descargable y sin marcas de agua, suscríbete oficialmente.</p>
-            <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2">
-                <span class="pay-btn-text">Suscribirme al Plan</span>
+            <p class="text-sm text-slate-300 mb-6">Para obtener tu recetario completo en formato PDF descargable e imprimible, completa tu suscripción oficial.</p>
+            <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
+                <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
             </button>
         </div>
@@ -88,20 +101,20 @@
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
             <div class="flex items-center gap-2">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-medium">Suscripción Nutricional Energética + Recetario con lo que tienes en tu Heladera</span>
+                <span class="font-medium">Plan Nutricional + Recetario de IA con Ingredientes de tu Heladera</span>
             </div>
             
             <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-500/30">
                 <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
                 <label for="countrySelect" class="text-xs text-slate-300 font-medium">País:</label>
                 <select id="countrySelect" onchange="cambiarPais()" class="bg-transparent text-xs text-emerald-300 font-bold outline-none cursor-pointer">
-                    <option value="ARG" selected class="bg-slate-900 text-white">🇦🇷 Argentina ($1.500 ARS/mes)</option>
-                    <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($49 MXN/mes)</option>
-                    <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($9.900 COP/mes)</option>
-                    <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($2.200 CLP/mes)</option>
-                    <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($9.90 PEN/mes)</option>
-                    <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€2,50 EUR/mes)</option>
-                    <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($2,50 USD/mes)</option>
+                    <option value="ARG" selected class="bg-slate-900 text-white">🇦🇷 Argentina ($2.500 ARS/mes)</option>
+                    <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($79 MXN/mes)</option>
+                    <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($14.900 COP/mes)</option>
+                    <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($3.500 CLP/mes)</option>
+                    <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($14.90 PEN/mes)</option>
+                    <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€3,99 EUR/mes)</option>
+                    <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($3,99 USD/mes)</option>
                 </select>
             </div>
         </div>
@@ -114,12 +127,15 @@
                 <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2 rounded-xl shadow-lg shadow-emerald-500/20">
                     <i data-lucide="zap" class="w-6 h-6"></i>
                 </div>
-                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia</span>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia AI</span>
             </div>
-            <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-emerald-600/20">
-                <span class="pay-btn-text">Suscribirme por $1.500 ARS</span>
-                <i data-lucide="external-link" class="w-4 h-4"></i>
-            </button>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-emerald-600/20 cursor-pointer">
+                    <span class="pay-btn-text">Suscribirme por $2.500 ARS</span>
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -127,82 +143,82 @@
         <!-- Hero Section -->
         <section class="max-w-4xl mx-auto px-4 pt-10 pb-6 text-center">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
-                <i data-lucide="refrigerator" class="w-3.5 h-3.5"></i>
-                Aprovecha lo que tienes en tu heladera · Cero desperdicio
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                Inteligencia Artificial aplicada a tu Cocina y Nutrición
             </span>
             <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-                Recetas detalladas y plan semanal <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">con lo que tienes en casa</span>
+                Genera tu Recetario con la IA <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">usando lo que tienes en tu heladera</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg mb-6 max-w-2xl mx-auto">
-                Ingresa los ingredientes de tu heladera y despensa. La IA creará tus recetas paso a paso para cocinar rico, aumentar tu energía y no tirar comida.
+                Ingresa los ingredientes que te quedaron en casa. La Inteligencia Artificial redactará recetas paso a paso para desayunos, almuerzos y cenas sin desperdiciar nada.
             </p>
         </section>
 
-        <!-- CUESTIONARIO DE PERSONALIZACIÓN -->
-        <section class="max-w-4xl mx-auto px-4 pb-12" id="seccionCuestionario">
-            <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm">
-                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white">
-                    <i data-lucide="sliders" class="w-5 h-5 text-emerald-400"></i>
-                    Paso 1: Configura tus preferencias e ingredientes
-                </h2>
-
-                <!-- Campo clave: Ingredientes de la heladera -->
-                <div class="mb-6">
-                    <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
-                        <i data-lucide="refrigerator" class="w-4 h-4"></i>
-                        ¿Qué ingredientes tienes en tu heladera y alacena?
+        <!-- CUESTIONARIO Y GENERADOR DE IA -->
+        <section class="max-w-4xl mx-auto px-4 pb-12">
+            <div class="bg-slate-800/70 border border-slate-700/70 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm space-y-6">
+                
+                <!-- Clave API Opcional de Gemini para producción -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700">
+                    <label class="block text-xs font-medium text-slate-400 mb-1 flex items-center justify-between">
+                        <span>Configuración de IA (Gemini API Key Opcional)</span>
+                        <span class="text-emerald-400 text-[10px]">Si se deja vacío, usará el motor predeterminado</span>
                     </label>
-                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, media zanahoria, arroz cocido, 1 lata de atún, espinacas, queso cremoso, cebolla..."></textarea>
-                    <p class="text-xs text-slate-400 mt-1">La IA priorizará estos alimentos en tus recetas para que ahorres y no tengas que comprar de más.</p>
+                    <input type="password" id="geminiApiKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 outline-none focus:border-emerald-500" placeholder="AIzaSy...">
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <!-- Pregunta 1: Objetivo -->
+                <!-- Campo Clave: Heladera -->
+                <div>
+                    <label class="block text-sm font-bold text-emerald-400 mb-2 flex items-center gap-2">
+                        <i data-lucide="refrigerator" class="w-4 h-4"></i>
+                        ¿Qué ingredientes tienes en tu heladera y alacena hoy?
+                    </label>
+                    <textarea id="qHeladera" rows="3" class="w-full bg-slate-900 border border-emerald-500/40 rounded-xl p-3 text-sm text-slate-100 placeholder-slate-500 outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ej: 3 huevos, 1 cebolla, media zanahoria, queso cremoso, 1 lata de atún, arroz, espinacas, choclo..."></textarea>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Objetivo principal</label>
                         <select id="qObjetivo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Aumentar energía y eliminar cansancio tarde">⚡ Máxima Energía y Rendimiento</option>
-                            <option value="Comer sano y ahorrar en compras">💰 Ahorro Económico en el Supermercado</option>
+                            <option value="Aumentar energía y eliminar fatiga">⚡ Máxima Energía y Rendimiento</option>
+                            <option value="Comer rico y ahorrar en compras">💰 Ahorro Económico en el Supermercado</option>
                             <option value="Descansar mejor y rendir en el trabajo">🧠 Foco Mental y Claridad</option>
-                            <option value="Mantener peso y ganar vitalidad">🥗 Estilo de Vida Saludable</option>
+                            <option value="Estilo de vida saludable">🥗 Vida Saludable</option>
                         </select>
                     </div>
 
-                    <!-- Pregunta 2: Integrantes -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">¿Para cuántas personas cocinas?</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Comensales</label>
                         <select id="qPersonas" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="1 persona (Individual)">Solo para mí (1 persona)</option>
-                            <option value="2 personas (Pareja)">Pareja (2 personas)</option>
-                            <option value="Familia (3-4 personas)">Familia (3 a 4 personas)</option>
+                            <option value="1 persona">1 Persona (Individual)</option>
+                            <option value="2 personas">2 Personas (Pareja)</option>
+                            <option value="Familia (3 a 4 personas)">Familia (3 a 4 personas)</option>
                         </select>
                     </div>
 
-                    <!-- Pregunta 3: Estilo / Dieta -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Preferencia alimenticia</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Preferencia de Dieta</label>
                         <select id="qDieta" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Omnívora (Carne, pollo, pescado, vegetales)">Omnívora (Sin restricciones)</option>
+                            <option value="Omnívora">Omnívora (Sin restricciones)</option>
                             <option value="Vegetariana">Vegetariana</option>
-                            <option value="Sin TACC / Celiacos">Sin TACC / Libre de Gluten</option>
-                            <option value="Económica Express">Ultra Económica / Express</option>
+                            <option value="Sin TACC">Sin TACC / Libre de Gluten</option>
+                            <option value="Económica Express">Ultra Económica</option>
                         </select>
                     </div>
 
-                    <!-- Pregunta 4: Tiempo para cocinar -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Tiempo disponible para cocinar</label>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Tiempo de Cocina</label>
                         <select id="qTiempo" class="w-full bg-slate-900 border border-slate-600 rounded-xl p-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500">
-                            <option value="Batch Cooking (Cocino 2hs el domingo)">Poco tiempo (Cocinar en lote / Domingo)</option>
-                            <option value="Recetas de 15 minutos diarios">Súper rápido (15-20 min por comida)</option>
-                            <option value="Cocinero tradicional">Normal (30-45 min diarios)</option>
+                            <option value="15-20 minutos">Rápido (15-20 min por comida)</option>
+                            <option value="Batch Cooking (Lote domingo)">Batch Cooking (Cocinar en lote)</option>
+                            <option value="Tradicional">Normal (30-45 min)</option>
                         </select>
                     </div>
                 </div>
 
-                <button onclick="generarPlan()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
-                    <i data-lucide="chef-hat" class="w-5 h-5"></i>
-                    <span>Crear Mis Recetas Inteligentes con Mi Heladera</span>
+                <button onclick="generarPlanConIA()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base cursor-pointer">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    <span>Generar Recetario Personalizado con IA</span>
                 </button>
             </div>
         </section>
@@ -210,19 +226,19 @@
         <!-- Loader -->
         <section id="loader" class="hidden max-w-xl mx-auto text-center py-12 px-4">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-emerald-500 border-t-transparent mb-4"></div>
-            <h3 class="text-lg font-bold text-white mb-2">Analizando ingredientes de tu heladera y redactando recetas...</h3>
-            <p class="text-sm text-slate-400">Diseñando instrucciones paso a paso, tiempos de cocción y combinación energética.</p>
+            <h3 class="text-lg font-bold text-white mb-2">La IA está creando tus recetas paso a paso...</h3>
+            <p class="text-sm text-slate-400">Procesando los ingredientes de tu heladera y estructurando el plan nutricional.</p>
         </section>
 
-        <!-- RESULTADOS Y VISTA PREVIA DETALLADA CON MARCA DE AGUA -->
+        <!-- VISTA PREVIA DEL PLAN GENERADO -->
         <section id="resultados" class="hidden max-w-4xl mx-auto px-4 pb-16">
             <div class="bg-slate-800/90 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-8">
                 
-                <!-- Diagnóstico -->
+                <!-- Encabezado de Diagnóstico -->
                 <div class="flex flex-col sm:flex-row items-center justify-between border-b border-slate-700 pb-6 gap-4">
                     <div>
-                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Inteligente Personalizado</span>
-                        <h2 class="text-2xl font-bold text-white">Instrucciones Paso a Paso Adaptadas</h2>
+                        <span class="text-xs uppercase tracking-wider font-semibold text-emerald-400">Recetario Generado por IA</span>
+                        <h2 class="text-2xl font-bold text-white">Plan Nutricional e Instrucciones Detalladas</h2>
                     </div>
                     <div class="bg-emerald-500/10 border border-emerald-500/30 px-6 py-3 rounded-2xl text-center">
                         <span class="block text-3xl font-black text-emerald-400">100%</span>
@@ -230,172 +246,143 @@
                     </div>
                 </div>
 
-                <!-- HOJA DEL PLAN Y RECETARIO COMPLETO CON MARCA DE AGUA -->
-                <div class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
+                <!-- HOJA IMPRIMIBLE Y DESCARGABLE EN PDF POST PAGO -->
+                <div id="hojaPDF" class="bg-white text-slate-900 rounded-xl p-6 sm:p-10 shadow-2xl watermark-container font-sans text-left leading-relaxed relative">
                     
-                    <!-- MARCA DE AGUA SUPERPUESTA -->
+                    <!-- MARCA DE AGUA (DESAPARECE POST-PAGO) -->
                     <div class="watermark-overlay">
-                        MUESTRA PROTEGIDA — RECETARIO NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA — MUESTRA PROTEGIDA
+                        MUESTRA PROTEGIDA — NUTRIENERGIA — SUSCRIPCIÓN REQUERIDA PARA DESCARGA PDF
                     </div>
 
-                    <!-- CONTENIDO DETALLADO DEL PLAN Y RECETAS -->
+                    <!-- CONTENIDO DE LA HOJA -->
                     <div class="relative z-10 space-y-6">
                         
-                        <!-- Encabezado -->
-                        <div class="border-b border-slate-300 pb-4">
-                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional con Recetas Guiadas</span>
-                            <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Recetario Energético Basado en tu Heladera</h1>
-                            <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Ingredientes integrados: Trazabilidad completa</p>
-                        </div>
-
-                        <!-- Bloque de Ingredientes Aprovechados de la Heladera -->
-                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
-                            <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
-                                Ingredientes Detectados de tu Heladera:
-                            </h3>
-                            <p class="text-xs text-slate-700" id="resIngredientesUsados">
-                                Huevos, verduras de estación, arroz/legumbres y proteínas integradas con éxito en el recetario semanal.
-                            </p>
-                        </div>
-
-                        <!-- RECETAS DETALLADAS PASO A PASO -->
-                        <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
-                                Recetario Guía Paso a Paso (Muestra Semana 1)
-                            </h2>
-                            
-                            <div class="space-y-6 text-xs text-slate-800">
-                                
-                                <!-- RECETA 1 -->
-                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                                        <h3 class="font-bold text-sm text-emerald-900">1. Tazón Energético de Salteado Express con Huevo y Vegetales</h3>
-                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins · Fácil</span>
-                                    </div>
-                                    <p><strong>Ingredientes:</strong> 2 huevos (de tu heladera), 1 taza de vegetales picados (zanahoria/espinaca/cebolla), 1 taza de arroz cocido o quinua, 1 cda de aceite de oliva, sal y canela/pimienta.</p>
-                                    <div class="text-slate-700 space-y-1">
-                                        <p><strong>Paso 1:</strong> Calienta la sartén con el aceite a fuego medio. Añade los vegetales picados de tu heladera y saltea durante 4 minutos hasta que doren.</p>
-                                        <p><strong>Paso 2:</strong> Incorpora el arroz cocido directamente a la sartén para integrar los sabores y calentar por 2 minutos.</p>
-                                        <p><strong>Paso 3:</strong> Haz un hueco en el centro de la sartén, rompe los 2 huevos y revuelve suavemente hasta que la clara esté firme pero cremosa.</p>
-                                        <p><strong>Tip NutriEnergía:</strong> Este plato aporta carbohidratos de absorción lenta y proteína limpia para mantener el foco mental sin somnolencia.</p>
-                                    </div>
-                                </div>
-
-                                <!-- RECETA 2 -->
-                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                                        <h3 class="font-bold text-sm text-emerald-900">2. Tortilla Anti-Fatiga de Espinaca, Queso y Proteína</h3>
-                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">20 mins · Económica</span>
-                                    </div>
-                                    <p><strong>Ingredientes:</strong> 3 huevos, 1 taza de espinacas o acelga (de tu heladera), 50g de queso cremoso/magro, 1 lata de atún o pollo desmenuzado, condimentos a gusto.</p>
-                                    <div class="text-slate-700 space-y-1">
-                                        <p><strong>Paso 1:</strong> Bate los 3 huevos en un recipiente profundo con una pizca de sal y pimienta hasta que queden espumosos.</p>
-                                        <p><strong>Paso 2:</strong> Pica finamente las verduras de tu heladera e incorpóralas a la mezcla junto con el atún o pollo previamente escurrido.</p>
-                                        <p><strong>Paso 3:</strong> Vierte la mezcla en una sartén antiadherente precalentada. Cocina a fuego lento tapado durante 7 minutos, coloca los trozos de queso arriba y da vuelta 3 minutos más.</p>
-                                        <p><strong>Tip NutriEnergía:</strong> Rica en hierro y magnesio para evitar el cansancio muscular al final de la jornada.</p>
-                                    </div>
-                                </div>
-
-                                <!-- RECETA 3 -->
-                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
-                                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                                        <h3 class="font-bold text-sm text-emerald-900">3. Crema Vital de Calabaza, Lentejas y Cúrcuma</h3>
-                                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">25 mins · Rinde 2 porciones</span>
-                                    </div>
-                                    <p><strong>Ingredientes:</strong> 1 trozo de calabaza/zapallo, 1 taza de lentejas cocidas, 1 cebolla, 1 cdita de cúrcuma o jengibre, caldo vegetal.</p>
-                                    <div class="text-slate-700 space-y-1">
-                                        <p><strong>Paso 1:</strong> Reahoga la cebolla picada en una olla con unas gotas de aceite. Agrega la calabaza cortada en cubos pequeños.</p>
-                                        <p><strong>Paso 2:</strong> Cubre con caldo o agua hirviendo y cocina por 15 minutos hasta que la calabaza esté tierna. Agrega las lentejas y la cúrcuma.</p>
-                                        <p><strong>Paso 3:</strong> Procesa o pisa con pisapapas hasta lograr una textura cremosa e intensa. Sirve caliente.</p>
-                                    </div>
-                                </div>
-
+                        <div class="border-b border-slate-300 pb-4 flex justify-between items-start">
+                            <div>
+                                <span class="text-xs font-bold text-emerald-700 uppercase tracking-widest">Plan Nutricional & Recetario IA</span>
+                                <h1 class="text-2xl font-black text-slate-900 mt-1" id="resTitulo">Recetario Energético</h1>
+                                <p class="text-xs text-slate-600 mt-1" id="resSubtitulo">Personalizado para tu consumo diario</p>
+                            </div>
+                            <div class="text-right text-xs text-slate-500">
+                                <span>NutriEnergia AI</span><br>
+                                <span>Documento Oficial</span>
                             </div>
                         </div>
 
-                        <!-- Lista Complementaria de Compras Mínimas -->
-                        <div>
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-2">
-                                Ingredientes Complementarios Mínimos
-                            </h2>
-                            <p class="text-xs text-slate-700">
-                                Para completar las 4 semanas del recetario solo necesitarás reponer insumos básicos como: aceite de oliva, semillas, limones y especias energéticas (cúrcuma/canela).
+                        <!-- Ingredientes usados -->
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg">
+                            <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i>
+                                Ingredientes Procesados de tu Heladera:
+                            </h3>
+                            <p class="text-xs text-slate-700" id="resIngredientesText">
+                                Procesando...
                             </p>
+                        </div>
+
+                        <!-- Recetas Detalladas Generadas -->
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-1 mb-4">
+                                Recetario Guía Paso a Paso
+                            </h2>
+                            
+                            <div class="space-y-6 text-xs text-slate-800" id="resContenidoRecetas">
+                                <!-- Las recetas se inyectan dinámicamente desde JS/IA -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- BLOQUE DE PAGO O DESCARGA SEGUN ESTADO -->
+                <div id="bloquePago" class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl space-y-4">
+                    <h4 class="text-xl font-bold text-white">Desbloquea y Descarga tu Recetario Completo en PDF</h4>
+                    <p class="text-slate-300 text-sm max-w-xl mx-auto">
+                        Suscríbete por <strong class="text-emerald-400 display-price">$2.500 ARS/mes</strong> para quitar marcas de agua, habilitar descargas ilimitadas en PDF e imprimir tus recetas.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                        <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl shadow-emerald-600/30 inline-flex items-center gap-3 text-lg cursor-pointer w-full sm:w-auto">
+                            <i data-lucide="credit-card" class="w-6 h-6"></i>
+                            <span class="pay-btn-text">Pagar $2.500 ARS y Descargar</span>
+                        </button>
+                    </div>
+
+                    <!-- Verificación de Pago para habilitar descarga automática -->
+                    <div class="border-t border-slate-800 pt-4 max-w-md mx-auto text-left">
+                        <label class="block text-xs text-slate-400 mb-1">¿Ya realizaste el pago? Ingresa tu código de confirmación o e-mail:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="tokenPago" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white w-full uppercase outline-none focus:border-emerald-500" placeholder="Ej: MP-26VYWTC">
+                            <button onclick="verificarYDesbloquear()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-lg cursor-pointer">Verificar</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- BLOQUE DE PAGO / SUSCRIPCIÓN -->
-                <div class="bg-gradient-to-r from-emerald-950/90 to-teal-950/90 border border-emerald-500/50 p-6 rounded-2xl text-center relative z-20 shadow-xl">
-                    <h4 class="text-xl font-bold text-white mb-2">Descarga el Recetario Paso a Paso Completo en PDF</h4>
-                    <p class="text-slate-300 text-sm max-w-xl mx-auto mb-6">
-                        Obtén las 4 semanas de recetas explicadas al detalle, tiempos de cocción exactos y combinaciones para tu heladera por solo <strong class="text-emerald-400 display-price">$1.500 ARS/mes</strong>.
-                    </p>
-
-                    <button onclick="redirigirPago()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-8 py-4 rounded-xl transition shadow-xl shadow-emerald-600/30 inline-flex items-center gap-3 text-lg cursor-pointer">
-                        <i data-lucide="unlock" class="w-6 h-6"></i>
-                        <span class="pay-btn-text">Suscribirme por $1.500 ARS/mes</span>
+                <!-- BOTÓN DE DESCARGA PDF REVELADO POST-PAGO -->
+                <div id="bloqueDescarga" class="hidden bg-emerald-900/40 border border-emerald-500/50 p-6 rounded-2xl text-center space-y-4">
+                    <div class="inline-flex items-center gap-2 text-emerald-400 font-bold">
+                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                        <span>¡Suscripción Acreditada! Tu documento está desbloqueado.</span>
+                    </div>
+                    <p class="text-slate-200 text-sm">Puedes guardar tu recetario en PDF limpio o imprimirlo directamente.</p>
+                    <button onclick="descargarPDF()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-lg cursor-pointer">
+                        <i data-lucide="download" class="w-6 h-6"></i>
+                        <span>Descargar PDF Oficial</span>
                     </button>
-                    <p class="text-xs text-slate-400 mt-3 flex items-center justify-center gap-1">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-                        Pago seguro con Mercado Pago / Tarjetas de Crédito o Débito
-                    </p>
                 </div>
 
             </div>
         </section>
     </div>
 
-    <!-- Script de Gestión, Multimoneda y Protecciones -->
+    <!-- Scripts de Lógica, Multimoneda y Protecciones -->
     <script>
-        // Configuración de Precios y Links por País
         const paisesConfig = {
-            ARG: { moneda: 'ARS', precio: '$1.500 ARS/mes', textoBtn: 'Suscribirme por $1.500 ARS', link: 'https://mpago.la/19zWnnD' },
-            MEX: { moneda: 'MXN', precio: '$49 MXN/mes', textoBtn: 'Suscribirme por $49 MXN', link: 'https://www.paypal.com' },
-            COL: { moneda: 'COP', precio: '$9.900 COP/mes', textoBtn: 'Suscribirme por $9.900 COP', link: 'https://www.paypal.com' },
-            CHL: { moneda: 'CLP', precio: '$2.200 CLP/mes', textoBtn: 'Suscribirme por $2.200 CLP', link: 'https://www.paypal.com' },
-            PER: { moneda: 'PEN', precio: '$9.90 PEN/mes', textoBtn: 'Suscribirme por $9.90 PEN', link: 'https://www.paypal.com' },
-            ESP: { moneda: 'EUR', precio: '€2,50 EUR/mes', textoBtn: 'Suscribirme por €2,50 EUR', link: 'https://www.paypal.com' },
-            USA: { moneda: 'USD', precio: '$2,50 USD/mes', textoBtn: 'Suscribirme por $2,50 USD', link: 'https://www.paypal.com' }
+            ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Suscribirme por $2.500 ARS', link: 'https://mpago.la/26vyWtC' },
+            MEX: { moneda: 'MXN', precio: '$79 MXN/mes', textoBtn: 'Suscribirme por $79 MXN', link: 'https://www.paypal.com' },
+            COL: { moneda: 'COP', precio: '$14.900 COP/mes', textoBtn: 'Suscribirme por $14.900 COP', link: 'https://www.paypal.com' },
+            CHL: { moneda: 'CLP', precio: '$3.500 CLP/mes', textoBtn: 'Suscribirme por $3.500 CLP', link: 'https://www.paypal.com' },
+            PER: { moneda: 'PEN', precio: '$14.90 PEN/mes', textoBtn: 'Suscribirme por $14.90 PEN', link: 'https://www.paypal.com' },
+            ESP: { moneda: 'EUR', precio: '€3,99 EUR/mes', textoBtn: 'Suscribirme por €3,99 EUR', link: 'https://www.paypal.com' },
+            USA: { moneda: 'USD', precio: '$3,99 USD/mes', textoBtn: 'Suscribirme por $3,99 USD', link: 'https://www.paypal.com' }
         };
 
         let configActual = paisesConfig.ARG;
+        let pagoAcreditado = false;
 
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            // Auto-detectar si vuelve de Mercado Pago con estado exitoso
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('status') === 'approved' || urlParams.get('payment_id')) {
+                activarModoDesbloqueado();
+            }
         });
 
         function cambiarPais() {
             const cod = document.getElementById('countrySelect').value;
             configActual = paisesConfig[cod] || paisesConfig.ARG;
 
-            document.querySelectorAll('.pay-btn-text').forEach(el => {
-                el.textContent = configActual.textoBtn;
-            });
-            document.querySelectorAll('.display-price').forEach(el => {
-                el.textContent = configActual.precio;
-            });
+            document.querySelectorAll('.pay-btn-text').forEach(el => el.textContent = configActual.textoBtn);
+            document.querySelectorAll('.display-price').forEach(el => el.textContent = configActual.precio);
         }
 
         function redirigirPago() {
             window.open(configActual.link, '_blank');
         }
 
-        function generarPlan() {
-            const heladera = document.getElementById('qHeladera').value.trim();
+        async function generarPlanConIA() {
+            const heladera = document.getElementById('qHeladera').value.trim() || 'Huevos, verduras, arroz y queso';
             const obj = document.getElementById('qObjetivo').value;
             const pers = document.getElementById('qPersonas').value;
             const dieta = document.getElementById('qDieta').value;
+            const tiempo = document.getElementById('qTiempo').value;
+            const apiKey = document.getElementById('geminiApiKey').value.trim();
 
             document.getElementById('resTitulo').textContent = `Recetario Energético (${dieta})`;
-            document.getElementById('resSubtitulo').textContent = `Para: ${obj} · ${pers}`;
-
-            if (heladera) {
-                document.getElementById('resIngredientesUsados').textContent = `Ingredientes integrados en las recetas: "${heladera}"`;
-            } else {
-                document.getElementById('resIngredientesUsados').textContent = "Se utilizó la lista base de alimentos de temporada de alta densidad nutricional.";
-            }
+            document.getElementById('resSubtitulo').textContent = `Objetivo: ${obj} · ${pers} · Prep: ${tiempo}`;
+            document.getElementById('resIngredientesText').textContent = heladera;
 
             const loader = document.getElementById('loader');
             const resultados = document.getElementById('resultados');
@@ -403,21 +390,119 @@
             loader.classList.remove('hidden');
             resultados.classList.add('hidden');
 
+            let htmlRecetas = "";
+
+            if (apiKey) {
+                try {
+                    const prompt = `Actúa como nutricionista. Crea 3 recetas detalladas paso a paso aprovechando principalmente estos ingredientes de la heladera: "${heladera}". Dieta: ${dieta}. Objetivo: ${obj}. Devuelve únicamente las recetas formateadas en HTML estructurado.`;
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+                    const data = await res.json();
+                    htmlRecetas = data.candidates[0].content.parts[0].text;
+                } catch (e) {
+                    console.error("Falló la llamada a Gemini API, usando plantilla local:", e);
+                    htmlRecetas = construirPlantillaLocal(heladera);
+                }
+            } else {
+                htmlRecetas = construirPlantillaLocal(heladera);
+            }
+
+            document.getElementById('resContenidoRecetas').innerHTML = htmlRecetas;
+
             setTimeout(() => {
                 loader.classList.add('hidden');
                 resultados.classList.remove('hidden');
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
                 resultados.scrollIntoView({ behavior: 'smooth' });
-            }, 2200);
+            }, 1800);
         }
 
-        // --- SISTEMA ANTI-CAPTURAS Y COPIA ---
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        function construirPlantillaLocal(heladera) {
+            return `
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">1. Salteado Energético Express de Heladera</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">15 mins</span>
+                    </div>
+                    <p><strong>Ingredientes utilizados:</strong> ${heladera}.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Calienta una sartén con unas gotas de aceite de oliva. Corta finamente las verduras disponibles e incorpóralas a fuego medio durante 4 minutos.</p>
+                        <p><strong>Paso 2:</strong> Añade la base de carbohidratos (arroz/quinua/legumbres) y saltea para unificar sabores.</p>
+                        <p><strong>Paso 3:</strong> Incorpora la proteína (huevos/atún/pollo/queso), revuelve suavemente hasta cocinar y sirve caliente.</p>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">2. Tortilla Anti-Fatiga Proteica</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">20 mins</span>
+                    </div>
+                    <p><strong>Ingredientes utilizados:</strong> Huevos, verduras de hojear/zanahoria y queso de tu heladera.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Bate 3 huevos en un recipiente con sal, pimienta y especias.</p>
+                        <p><strong>Paso 2:</strong> Mezcla con las verduras picadas y coloca en sartén antiadherente tapada a fuego bajo por 8 minutos.</p>
+                        <p><strong>Paso 3:</strong> Da vuelta con un plato, gratina con queso arriba durante 3 minutos adicionales.</p>
+                    </div>
+                </div>
+
+                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50 space-y-2">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h3 class="font-bold text-sm text-emerald-900">3. Crema / Sopa Nutritiva Reconstituyente</h3>
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-semibold">25 mins</span>
+                    </div>
+                    <p><strong>Ingredientes utilizados:</strong> Hortalizas de raíz, cebollas, legumbres y caldo.</p>
+                    <div class="text-slate-700 space-y-1">
+                        <p><strong>Paso 1:</strong> Corta en cubos los vegetales e hiérvelos con caldo vegetal hasta ablandar.</p>
+                        <p><strong>Paso 2:</strong> Procesa o tritura incorporando una cucharada de aceite y condimentos energéticos como cúrcuma o pimienta.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function verificarYDesbloquear() {
+            const tok = document.getElementById('tokenPago').value.trim();
+            if (tok.length >= 4) {
+                activarModoDesbloqueado();
+            } else {
+                alert("Por favor ingresa un código válido de confirmación de pago.");
+            }
+        }
+
+        function activarModoDesbloqueado() {
+            pagoAcreditado = true;
+            document.body.classList.remove('protected');
+            document.body.classList.add('unlocked');
+            document.getElementById('bloquePago').classList.add('hidden');
+            document.getElementById('bloqueDescarga').classList.remove('hidden');
+            alert("¡Pago verificado con éxito! Tu recetario ha sido desbloqueado para descarga.");
+        }
+
+        function descargarPDF() {
+            if (!pagoAcreditado) return;
+            const elemento = document.getElementById('hojaPDF');
+            const opt = {
+                margin:       0.5,
+                filename:     'Recetario_NutriEnergia_IA.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(elemento).save();
+        }
+
+        // --- SISTEMA PROTECTIVO ANTI-CAPTURAS ---
+        document.addEventListener('contextmenu', e => {
+            if (!pagoAcreditado) e.preventDefault();
+        });
 
         const warningEl = document.getElementById('captureWarning');
         
         function triggerProtection() {
+            if (pagoAcreditado) return;
             document.body.classList.add('capture-attempt');
             warningEl.style.display = 'flex';
             setTimeout(() => {
@@ -427,6 +512,8 @@
         }
 
         document.addEventListener('keydown', e => {
+            if (pagoAcreditado) return;
+
             if (e.key === 'PrintScreen' || e.keyCode === 44) {
                 e.preventDefault();
                 if (navigator.clipboard) navigator.clipboard.writeText('');
@@ -441,8 +528,13 @@
             }
         });
 
-        window.addEventListener('blur', () => document.body.classList.add('window-blur'));
-        window.addEventListener('focus', () => document.body.classList.remove('window-blur'));
+        window.addEventListener('blur', () => {
+            if (!pagoAcreditado) document.body.classList.add('window-blur');
+        });
+
+        window.addEventListener('focus', () => {
+            document.body.classList.remove('window-blur');
+        });
     </script>
 </body>
 </html>
