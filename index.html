@@ -53,7 +53,7 @@
             <h3 class="text-xl font-bold mb-2">Contenido Protegido Enterprise</h3>
             <p class="text-sm text-slate-300 mb-6">Completa tu pago oficial en Mercado Pago para desbloquear la Zona VIP de 30 días.</p>
             <button onclick="redirigirMercadoPago()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition inline-flex items-center gap-2 cursor-pointer">
-                <span class="pay-btn-text">Pagar con Mercado Pago ($2.500 ARS)</span>
+                <span class="pay-btn-text">Pagar en Mercado Pago ($2.500 ARS)</span>
             </button>
         </div>
     </div>
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <button onclick="redirigirMercadoPago()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-blue-600/20 cursor-pointer">
-                <span class="pay-btn-text">Pagar con Mercado Pago ($2.500 ARS)</span>
+                <span class="pay-btn-text">Pagar en Mercado Pago ($2.500 ARS)</span>
                 <i data-lucide="external-link" class="w-4 h-4"></i>
             </button>
         </div>
@@ -198,7 +198,7 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                        <!-- Botón Mercado Pago -->
+                        <!-- Botón Mercado Pago con tu link oficial -->
                         <button onclick="redirigirMercadoPago()" class="bg-blue-600 hover:bg-blue-500 text-white font-black px-6 py-4 rounded-xl transition shadow-xl inline-flex items-center gap-3 text-sm cursor-pointer justify-center w-full sm:w-auto">
                             <i data-lucide="credit-card" class="w-5 h-5"></i>
                             <span class="pay-btn-text">Pagar en Mercado Pago ($2.500 ARS)</span>
@@ -257,13 +257,13 @@
     <!-- Script Enterprise Masivo -->
     <script>
         const paisesConfig = {
-            ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Pagar en Mercado Pago ($2.500 ARS)', linkMP: 'https://mercadopago.com.ar' },
-            MEX: { moneda: 'MXN', precio: '$79 MXN/mes', textoBtn: 'Pagar en Mercado Pago ($79 MXN)', linkMP: 'https://mercadopago.com.mx' },
-            COL: { moneda: 'COP', precio: '$14.900 COP/mes', textoBtn: 'Pagar en Mercado Pago ($14.900 COP)', linkMP: 'https://mercadopago.com.co' },
-            CHL: { moneda: 'CLP', precio: '$3.500 CLP/mes', textoBtn: 'Pagar en Mercado Pago ($3.500 CLP)', linkMP: 'https://mercadopago.cl' },
-            PER: { moneda: 'PEN', precio: '$14.90 PEN/mes', textoBtn: 'Pagar con Tarjeta', linkMP: 'https://mercadopago.com.pe' },
-            ESP: { moneda: 'EUR', precio: '€3,99 EUR/mes', textoBtn: 'Pagar con Tarjeta / EUR', linkMP: 'https://paypal.com' },
-            USA: { moneda: 'USD', precio: '$3,99 USD/mes', textoBtn: 'Pagar con Tarjeta / USD', linkMP: 'https://paypal.com' }
+            ARG: { moneda: 'ARS', precio: '$2.500 ARS/mes', textoBtn: 'Pagar en Mercado Pago ($2.500 ARS)', linkMP: 'https://mpago.la/26vyWtC' },
+            MEX: { moneda: 'MXN', precio: '$79 MXN/mes', textoBtn: 'Pagar en Mercado Pago ($79 MXN)', linkMP: 'https://mpago.la/26vyWtC' },
+            COL: { moneda: 'COP', precio: '$14.900 COP/mes', textoBtn: 'Pagar en Mercado Pago ($14.900 COP)', linkMP: 'https://mpago.la/26vyWtC' },
+            CHL: { moneda: 'CLP', precio: '$3.500 CLP/mes', textoBtn: 'Pagar en Mercado Pago ($3.500 CLP)', linkMP: 'https://mpago.la/26vyWtC' },
+            PER: { moneda: 'PEN', precio: '$14.90 PEN/mes', textoBtn: 'Pagar con Tarjeta', linkMP: 'https://mpago.la/26vyWtC' },
+            ESP: { moneda: 'EUR', precio: '€3,99 EUR/mes', textoBtn: 'Pagar con Tarjeta / EUR', linkMP: 'https://mpago.la/26vyWtC' },
+            USA: { moneda: 'USD', precio: '$3,99 USD/mes', textoBtn: 'Pagar con Tarjeta / USD', linkMP: 'https://mpago.la/26vyWtC' }
         };
 
         let configActual = paisesConfig.ARG;
@@ -289,7 +289,6 @@
         }
 
         function redirigirMercadoPago() {
-            // Reemplaza este link con tu link directo de cobro de Mercado Pago (Botón o Link de pago)
             window.open(configActual.linkMP, '_blank');
         }
 
@@ -297,7 +296,7 @@
             const email = document.getElementById('qEmail').value.trim() || 'No especificado';
             const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
             const heladera = document.getElementById('qHeladera').value.trim() || 'Sin detallar';
-            const mensaje = `Hola, ¿Ya pagaste? SÍ. Ya realicé mi pago en Mercado Pago por ${configActual.precio}. Adjunto mi comprobante para que me habilites en la Zona VIP.%0A%0A- Nombre: ${nombre}%0A- Email: ${email}%0A- Heladera: ${heladera}`;
+            const mensaje = `Hola, ¿Ya pagaste? SÍ. Ya realicé mi pago en Mercado Pago (${configActual.precio}). Adjunto mi comprobante para que me habilites en la Zona VIP.%0A%0A- Nombre: ${nombre}%0A- Email: ${email}%0A- Heladera: ${heladera}`;
             window.open(`https://wa.me/5492983389710?text=${mensaje}`, '_blank');
         }
 
