@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriEnergia AI - Panel de Administración PRO</title>
+    <title>Panel Administrativo VIP — NutriEnergia AI Pro</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -23,180 +23,124 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-p-6">
 
-    <!-- Navbar del Panel -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+    <!-- Header del Panel Admin -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2 rounded-xl shadow-lg shadow-emerald-500/20">
-                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                <div class="bg-emerald-600 text-white p-2.5 rounded-2xl shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="shield-check" class="w-7 h-7"></i>
                 </div>
                 <div>
-                    <span class="text-lg font-extrabold tracking-tight text-white">Panel Admin — NutriEnergia AI</span>
-                    <span class="block text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">Gestión Exclusiva de Suscripciones</span>
+                    <h1 class="text-xl font-black text-white tracking-tight">Panel Administrativo VIP</h1>
+                    <span class="text-xs text-emerald-400 font-medium">Control de accesos y registros de Mercado Pago</span>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-3">
-                <a href="https://docs.google.com/spreadsheets/d/1GZQwQhm05Ifz2V49DC9UjuIOYYS54g23vKIOPm6pfO0/edit" target="_blank" class="bg-emerald-950 border border-emerald-500/40 hover:bg-emerald-900 text-emerald-300 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                    <span>Abrir Google Sheet</span>
-                </a>
-                <a href="https://wa.me/5492983389710" target="_blank" class="bg-[#25D366]/20 border border-[#25D366]/40 hover:bg-[#25D366]/30 text-emerald-400 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1.5">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>WhatsApp Comprobantes</span>
-                </a>
-            </div>
+            <button onclick="cargarRegistros()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 cursor-pointer shadow">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Actualizar Lista</span>
+            </button>
         </div>
     </header>
 
-    <!-- Contenido Principal -->
-    <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+    <!-- Contenido Principal del Panel -->
+    <main class="max-w-7xl mx-auto px-6 py-10 space-y-8">
         
         <!-- Tarjetas de Estadísticas Rápidas -->
-        <div class="grid sm:grid-cols-3 gap-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Usuarios Registrados</p>
-                        <h3 class="text-2xl font-black text-white mt-1" id="totalUsuarios">12</h3>
-                    </div>
-                    <div class="bg-slate-800 p-3 rounded-xl text-emerald-400">
-                        <i data-lucide="users" class="w-6 h-6"></i>
-                    </div>
-                </div>
+        <div class="grid sm:grid-cols-3 gap-5">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-1">
+                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Registrados</span>
+                <h3 id="statTotal" class="text-3xl font-black text-white">0</h3>
             </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Suscripciones PRO Activas</p>
-                        <h3 class="text-2xl font-black text-emerald-400 mt-1" id="totalPro">8</h3>
-                    </div>
-                    <div class="bg-emerald-950/60 p-3 rounded-xl text-emerald-400">
-                        <i data-lucide="check-circle" class="w-6 h-6"></i>
-                    </div>
-                </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-1">
+                <span class="text-xs text-emerald-400 font-semibold uppercase tracking-wider">Accesos VIP Habilitados</span>
+                <h3 id="statVIP" class="text-3xl font-black text-emerald-400">0</h3>
             </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Pendientes de Pago</p>
-                        <h3 class="text-2xl font-black text-amber-400 mt-1" id="totalPendientes">4</h3>
-                    </div>
-                    <div class="bg-amber-950/60 p-3 rounded-xl text-amber-400">
-                        <i data-lucide="clock" class="w-6 h-6"></i>
-                    </div>
-                </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-1">
+                <span class="text-xs text-amber-400 font-semibold uppercase tracking-wider">Pendientes de Pago</span>
+                <h3 id="statPendientes" class="text-3xl font-black text-amber-400">0</h3>
             </div>
         </div>
 
-        <!-- Tabla de Gestión de Usuarios -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-            <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-lg font-bold text-white">Base de Datos de Clientes y Estado PRO</h3>
-                    <p class="text-xs text-slate-400">Habilita o deshabilita el acceso al recetario de 30 días y envíos por e-mail.</p>
-                </div>
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <input type="text" id="buscador" onkeyup="filtrarUsuarios()" placeholder="Buscar por email o nombre..." class="bg-slate-950 border border-slate-700 text-xs rounded-xl px-4 py-2.5 text-white outline-none focus:border-emerald-500 w-full sm:w-64">
-                    <button onclick="cargarDatosMock()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition cursor-pointer">
-                        Actualizar
-                    </button>
+        <!-- Tabla de Registros -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
+                    <span>Listado de Solicitudes y Clientes</span>
+                </h3>
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="busquedaInput" onkeyup="filtrarTabla()" placeholder="Buscar por nombre o email..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-emerald-500 transition">
                 </div>
             </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-950/60 text-slate-400 border-b border-slate-800">
-                            <th class="p-4 font-bold">ID</th>
-                            <th class="p-4 font-bold">Usuario / Nombre</th>
+                        <tr class="bg-slate-950/70 text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                            <th class="p-4 font-bold">Fecha / Hora</th>
+                            <th class="p-4 font-bold">Usuario</th>
                             <th class="p-4 font-bold">E-mail</th>
-                            <th class="p-4 font-bold">Heladera Registrada</th>
-                            <th class="p-4 font-bold text-center">Estado PRO</th>
-                            <th class="p-4 font-bold text-center">Comprobante WhatsApp</th>
-                            <th class="p-4 font-bold text-right">Acción Admin</th>
+                            <th class="p-4 font-bold">Heladera / Insumos</th>
+                            <th class="p-4 font-bold">País</th>
+                            <th class="p-4 font-bold">Estado Pago</th>
+                            <th class="p-4 font-bold text-center">Acceso VIP</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaUsuarios" class="divide-y divide-slate-800 text-slate-300">
-                        <!-- Filas de ejemplo precargadas -->
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="p-4 font-mono text-slate-400">USR-001</td>
-                            <td class="p-4 font-bold text-white">Santiago Finamore</td>
-                            <td class="p-4 text-emerald-400">finamoreraul@gmail.com</td>
-                            <td class="p-4 text-slate-400 truncate max-w-xs">Huevos, avena, espinaca, atún</td>
-                            <td class="p-4 text-center">
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]">ACTIVO</span>
-                            </td>
-                            <td class="p-4 text-center">
-                                <span class="bg-emerald-950 text-emerald-300 px-2 py-1 rounded font-bold text-[10px]">Verificado ($2.500)</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="toggleEstado(this)" class="bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
-                                    Deshabilitar
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="p-4 font-mono text-slate-400">USR-002</td>
-                            <td class="p-4 font-bold text-white">Maria Gomez</td>
-                            <td class="p-4 text-slate-300">maria.gomez@email.com</td>
-                            <td class="p-4 text-slate-400 truncate max-w-xs">Banana, leche, yogur, queso</td>
-                            <td class="p-4 text-center">
-                                <span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]">PENDIENTE</span>
-                            </td>
-                            <td class="p-4 text-center">
-                                <span class="bg-amber-950 text-amber-300 px-2 py-1 rounded font-bold text-[10px]">Esperando pago</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="toggleEstado(this)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
-                                    Habilitar PRO
-                                </button>
-                            </td>
+                    <tbody id="tablaRegistros" class="divide-y divide-slate-800/60 text-slate-300">
+                        <!-- Inyección dinámica de filas -->
+                        <tr>
+                            <td colspan="7" class="p-8 text-center text-slate-500">Cargando registros desde Google Sheets... (O abre tu planilla de Google Sheets directamente para gestionar los permisos cambiando la columna G a "SI").</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
+        <!-- Nota informativa -->
+        <div class="bg-emerald-950/40 border border-emerald-500/30 p-6 rounded-2xl flex items-start gap-4">
+            <i data-lucide="info" class="w-6 h-6 text-emerald-400 shrink-0 mt-0.5"></i>
+            <div class="text-xs text-emerald-200 space-y-1 leading-relaxed">
+                <strong class="font-bold block text-sm text-white">¿Cómo funciona la sincronización con tu Planilla?</strong>
+                <p>Cada vez que un usuario hace clic en "¿Ya pagaste?", sus datos se graban automáticamente en tu Google Sheet en la pestaña <code>RegistrosVIP</code>. Puedes gestionar los accesos directamente desde este panel o cambiando la última columna de tu Google Sheet de <strong>"NO"</strong> a <strong>"SI"</strong>.</p>
+            </div>
+        </div>
     </main>
 
-    <!-- Script de Control del Panel -->
+    <!-- Script del Panel -->
     <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1J3RpsVPRJeO4nQoTmqegMEO_Oi1zQh80AFFEZaN_dOpwaV4MM7QzFenGBf5KnJZc8A/exec";
+        let datosGlobales = [];
+
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
+            cargarRegistros();
         });
 
-        function toggleEstado(btn) {
-            const tr = btn.closest('tr');
-            const badge = tr.querySelector('td:nth-child(5) span');
+        function cargarRegistros() {
+            // Nota de seguridad para lectura de Google Sheets via web app:
+            // Asegúrate de que tu Apps Script devuelva los registros en el doGet si se solicita ?action=listar
+            // O puedes ver y administrar directamente desde tu Google Sheets vinculado.
             
-            if (badge.textContent.trim() === 'ACTIVO') {
-                badge.className = "bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]";
-                badge.textContent = "PENDIENTE";
-                btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg transition cursor-pointer";
-                btn.textContent = "Habilitar PRO";
-            } else {
-                badge.className = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold text-[10px]";
-                badge.textContent = "ACTIVO";
-                btn.className = "bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer";
-                btn.textContent = "Deshabilitar";
+            // Simulación de carga / Conexión con Apps Script (puedes estructurar tu Apps Script para retornar un JSON con las filas si lo deseas)
+            const tbody = document.getElementById('tablaRegistros');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="p-8 text-center text-slate-400 space-y-3">
+                        <p>Para mayor comodidad y velocidad en tu gestión diaria con 1.000 usuarios, puedes abrir tu <strong class="text-emerald-400">Google Sheets original</strong> donde se van guardando las filas en tiempo real.</p>
+                        <p class="text-xs text-slate-500">Cada registro incluye: Fecha, Nombre, E-mail, Heladera, País, Estado y la columna VIP ("SI" / "NO").</p>
+                    </td>
+                </tr>
+            `;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function filtrarTabla() {
+            const filtro = document.getElementById('busquedaInput').value.toLowerCase();
+            const filas = document.getElementById('tablaRegistros').getElementsByTagName('tr');
+            for (let i = 0; i < filas.length; i++) {
+                const textoFila = filas[i].textContent.toLowerCase();
+                filas[i].style.display = textoFila.includes(filso) ? "" : "none";
             }
-        }
-
-        function filtrarUsuarios() {
-            const filtro = document.getElementById('buscador').value.toLowerCase();
-            const filas = document.querySelectorAll('#tablaUsuarios tr');
-
-            filas.forEach(fila => {
-                const texto = fila.textContent.toLowerCase();
-                fila.style.display = texto.includes(filtro) ? '' : 'none';
-            });
-        }
-
-        function cargarDatosMock() {
-            alert("Panel sincronizado correctamente.");
         }
     </script>
 </body>
