@@ -92,16 +92,16 @@
         </div>
     </div>
 
-    <!-- Header Principal -->
+    <!-- Header Principal (Hacer clic en el logo/nombre vuelve a la Vista Previa) -->
     <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2.5 rounded-2xl shadow-lg shadow-emerald-500/25">
+            <div onclick="volverAVistaPrevia()" class="flex items-center space-x-3 cursor-pointer group">
+                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-2.5 rounded-2xl shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition">
                     <i data-lucide="zap" class="w-7 h-7"></i>
                 </div>
                 <div>
-                    <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">NutriEnergia AI Pro</span>
-                    <span class="block text-[10px] text-slate-400 font-bold tracking-widest uppercase">Enterprise Edition</span>
+                    <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent group-hover:underline">NutriEnergia AI Pro</span>
+                    <span class="block text-[10px] text-slate-400 font-bold tracking-widest uppercase">Enterprise Edition (Volver al Inicio)</span>
                 </div>
             </div>
             <button onclick="redirigirMercadoPago()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-5 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-lg shadow-blue-600/20 cursor-pointer">
@@ -214,7 +214,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN VIP (DÍA POR DÍA CON 4 COMIDAS, PASO A PASO Y BENEFICIOS) -->
+        <!-- SECCIÓN VIP (DÍA POR DÍA CON 4 COMIDAS, INGREDIENTES, PASO A PASO Y BENEFICIOS) -->
         <section id="seccionVIP" class="hidden max-w-4xl mx-auto px-4 pb-24">
             <div class="bg-gradient-to-b from-slate-800 to-emerald-950/95 border-2 border-emerald-500 rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8">
                 
@@ -300,6 +300,13 @@
             window.open(`https://wa.me/5492983389710?text=${mensaje}`, '_blank');
         }
 
+        function volverAVistaPrevia() {
+            document.getElementById('seccionVIP').classList.add('hidden');
+            document.getElementById('resultados').classList.add('hidden');
+            document.getElementById('seccionFormulario').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function construirBaseDatos30Dias() {
             listaRecetasGeneradas = [];
             const titulosPlatos = [
@@ -324,24 +331,28 @@
                         {
                             tipo: "Desayuno",
                             titulo: `${baseTitulo} — Matutino (Día ${i})`,
+                            ingredientes: "• 40g de avena o cereal base<br>• 1 huevo de campo o porción láctea<br>• Fruta fresca de estación (1 unidad)<br>• Cucharada de semillas o frutos secos",
                             pasos: "1. Preparar la base proteica o cerealera según inventario.<br>2. Cocinar a fuego moderado por 4 minutos integrando texturas.<br>3. Servir acompañado de fruta fresca o infusión.",
                             ayuda: "Estabiliza la glucemia matutina, proporciona energía de liberación lenta y mejora la claridad mental."
                         },
                         {
                             tipo: "Almuerzo",
                             titulo: `${baseTitulo} — Principal del Mediodía (Día ${i})`,
+                            ingredientes: "• 150g de proteína magra (pollo, atún o huevo)<br>• 200g de vegetales mixtos de heladera<br>• 1 porción de carbohidrato complejo (arroz o papa)<br>• Aceite de oliva y condimentos a gusto",
                             pasos: "1. Picar los vegetales disponibles en porciones uniformes.<br>2. Saltear o cocinar al horno combinando con la fuente proteica elegida.<br>3. Condimentar con hierbas y aceite de oliva.",
                             ayuda: "Optimiza la síntesis proteica, aporta saciedad prolongada y previene el letargo posterior."
                         },
                         {
                             tipo: "Merienda",
                             titulo: `${baseTitulo} — Energético Vespertino (Día ${i})`,
+                            ingredientes: "• 1 fruta fresca disponible<br>• 150ml de agua o leche descremada / vegetal<br>• Puñado chico de avena o frutos secos",
                             pasos: "1. Procesar ingredientes frescos con líquido en licuadora o armar snack rápido.<br>2. Integrar hasta homogeneizar.<br>3. Consumir fresco acompañado de frutos secos.",
                             ayuda: "Frena la ansiedad de la tarde, rehidrata y mantiene el rendimiento óptimo hasta la noche."
                         },
                         {
                             tipo: "Cena",
                             titulo: `${baseTitulo} — Nocturno Digestivo (Día ${i})`,
+                            ingredientes: "• 120g de proteína de fácil digestión<br>• Mix de verduras verdes cocidas al vapor o plancha<br>• Aceite de oliva para realzar sabores",
                             pasos: "1. Emplear cocciones ligeras como plancha, vapor u horno suave.<br>2. Evitar excesos de grasas pesadas.<br>3. Servir en porción controlada.",
                             ayuda: "Favorece un descanso profundo, optimiza la recuperación muscular y facilita la digestión nocturna."
                         }
@@ -365,6 +376,7 @@
                     <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2">
                         <span class="text-xs font-black uppercase text-emerald-800 bg-emerald-200 px-2.5 py-1 rounded">Desayuno Día 1 (Demostración Gratuita)</span>
                         <h4 class="font-bold text-slate-900 text-sm">${muestraDía1.titulo}</h4>
+                        <p class="text-xs text-slate-700"><strong>Ingredientes:</strong> ${muestraDía1.ingredientes}</p>
                         <p class="text-xs text-slate-700"><strong>Paso a paso:</strong> ${muestraDía1.pasos}</p>
                         <p class="text-xs text-slate-700"><strong>Beneficio:</strong> ${muestraDía1.ayuda}</p>
                     </div>
@@ -405,13 +417,17 @@
                         </div>
                         <h4 class="text-xl font-bold text-white">${comida.titulo}</h4>
                         
-                        <div class="grid sm:grid-cols-2 gap-5 pt-1">
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 space-y-1.5">
-                                <strong class="text-xs text-teal-400 uppercase tracking-wider block">🍳 Paso a paso (Cómo se hace):</strong>
+                        <div class="grid sm:grid-cols-3 gap-4 pt-1">
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60 space-y-1.5">
+                                <strong class="text-xs text-amber-400 uppercase tracking-wider block">🛒 Ingredientes:</strong>
+                                <p class="text-xs text-slate-300 leading-relaxed">${comida.ingredientes}</p>
+                            </div>
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60 space-y-1.5">
+                                <strong class="text-xs text-teal-400 uppercase tracking-wider block">🍳 Paso a paso:</strong>
                                 <p class="text-xs text-slate-300 leading-relaxed">${comida.pasos}</p>
                             </div>
-                            <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700/60 space-y-1.5">
-                                <strong class="text-xs text-indigo-400 uppercase tracking-wider block">💡 Beneficio (En qué te ayuda):</strong>
+                            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/60 space-y-1.5">
+                                <strong class="text-xs text-indigo-400 uppercase tracking-wider block">💡 Beneficio:</strong>
                                 <p class="text-xs text-slate-300 leading-relaxed">${comida.ayuda}</p>
                             </div>
                         </div>
