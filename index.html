@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <!-- Topbar con Selector de Moneda / País y Botón de Acceso VIP verificado por Gmail -->
+    <!-- Topbar con Selector de Moneda / País y el botón VIP que aparece mágicamente al ser autorizado -->
     <div class="bg-emerald-950/90 border-b border-emerald-800/60 text-emerald-200 text-xs sm:text-sm py-2.5 px-4 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center gap-2.5">
@@ -67,13 +67,19 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <!-- Botón de Acceso VIP (Valida por Gmail contra tu Google Sheet) -->
-                <div>
-                    <button onclick="solicitarAccesoVIP()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-2 rounded-lg transition shadow-md inline-flex items-center gap-1.5 cursor-pointer">
+                <!-- BOTÓN VIP CONDICIONAL: Aparece solo cuando tú lo habilitas en tu panel/sheet -->
+                <div id="contenedorBotonVIP" class="hidden">
+                    <button onclick="irAZonaVIP()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-2 rounded-lg transition shadow-md inline-flex items-center gap-1.5 cursor-pointer animate-bounce">
                         <i data-lucide="crown" class="w-3.5 h-3.5"></i>
-                        <span>Ir a mi Zona VIP (Verificar Gmail)</span>
+                        <span>✨ ¡Ya estás autorizado! Entrar a mi Zona VIP</span>
                     </button>
                 </div>
+
+                <!-- Botón para verificar si ya fue habilitado -->
+                <button onclick="consultarAutorizacionPanel()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3 py-2 rounded-lg transition inline-flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                    <span>¿Ya me habilitaste? Verificar</span>
+                </button>
 
                 <div class="flex items-center gap-3 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
                     <i data-lucide="globe" class="w-4 h-4 text-emerald-400"></i>
@@ -83,7 +89,7 @@
                         <option value="MEX" class="bg-slate-900 text-white">🇲🇽 México ($79 MXN)</option>
                         <option value="COL" class="bg-slate-900 text-white">🇨🇴 Colombia ($14.900 COP)</option>
                         <option value="CHL" class="bg-slate-900 text-white">🇨🇱 Chile ($3.500 CLP)</option>
-                        <option value="PER" class="bg-slate-900 text-white">🇵🇪 Perú ($14.90 PEN)</option>
+                        <option value="PER" class="bg-slate-900 text-white">🇨🇪 Perú ($14.90 PEN)</option>
                         <option value="ESP" class="bg-slate-900 text-white">🇪🇸 España / EUR (€3,99 EUR)</option>
                         <option value="USA" class="bg-slate-900 text-white">🇺🇸 Internacional ($3,99 USD)</option>
                     </select>
@@ -122,7 +128,7 @@
                 Plan Nutricional Masivo <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Sin Desperdicios en tu Hogar</span>
             </h1>
             <p class="text-slate-300 text-base sm:text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
-                Ingresa los ingredientes disponibles en tu heladera para evaluar primero la vista previa y muestra restringida del Día 1. Paga en Mercado Pago, envía tu comprobante por WhatsApp y verifica tu Gmail para acceder al contenido completo.
+                Ingresa los ingredientes disponibles en tu heladera para evaluar primero la vista previa y muestra restringida del Día 1. Paga en Mercado Pago, envía tu comprobante por WhatsApp y cuando te habilitemos desde el panel, haz clic en verificar para ver tu botón VIP.
             </p>
         </section>
 
@@ -194,7 +200,7 @@
                     <h4 class="text-2xl font-extrabold text-white">¿Te gustó el adelanto? Desbloquea los 30 Días por $2.500 ARS</h4>
                     <p class="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
                         Paso 1: Realiza el pago seguro en Mercado Pago.<br>
-                        Paso 2: Responde a la pregunta <strong>¿Ya pagaste?</strong> enviando tu comprobante por WhatsApp para que te activemos el acceso VIP por Gmail.
+                        Paso 2: Responde a la pregunta <strong>¿Ya pagaste?</strong> enviando tu comprobante por WhatsApp para que te activemos el acceso desde nuestro panel.
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
@@ -254,7 +260,7 @@
         </section>
     </div>
 
-    <!-- Script Enterprise Masivo con validación estricta de Gmail -->
+    <!-- Script Enterprise Masivo con verificación de autorización por panel -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1J3RpsVPRJeO4nQoTmqegMEO_Oi1zQh80AFFEZaN_dOpwaV4MM7QzFenGBf5KnJZc8A/exec";
 
@@ -275,6 +281,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             construirBaseDatos30Dias();
+            
+            // Si ya guardó su email previamente, verifica automáticamente si el admin ya le dio "SI"
+            const emailGuardado = localStorage.getItem("nutri_email_autorizado");
+            if(emailGuardado) {
+                document.getElementById('qEmail').value = emailGuardado;
+                verificarAutorizacionSilenciosa(emailGuardado);
+            }
         });
 
         function cambiarPais() {
@@ -293,7 +306,10 @@
             const heladera = document.getElementById('qHeladera').value.trim() || 'Sin detallar';
             const pais = document.getElementById('countrySelect').value;
 
-            // Envía los datos automáticamente al Google Sheet para que queden pendientes de aprobación
+            // Guarda el email para futuras consultas automáticas
+            localStorage.setItem("nutri_email_autorizado", email);
+
+            // Registra el pedido en tu Google Sheet
             const payload = { nombre: nombre, email: email, heladera: heladera, pais: pais };
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
@@ -306,38 +322,42 @@
             window.open(`https://wa.me/5492983389710?text=${mensaje}`, '_blank');
         }
 
-        // CONTROL DE ACCESO VIP ESTRICTO MEDIANTE GMAIL CONSULTANDO A GOOGLE SHEET
-        function solicitarAccesoVIP() {
-            const emailIngresado = prompt("Ingresa tu Gmail registrado para verificar tu acceso VIP:");
-            if (!emailIngresado || !emailIngresado.includes("@")) {
-                if (emailIngresado !== null) alert("Por favor ingresa un correo electrónico válido.");
-                return;
+        // CONSULTA AL PANEL (GOOGLE SHEET) PARA HACER APARECER EL BOTÓN VIP
+        function consultarAutorizacionPanel() {
+            let email = document.getElementById('qEmail').value.trim();
+            if (!email || !email.includes("@")) {
+                email = prompt("Ingresa tu Gmail para verificar si ya te habilitamos el acceso:");
+                if (!email || !email.includes("@")) return;
+                document.getElementById('qEmail').value = email;
             }
 
-            // Muestra indicador visual de carga
-            const btnOriginal = event.currentTarget.innerHTML;
-            event.currentTarget.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Verificando...`;
-            if (typeof lucide !== 'undefined') lucide.createIcons();
+            localStorage.setItem("nutri_email_autorizado", email);
 
-            // Consulta en tiempo real al backend de Google Apps Script
-            fetch(`${APPS_SCRIPT_URL}?email=${encodeURIComponent(emailIngresado.trim())}`)
+            fetch(`${APPS_SCRIPT_URL}?email=${encodeURIComponent(email)}`)
                 .then(res => res.json())
                 .then(data => {
-                    event.currentTarget.innerHTML = btnOriginal;
-                    if (typeof lucide !== 'undefined') lucide.createIcons();
-
                     if (data.status === "success" && data.vip === true) {
-                        alert("¡Acceso verificado con éxito! Bienvenido a la Zona VIP.");
-                        irAZonaVIP();
+                        // ¡HACE APARECER EL BOTÓN VIP EN LA BARRA SUPERIOR!
+                        document.getElementById('contenedorBotonVIP').classList.remove('hidden');
+                        alert("¡Excelente! Tu pago ya fue verificado y autorizado. Haz clic en el botón verde de arriba para entrar a tu Zona VIP.");
                     } else {
-                        alert("El correo ingresado no cuenta con un pago verificado o aún no ha sido autorizado desde el panel administrativo. Realiza tu pago o envía tu comprobante por WhatsApp.");
+                        alert("Aún figura como pendiente o no encontrado. Asegúrate de haber enviado tu comprobante por WhatsApp o que el administrador haya habilitado tu correo en el panel.");
                     }
                 })
                 .catch(err => {
-                    event.currentTarget.innerHTML = btnOriginal;
-                    if (typeof lucide !== 'undefined') lucide.createIcons();
-                    alert("Error de conexión al verificar el acceso. Intenta nuevamente en unos segundos.");
+                    alert("Error al verificar. Intenta nuevamente en unos segundos.");
                 });
+        }
+
+        function verificarAutorizacionSilenciosa(email) {
+            fetch(`${APPS_SCRIPT_URL}?email=${encodeURIComponent(email)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success" && data.vip === true) {
+                        document.getElementById('contenedorBotonVIP').classList.remove('hidden');
+                    }
+                })
+                .catch(err => {});
         }
 
         function volverAVistaPrevia() {
@@ -403,6 +423,9 @@
 
         function generarMuestraPrevia() {
             const nombre = document.getElementById('qNombre').value.trim() || 'Usuario';
+            const email = document.getElementById('qEmail').value.trim();
+            if(email) localStorage.setItem("nutri_email_autorizado", email);
+
             document.getElementById('resTitulo').textContent = `Vista Previa para ${nombre}`;
             document.getElementById('loader').classList.remove('hidden');
             document.getElementById('resultados').classList.add('hidden');
