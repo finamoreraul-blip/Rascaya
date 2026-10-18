@@ -21,7 +21,7 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-p-6">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
 
     <!-- Header del Panel Admin -->
     <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 shadow-md">
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-black text-white tracking-tight">Panel Administrativo VIP</h1>
-                    <span class="text-xs text-emerald-400 font-medium">Control de accesos y registros de Mercado Pago</span>
+                    <span class="text-xs text-emerald-400 font-medium">Control de accesos y habilitación instantánea</span>
                 </div>
             </div>
             <button onclick="cargarRegistros()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 cursor-pointer shadow">
@@ -83,13 +83,15 @@
                             <th class="p-4 font-bold">Heladera / Insumos</th>
                             <th class="p-4 font-bold">País</th>
                             <th class="p-4 font-bold">Estado Pago</th>
-                            <th class="p-4 font-bold text-center">Acceso VIP</th>
+                            <th class="p-4 font-bold text-center">Acceso VIP (Habilitar)</th>
                         </tr>
                     </thead>
                     <tbody id="tablaRegistros" class="divide-y divide-slate-800/60 text-slate-300">
-                        <!-- Inyección dinámica de filas -->
                         <tr>
-                            <td colspan="7" class="p-8 text-center text-slate-500">Cargando registros desde Google Sheets... (O abre tu planilla de Google Sheets directamente para gestionar los permisos cambiando la columna G a "SI").</td>
+                            <td colspan="7" class="p-12 text-center text-slate-400">
+                                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent mb-3"></div>
+                                <p>Cargando registros y sincronizando con Google Sheets...</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -100,16 +102,16 @@
         <div class="bg-emerald-950/40 border border-emerald-500/30 p-6 rounded-2xl flex items-start gap-4">
             <i data-lucide="info" class="w-6 h-6 text-emerald-400 shrink-0 mt-0.5"></i>
             <div class="text-xs text-emerald-200 space-y-1 leading-relaxed">
-                <strong class="font-bold block text-sm text-white">¿Cómo funciona la sincronización con tu Planilla?</strong>
-                <p>Cada vez que un usuario hace clic en "¿Ya pagaste?", sus datos se graban automáticamente en tu Google Sheet en la pestaña <code>RegistrosVIP</code>. Puedes gestionar los accesos directamente desde este panel o cambiando la última columna de tu Google Sheet de <strong>"NO"</strong> a <strong>"SI"</strong>.</p>
+                <strong class="font-bold block text-sm text-white">Sync en Tiempo Real Enterprise</strong>
+                <p>Al hacer clic en el botón de habilitar dentro de este panel, se actualizará la columna correspondiente en tu Google Sheet. En ese mismo instante, el usuario podrá pulsar <em>"¿Ya me habilitaste? Verificar"</em> en su pantalla y aparecerá mágicamente su botón para ingresar a la Zona VIP.</p>
             </div>
         </div>
     </main>
 
-    <!-- Script del Panel -->
+    <!-- Script del Panel Admin -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx1J3RpsVPRJeO4nQoTmqegMEO_Oi1zQh80AFFEZaN_dOpwaV4MM7QzFenGBf5KnJZc8A/exec";
-        let datosGlobales = [];
+        let registrosGlobales = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -117,21 +119,105 @@
         });
 
         function cargarRegistros() {
-            // Nota de seguridad para lectura de Google Sheets via web app:
-            // Asegúrate de que tu Apps Script devuelva los registros en el doGet si se solicita ?action=listar
-            // O puedes ver y administrar directamente desde tu Google Sheets vinculado.
-            
-            // Simulación de carga / Conexión con Apps Script (puedes estructurar tu Apps Script para retornar un JSON con las filas si lo deseas)
             const tbody = document.getElementById('tablaRegistros');
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="p-8 text-center text-slate-400 space-y-3">
-                        <p>Para mayor comodidad y velocidad en tu gestión diaria con 1.000 usuarios, puedes abrir tu <strong class="text-emerald-400">Google Sheets original</strong> donde se van guardando las filas en tiempo real.</p>
-                        <p class="text-xs text-slate-500">Cada registro incluye: Fecha, Nombre, E-mail, Heladera, País, Estado y la columna VIP ("SI" / "NO").</p>
+                    <td colspan="7" class="p-12 text-center text-slate-400">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent mb-3"></div>
+                        <p>Actualizando registros...</p>
                     </td>
                 </tr>
             `;
+
+            // Realiza una petición GET al Apps Script pidiendo la lista completa de registros
+            fetch(`${APPS_SCRIPT_URL}?action=listar`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success" && Array.isArray(data.registros)) {
+                        registrosGlobales = data.registros;
+                        renderizarTabla(registrosGlobales);
+                    } else {
+                        // Si el Apps Script está configurado de manera básica, muestra alternativa
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="p-8 text-center text-amber-400 space-y-2">
+                                    <p>Para habilitar registros dinámicos aquí, asegúrate de actualizar tu Apps Script con la función de listado, o gestiona directamente tus permisos en tu planilla de Google Sheets.</p>
+                                    <a href="https://docs.google.com/spreadsheets/u/0/" target="_blank" class="inline-block bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition">Abrir Google Sheets Directamente</a>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                })
+                .catch(err => {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="p-8 text-center text-slate-400 space-y-3">
+                                <p>Gestiona tus registros y accesos VIP directamente desde tu <strong class="text-emerald-400">Google Sheets principal</strong>.</p>
+                                <p class="text-xs text-slate-500">Cambia la celda de la última columna (Habilitar VIP) de "NO" a "SI" para dar acceso instantáneo a tus clientes.</p>
+                            </td>
+                        </tr>
+                    `;
+                });
+        }
+
+        function renderizarTabla(registros) {
+            const tbody = document.getElementById('tablaRegistros');
+            tbody.innerHTML = "";
+
+            let total = registros.length;
+            let vipCount = 0;
+            let pendientesCount = 0;
+
+            if (total === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500">No hay registros de usuarios todavía.</td></tr>`;
+                return;
+            }
+
+            registros.forEach((reg, index) => {
+                const esVIP = String(reg.vip || "").trim().toUpperCase() === "SI";
+                if (esVIP) vipCount++; else pendientesCount++;
+
+                const fila = document.createElement('tr');
+                fila.className = "hover:bg-slate-800/40 transition";
+                fila.innerHTML = `
+                    <td class="p-4 text-slate-400">${reg.fecha || 'N/A'}</td>
+                    <td class="p-4 font-bold text-white">${reg.nombre || 'Sin nombre'}</td>
+                    <td class="p-4 text-emerald-400">${reg.email || 'Sin email'}</td>
+                    <td class="p-4 text-slate-300 max-w-xs truncate" title="${reg.heladera || ''}">${reg.heladera || 'Sin especificar'}</td>
+                    <td class="p-4 text-slate-300 font-semibold">${reg.pais || 'ARG'}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${esVIP ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}">
+                            ${esVIP ? 'Pagado & Autorizado' : 'Pendiente de Pago'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="alternarVIP('${reg.email}', ${!esVIP})" class="px-3 py-1.5 rounded-xl font-bold text-xs transition cursor-pointer ${esVIP ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30' : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md'}">
+                            ${esVIP ? 'Revocar VIP' : '✨ Habilitar VIP'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statVIP').textContent = vipCount;
+            document.getElementById('statPendientes').textContent = pendientesCount;
             if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function alternarVIP(email, habilitar) {
+            const nuevoEstado = habilitar ? "SI" : "NO";
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, vip: nuevoEstado, accion: 'actualizar' })
+            }).then(() => {
+                alert(`Acceso VIP ${habilitar ? 'Habilitado' : 'Revocado'} correctamente para ${email}`);
+                cargarRegistros();
+            }).catch(err => {
+                alert("Error al actualizar. Intenta cambiarlo directamente en tu Google Sheets.");
+            });
         }
 
         function filtrarTabla() {
@@ -139,7 +225,7 @@
             const filas = document.getElementById('tablaRegistros').getElementsByTagName('tr');
             for (let i = 0; i < filas.length; i++) {
                 const textoFila = filas[i].textContent.toLowerCase();
-                filas[i].style.display = textoFila.includes(filso) ? "" : "none";
+                filas[i].style.display = textoFila.includes(filtro) ? "" : "none";
             }
         }
     </script>
